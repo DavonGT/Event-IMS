@@ -1,0 +1,121 @@
+/* Content Styling */
+.content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+
+
+
+
+
+/* Navigation Bar CSS */
+/* Sidebar Styling */
+.sidebar {
+    width: 70px;
+    height: 95vh;
+    background-color: #e0c5ff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 0 50px 50px 0;
+    border-right: 3px solid #670467;
+}
+
+/* Remove default list style */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+}
+
+/* Style for each nav link */
+.sidebar ul li a {
+    text-decoration: none;
+    color: #670467;
+    display: block;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 50%; /* Circular background */
+    width: 25px; /* Adjust size of the circle */
+    height: 25px; /* Adjust size of the circle */
+    display: flex;
+    justify-content: center; /* Center the icon inside the circle */
+    align-items: center; /* Center the icon inside the circle */
+    background-color: transparent; /* Default background is transparent */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Hover effect for nav links */
+.sidebar ul li a:hover {
+    background-color: #670467; /* Set background color on hover */
+    color: white; /* Change text/icon color on hover */
+}
+
+/* Style for icons inside the sidebar */
+.sidebar ul li a i {
+    font-size: 24px; /* Icon size */
+    color: #670467; /* Default icon color */
+    transition: color 0.3s ease; /* Smooth transition for icon color */
+}
+
+/* Change icon color to white on hover */
+.sidebar ul li a:hover i {
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Content Styling */
+.content {
+    margin-left: 240px; /* Account for the width of the sidebar */
+    padding: 20px;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    height: 100vh; /* Full viewport height */
+}
+
+/* Simple styling for the content */
+.home-container {
+    max-width: 800px; /* Limit content width */
+    text-align: center; /* Center-align text */
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
