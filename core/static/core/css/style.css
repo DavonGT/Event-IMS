@@ -18,14 +18,14 @@
     position: fixed;
     top: 0;
     left: 0;
-    padding: 20px;
+    padding: 15px;
     color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-radius: 0 50px 50px 0;
+    border-radius: 0 25px 25px 0;
     border-right: 3px solid #670467;
 }
 
@@ -42,29 +42,30 @@
     text-decoration: none;
     color: #670467;
     display: block;
-    margin-bottom: 15px;
+    margin: 18px;
+    margin-left: 10px;
     padding: 15px;
-    border-radius: 50%; /* Circular background */
-    width: 25px; /* Adjust size of the circle */
-    height: 25px; /* Adjust size of the circle */
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
     display: flex;
-    justify-content: center; /* Center the icon inside the circle */
-    align-items: center; /* Center the icon inside the circle */
-    background-color: transparent; /* Default background is transparent */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+    justify-content: center;
+    align-items: center;
+    background-color: transparent; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 /* Hover effect for nav links */
 .sidebar ul li a:hover {
-    background-color: #670467; /* Set background color on hover */
-    color: white; /* Change text/icon color on hover */
+    background-color: #670467; 
+    color: white;
 }
 
 /* Style for icons inside the sidebar */
 .sidebar ul li a i {
-    font-size: 24px; /* Icon size */
-    color: #670467; /* Default icon color */
-    transition: color 0.3s ease; /* Smooth transition for icon color */
+    font-size: 24px;
+    color: #670467;
+    transition: color 0.3s ease;
 }
 
 /* Change icon color to white on hover */
