@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+
+{% block title %}Add New Event{% endblock %}
+
+{% block content %}
+<div class="table_container">
+    <h1 class="page-title">Add New Event</h1>
+    <hr class="horizontal-line">
+
+    <form method="POST" class="event-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="add-new-button">Save Event</button>
+        <a href="{% url 'events_list' %}" class="filter-button">Cancel</a>
+    </form>
+</div>
+{% endblock %}

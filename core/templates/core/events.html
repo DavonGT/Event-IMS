@@ -1,0 +1,73 @@
+{% extends "core/base.html" %}
+
+{% block title %}All Events{% endblock %}
+
+{% block content %}
+  
+
+    <!-- Page Title -->
+    <div class="title-full">
+    <h1 class="page-title">College of Computer Studies Events:</h1>
+  </div>
+  <div class="table_container">
+    <div class="top-container">
+    <!-- Tabs Container -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab active">FCO</button>
+        <button class="tab">CSSO</button>
+        <button class="tab">ITSO</button>
+      </div>
+    </div>
+
+    <!-- Filter/Search/Add Container -->
+    <div class="filter-container">
+      <button class="filter-button">Filter</button>
+      <input type="text" placeholder="Search..." class="search-input" />
+      <a href="{% url 'add_event' %}" class="add-new-button">+ Add New</a>
+    </div>
+  </div>
+
+    <!-- Events Table -->
+    <table class="events-table">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Venue</th>
+          <th>Who</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+          <tr>
+            <td>{{ event.name }}</td>
+            <td>{{ event.start_datetime|date:"d. m. Y" }}</td>
+            <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
+            <td>{{ event.location }}</td>
+            <td>
+              {% if event.target_group %}
+                {{ event.target_group }}
+              {% else %}
+                {{ event.host.username }}
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'view_event' event.id %}" class="action-link">🔍</a>
+              {% if request.user == event.host %}
+                <a href="{% url 'edit_event' event.id %}" class="action-link">✏️</a>
+                <a href="{% url 'delete_event' event.id %}" class="action-link">🗑️</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6">No events found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

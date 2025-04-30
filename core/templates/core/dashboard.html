@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <div class="dashboard-container">
+    <h1>{{ user_role }} Dashboard</h1>
+
+    <div id="calendar"></div>
+  </div>
+
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        events: [
+          // Example events
+          { title: 'Orientation', date: '2025-05-05' },
+          { title: 'Workshop', date: '2025-05-12' },
+        ]
+      });
+      calendar.render();
+    });
+  </script>
+{% endblock %}

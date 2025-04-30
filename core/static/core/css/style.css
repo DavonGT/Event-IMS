@@ -1,16 +1,20 @@
-/* Content Styling */
+/* General Reset and Background */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0e5ff;
+    margin: 0;
+    padding: 0;
+}
+
 .content {
-    margin-left: 220px;
-    padding: 20px;
+    margin-left: 100px;
+    padding: 20px 0px;
+    display: block;
+
 }
 
 
-
-
-
-
-/* Navigation Bar CSS */
-/* Sidebar Styling */
+/* Sidebar Navigation */
 .sidebar {
     width: 70px;
     height: 95vh;
@@ -19,17 +23,14 @@
     top: 0;
     left: 0;
     padding: 15px;
-    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
     border-radius: 0 25px 25px 0;
     border-right: 3px solid #670467;
 }
 
-/* Remove default list style */
 .sidebar ul {
     list-style-type: none;
     padding: 0;
@@ -37,86 +38,213 @@
     margin: 0;
 }
 
-/* Style for each nav link */
 .sidebar ul li a {
     text-decoration: none;
     color: #670467;
-    display: block;
-    margin: 18px;
-    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px 10px;
     padding: 15px;
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent; 
-    transition: background-color 0.3s ease, color 0.3s ease; 
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Hover effect for nav links */
 .sidebar ul li a:hover {
-    background-color: #670467; 
+    background-color: #670467;
     color: white;
 }
 
-/* Style for icons inside the sidebar */
 .sidebar ul li a i {
     font-size: 24px;
     color: #670467;
     transition: color 0.3s ease;
 }
 
-/* Change icon color to white on hover */
 .sidebar ul li a:hover i {
     color: white;
 }
 
+/* Full-width Title Bar */
+.title-full {
+    width: auto;
+    margin: 20px 0px;
+    background-color: #4a004a;
+    padding: 10px 20px;
+}
 
+.page-title {
+    font-size: 25px;
+    color: #f0e5ff;
+    margin: 0;
+    font-weight: bold;
+    margin-left: 10px;
+    
+}
 
-
-
-
-
-
-
-
-
-
-/* Content Styling */
-.content {
-    margin-left: 240px; /* Account for the width of the sidebar */
+/* Table Wrapper */
+.table_container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #f0e5ff;
+
+}
+
+/* Top Section (Tabs + Buttons) */
+.top-container {
     display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    height: 100vh; /* Full viewport height */
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
-/* Simple styling for the content */
-.home-container {
-    max-width: 800px; /* Limit content width */
-    text-align: center; /* Center-align text */
+.tabs-container {
+    display: flex;
 }
 
-h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 20px;
+.tabs {
+    display: flex;
+    gap: 10px;
 }
 
-p {
-    font-size: 1.1rem;
-    color: #555;
+.tab {
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    background-color: #f0e5ff;
+    color: #4a004a;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin: 0;
+    transition: background-color 0.3s ease;
 }
 
-a {
-    color: #007BFF;
+.tab.active {
+    background-color: #670467;
+    color: white;
+}
+
+/* Filter/Search/Add Section */
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.filter-button,
+.search-input,
+.add-new-button {
+    white-space: nowrap;
+}
+
+.filter-button {
+    background-color: #670467;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.filter-button:hover {
+    background-color: #540357;
+}
+
+.search-input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 180px;
+}
+
+.add-new-button {
+    background-color: #4a004a;
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.add-new-button:hover {
+    background-color: #6e006e;
+}
+
+/* Events Table Styling */
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.events-table th,
+.events-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    color: #4a004a;
+}
+
+.events-table th {
+    background-color: #f8e6f8;
+    font-weight: bold;
+}
+
+.events-table td {
+    background-color: #fff;
+}
+
+.events-table tr:nth-child(even) td {
+    background-color: #fdf2fd;
+}
+
+.events-table tr:hover td {
+    background-color: #f3d6f3;
+}
+
+/* Action Links */
+.action-link {
+    color: #670467;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 5px;
     text-decoration: none;
     font-weight: bold;
 }
 
-a:hover {
+.action-link:hover {
+    color: #900090;
     text-decoration: underline;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .top-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .filter-button,
+    .search-input,
+    .add-new-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }

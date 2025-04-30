@@ -4,11 +4,11 @@
 
         <!-- Role-based links with checklist icon -->
         {% if user_role == 'Admin' %}
-        <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-list-check"></i></a></li>
+        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
         {% elif user_role == 'Organizer' %}
-        <li><a href="{% url 'organizer_dashboard' %}"><i class="fas fa-list-check"></i></a></li>
+        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
         {% elif user_role == 'Student' %}
-        <li><a href="{% url 'student_dashboard' %}"><i class="fas fa-list-check"></i></a></li>
+        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
         {% endif %}
 
         <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>

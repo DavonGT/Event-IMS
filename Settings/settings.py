@@ -118,8 +118,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# If using production or running with collectstatic
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Optional, if you have a global static folder
 
 
 # Default primary key field type
