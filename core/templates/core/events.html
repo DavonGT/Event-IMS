@@ -47,13 +47,7 @@
           <td>{{ event.start_datetime|date:"d. m. Y" }}</td>
           <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
           <td>{{ event.location }}</td>
-          <td>
-            {% if event.target_group %}
-              {{ event.target_group }}
-            {% else %}
-              {{ event.host.username }}
-            {% endif %}
-          </td>
+          <td>{{ event.who_can_attend }}</td>
           <td>
             <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
             {% if request.user == event.host %}

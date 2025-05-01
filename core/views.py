@@ -55,7 +55,6 @@ def add_event(request):
         if form.is_valid():
             event = form.save(commit=False)
             event.host = request.user
-            event.save()
             form.save_m2m()
             return redirect('events_list')
     else:
@@ -120,10 +119,12 @@ def view_event(request, event_id):
 
 def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
+        print("hello")
+        print(form)
         if form.is_valid():
+            print("hello")
             form.save()
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({'message': 'Event updated successfully'})

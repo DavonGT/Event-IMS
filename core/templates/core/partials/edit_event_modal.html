@@ -12,18 +12,21 @@
   
           <label for="id_name">Event Name:</label>
           {{ form.name }}
+
+          <label for="id_description">Description:</label>
+          {{ form.description }}
   
-          <label for="id_date">Date:</label>
-          {{ form.date }}
-  
-          <label for="id_time">Time:</label>
-          {{ form.time }}
+          <label for="id_date">Starting Date & Time:</label>
+          {{ form.start_datetime }}
+
+          <label for="id_date">Ending Date & Time:</label>
+          {{ form.end_datetime }}
   
           <label for="id_location">Location:</label>
           {{ form.location }}
   
-          <label for="id_who">Who:</label>
-          {{ form.who }}
+          <label for="id_who_can_attend">Who:</label>
+          {{ form.who_can_attend }}
   
           <button type="submit" class="save-button">SAVE</button>
         </div>
