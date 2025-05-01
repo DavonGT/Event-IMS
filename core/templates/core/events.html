@@ -3,21 +3,20 @@
 {% block title %}All Events{% endblock %}
 
 {% block content %}
-  
 
-    <!-- Page Title -->
-    <div class="title-full">
-    <h1 class="page-title">College of Computer Studies Events:</h1>
-  </div>
-  <div class="table_container">
-    <div class="top-container">
+<!-- Page Title -->
+<div class="title-full">
+  <h1 class="page-title">College of Computer Studies Events:</h1>
+</div>
+
+<div class="table_container">
+  <div class="top-container">
     <!-- Tabs Container -->
     <div class="tabs-container">
       <div class="tabs"> 
         {% for organization in organizations %}
           <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
         {% endfor %}
-        
       </div>
     </div>
 
@@ -29,46 +28,81 @@
     </div>
   </div>
 
-    <!-- Events Table -->
-    <table class="events-table">
-      <thead>
+  <!-- Events Table -->
+  <table class="events-table">
+    <thead>
+      <tr>
+        <th>Event Name</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Venue</th>
+        <th>Who</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
         <tr>
-          <th>Event Name</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Venue</th>
-          <th>Who</th>
-          <th>Action</th>
+          <td>{{ event.name }}</td>
+          <td>{{ event.start_datetime|date:"d. m. Y" }}</td>
+          <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
+          <td>{{ event.location }}</td>
+          <td>
+            {% if event.target_group %}
+              {{ event.target_group }}
+            {% else %}
+              {{ event.host.username }}
+            {% endif %}
+          </td>
+          <td>
+            <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
+            {% if request.user == event.host %}
+              <button class="action-link" onclick="openModal('{% url 'edit_event' event.id %}')">✏️</button>
+              <a href="{% url 'delete_event' event.id %}" class="action-link">🗑️</a>
+            {% endif %}
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {% for event in events %}
-          <tr>
-            <td>{{ event.name }}</td>
-            <td>{{ event.start_datetime|date:"d. m. Y" }}</td>
-            <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
-            <td>{{ event.location }}</td>
-            <td>
-              {% if event.target_group %}
-                {{ event.target_group }}
-              {% else %}
-                {{ event.host.username }}
-              {% endif %}
-            </td>
-            <td>
-              <a href="{% url 'view_event' event.id %}" class="action-link">🔍</a>
-              {% if request.user == event.host %}
-                <a href="{% url 'edit_event' event.id %}" class="action-link">✏️</a>
-                <a href="{% url 'delete_event' event.id %}" class="action-link">🗑️</a>
-              {% endif %}
-            </td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="6">No events found.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+      {% empty %}
+        <tr>
+          <td colspan="6">No events found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Structure -->
+<div id="eventModal" class="modal" style="display: none;">
+  <div class="modal-overlay" onclick="closeModal()"></div>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="modal-body">Loading...</div>
   </div>
+</div>
+
+<!-- Modal JS -->
+<script>
+  function openModal(url) {
+    const modal = document.getElementById('eventModal');
+    const modalBody = document.getElementById('modal-body');
+
+    modal.style.display = 'flex';
+    modalBody.innerHTML = 'Loading...';
+
+    fetch(url, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.text())
+    .then(html => {
+      modalBody.innerHTML = html;
+    });
+  }
+
+  function closeModal() {
+    document.getElementById('eventModal').style.display = 'none';
+  }
+</script>
+
 {% endblock %}

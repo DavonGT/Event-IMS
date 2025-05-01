@@ -10,9 +10,13 @@ urlpatterns = [
     path('events_list/<int:organization_id>/', views.events_list, name='events_list_filtered'),
     path('events_list/', views.events_list, name='events_list'),
 
-    path('view-event/<int:event_id>/', views.view_event, name='view_event'),
+    # path('view-event/<int:event_id>/', views.view_event, name='view_event'),
     path('delete-event/<int:event_id>/', views.delete_event, name='delete_event'),
-    path('edit-event/<int:event_id>/', views.edit_event, name='edit_event'),
+    # path('edit-event/<int:event_id>/', views.edit_event, name='edit_event'),
+
+    path('events/<int:event_id>/view/', views.view_event, name='view_event'),
+    path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
+
 
 
 

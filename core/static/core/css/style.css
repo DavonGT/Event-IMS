@@ -216,18 +216,20 @@ body {
 
 /* Action Links */
 .action-link {
-    color: #670467;
-    font-size: 1rem;
-    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
     margin: 0 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: inherit;
+  }
+  
+  .action-link:hover {
+    color: #007bff; /* Optional: hover effect */
     text-decoration: none;
-    font-weight: bold;
-}
-
-.action-link:hover {
-    color: #900090;
-    text-decoration: underline;
-}
+  }
+  
 
 /* Responsive Layout */
 @media (max-width: 768px) {
@@ -248,3 +250,42 @@ body {
         margin-bottom: 10px;
     }
 }
+
+
+
+
+  .modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-overlay {
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+  }
+
+  .modal-content {
+    position: relative;
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    z-index: 1001;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+

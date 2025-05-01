@@ -78,17 +78,45 @@ def events_list(request, organization_id=None):
         'selected_organization_id': selected_organization_id,
     })
 
-def view_event(request, event_id):
-    event = Event.objects.get(pk=event_id)
-    return render(request, 'core/view_event.html', {'event': event})
 
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     event.delete()
     return redirect('events_list')
 
+# def view_event(request, event_id):
+#     event = Event.objects.get(pk=event_id)
+#     return render(request, 'core/events.html', {'event': event})
+
+
+# def edit_event(request, event_id):
+#     event = Event.objects.get(pk=event_id)
+#     if request.method == 'POST':
+#         form = EventForm(request.POST, instance=event)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('events_list')
+#     else:
+#         form = EventForm(instance=event)
+#     return render(request, 'core/events.html', {'form': form})
+
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
+def view_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('core/partials/view_event_modal.html', {'event': event})
+        return HttpResponse(html)
+    
+    return render(request, 'core/events.html', {'event': event})
+
+
 def edit_event(request, event_id):
     event = Event.objects.get(pk=event_id)
+
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
@@ -96,4 +124,9 @@ def edit_event(request, event_id):
             return redirect('events_list')
     else:
         form = EventForm(instance=event)
-    return render(request, 'core/edit_event.html', {'form': form})
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('core/partials/edit_event_modal.html', {'form': form})
+        return HttpResponse(html)
+
+    return render(request, 'core/events.html', {'form': form})

@@ -1,0 +1,6 @@
+<h2>Edit Event: {{ form.instance.name }}</h2>
+<form method="POST" action="{% url 'edit_event' form.instance.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
