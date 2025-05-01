@@ -15,7 +15,7 @@
     <div class="tabs-container">
       <div class="tabs"> 
         {% for organization in organizations %}
-        <a class='tab active' href="{% url 'events_list_filtered' organization.id %}">{{ organization.acronym }}</a>
+          <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
         {% endfor %}
         
       </div>

@@ -68,10 +68,14 @@ def events_list(request, organization_id=None):
 
     if organization_id:
         events = events.filter(organization_id=organization_id)
+        selected_organization_id = organization_id
+    else:
+        selected_organization_id = None
 
     return render(request, 'core/events.html', {
         'events': events,
         'organizations': organizations,
+        'selected_organization_id': selected_organization_id,
     })
 
 def view_event(request, event_id):
