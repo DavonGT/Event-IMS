@@ -71,34 +71,52 @@
   </table>
 </div>
 
-<!-- Modal Structure -->
-<div id="eventModal" class="modal" style="display: none;">
-  <div class="modal-overlay" onclick="closeModal()"></div>
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div id="modal-body">Loading...</div>
+<div id="eventModal" class="custom-modal" style="display: none;">
+  <div class="custom-modal-overlay" onclick="closeModal()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h2 id="modal-title" class="modal-title-text">Loading title...</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-body" class="custom-modal-body">
+      Loading...
+    </div>
   </div>
 </div>
+
+
+
 
 <!-- Modal JS -->
 <script>
   function openModal(url) {
     const modal = document.getElementById('eventModal');
     const modalBody = document.getElementById('modal-body');
-
+    const modalTitle = document.getElementById('modal-title');
+  
     modal.style.display = 'flex';
     modalBody.innerHTML = 'Loading...';
-
+    modalTitle.textContent = ''; // Clear old title
+  
     fetch(url, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => response.text())
     .then(html => {
+      // Temporary container to parse the HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+  
+      // Try to get event name from a heading tag (or add a hidden tag for it)
+      const eventTitle = tempDiv.querySelector('.event-title');
+      if (eventTitle) {
+        modalTitle.textContent = eventTitle.textContent;
+      }
+  
       modalBody.innerHTML = html;
     });
   }
+  
 
   function closeModal() {
     document.getElementById('eventModal').style.display = 'none';

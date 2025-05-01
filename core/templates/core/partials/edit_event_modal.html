@@ -1,6 +1,33 @@
-<h2>Edit Event: {{ form.instance.name }}</h2>
-<form method="POST" action="{% url 'edit_event' form.instance.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+<div class="custom-modal">
+    <div class="custom-modal-content">
+      <!-- ✅ Only one header wrapper -->
+      <div class="custom-modal-header">
+        <span>Edit Event: {{ form.instance.name }}</span>
+        <button class="modal-close" type="button" onclick="closeModal()">×</button>
+      </div>
+  
+      <form method="POST" action="{% url 'edit_event' form.instance.id %}">
+        {% csrf_token %}
+        <div class="custom-modal-body">
+  
+          <label for="id_name">Event Name:</label>
+          {{ form.name }}
+  
+          <label for="id_date">Date:</label>
+          {{ form.date }}
+  
+          <label for="id_time">Time:</label>
+          {{ form.time }}
+  
+          <label for="id_location">Location:</label>
+          {{ form.location }}
+  
+          <label for="id_who">Who:</label>
+          {{ form.who }}
+  
+          <button type="submit" class="save-button">SAVE</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
