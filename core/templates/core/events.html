@@ -13,10 +13,11 @@
     <div class="top-container">
     <!-- Tabs Container -->
     <div class="tabs-container">
-      <div class="tabs">
-        <button class="tab active">FCO</button>
-        <button class="tab">CSSO</button>
-        <button class="tab">ITSO</button>
+      <div class="tabs"> 
+        {% for organization in organizations %}
+        <a class='tab active' href="{% url 'events_list_filtered' organization.id %}">{{ organization.acronym }}</a>
+        {% endfor %}
+        
       </div>
     </div>
 

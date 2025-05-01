@@ -1,11 +1,16 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Event
+from .models import Event, Organization
 
 class EventForm(forms.ModelForm):
+
+    organization = forms.ModelChoiceField(queryset=Organization.objects.all())
+
     class Meta:
         model = Event
-        fields = ['name', 'description', 'location', 'start_datetime', 'end_datetime', 'attendees']
+        widgets = {
+            'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+        fields = ['name', 'description', 'location', 'start_datetime', 'end_datetime', 'organization']
 
-    # Use get_user_model() to get the actual user model
-    attendees = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.all(), required=False)

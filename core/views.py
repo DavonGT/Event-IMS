@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from .models import Event
+from .models import Event, Organization
 from .forms import EventForm
 import json
 
@@ -48,12 +48,13 @@ def dashboard(request):
 def add_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
+        print(form)
         if form.is_valid():
             event = form.save(commit=False)
             event.host = request.user
             event.save()
             form.save_m2m()
-            return redirect('events')
+            return redirect('events_list')
     else:
         form = EventForm()
 
@@ -61,8 +62,34 @@ def add_event(request):
 
 
 @login_required
-def events_list(request):
+def events_list(request, organization_id=None):
+    organizations = Organization.objects.all()
     events = Event.objects.all()
-    return render(request, 'core/events.html', {'events': events})
 
+    if organization_id:
+        events = events.filter(organization_id=organization_id)
 
+    return render(request, 'core/events.html', {
+        'events': events,
+        'organizations': organizations,
+    })
+
+def view_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    return render(request, 'core/view_event.html', {'event': event})
+
+def delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+    return redirect('events_list')
+
+def edit_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('events_list')
+    else:
+        form = EventForm(instance=event)
+    return render(request, 'core/edit_event.html', {'form': form})

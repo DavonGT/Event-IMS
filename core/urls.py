@@ -7,7 +7,12 @@ urlpatterns = [
     path('', views.home, name='home'),
     # path('dashboard/', views.dashboard, name='dashboard'),
     path('add-event/', views.add_event, name='add_event'),
+    path('events_list/<int:organization_id>/', views.events_list, name='events_list_filtered'),
     path('events_list/', views.events_list, name='events_list'),
+
+    path('view-event/<int:event_id>/', views.view_event, name='view_event'),
+    path('delete-event/<int:event_id>/', views.delete_event, name='delete_event'),
+    path('edit-event/<int:event_id>/', views.edit_event, name='edit_event'),
 
 
 
