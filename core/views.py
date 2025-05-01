@@ -1,9 +1,12 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Event, Organization
 from .forms import EventForm
 import json
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
 
 
 @login_required
@@ -101,8 +104,7 @@ def delete_event(request, event_id):
 #     return render(request, 'core/events.html', {'form': form})
 
 
-from django.http import HttpResponse
-from django.template.loader import render_to_string
+
 
 def view_event(request, event_id):
     event = Event.objects.get(pk=event_id)
@@ -114,19 +116,20 @@ def view_event(request, event_id):
     return render(request, 'core/events.html', {'event': event})
 
 
-def edit_event(request, event_id):
-    event = Event.objects.get(pk=event_id)
 
+
+def edit_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'Event updated successfully'})
             return redirect('events_list')
+    
     else:
         form = EventForm(instance=event)
+    return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('core/partials/edit_event_modal.html', {'form': form})
-        return HttpResponse(html)
-
-    return render(request, 'core/events.html', {'form': form})
