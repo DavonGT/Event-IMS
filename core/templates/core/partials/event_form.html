@@ -1,0 +1,37 @@
+<form id="eventForm" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save-button">Save</button>
+  </form>
+  
+  <script>
+    const eventForm = document.getElementById('eventForm');
+  
+    if (eventForm) {
+      eventForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+  
+        const formData = new FormData(eventForm);
+        fetch("{% url 'add_event' %}", {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            closeModal();
+            // Option 1: reload the page
+            location.reload();
+            // Option 2 (Advanced): use JS to append the new row to the table
+          } else {
+            // Re-render the form with errors
+            document.getElementById('modal-body').innerHTML = data.html;
+          }
+        });
+      });
+    }
+  </script>
+  

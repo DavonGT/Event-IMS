@@ -253,6 +253,10 @@ body {
 
 
 
+
+
+
+
 .custom-modal {
     position: fixed;
     top: 0;
@@ -279,7 +283,8 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    max-height: 90vh; /* Prevent modal from going off screen */
+    max-height: 90vh;
+    overflow: hidden; 
   }
   
   .custom-modal-header {
@@ -305,6 +310,7 @@ body {
   .custom-modal-body {
     padding: 15px;
     overflow-y: auto;
+    max-height: 70vh;
   }
   
   .custom-modal-body p {

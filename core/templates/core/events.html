@@ -24,7 +24,7 @@
     <div class="filter-container">
       <button class="filter-button">Filter</button>
       <input type="text" placeholder="Search..." class="search-input" />
-      <a href="{% url 'add_event' %}" class="add-new-button">+ Add New</a>
+      <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New</button>
     </div>
   </div>
 
@@ -65,6 +65,7 @@
   </table>
 </div>
 
+<!-- Modal -->
 <div id="eventModal" class="custom-modal" style="display: none;">
   <div class="custom-modal-overlay" onclick="closeModal()"></div>
   <div class="custom-modal-content">
@@ -78,39 +79,40 @@
   </div>
 </div>
 
-
-
-
-<!-- Modal JS -->
+<!-- Modal JavaScript -->
 <script>
   function openModal(url) {
     const modal = document.getElementById('eventModal');
     const modalBody = document.getElementById('modal-body');
     const modalTitle = document.getElementById('modal-title');
-  
+
     modal.style.display = 'flex';
     modalBody.innerHTML = 'Loading...';
-    modalTitle.textContent = ''; // Clear old title
-  
+    modalTitle.textContent = '';
+
     fetch(url, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
-    .then(response => response.text())
-    .then(html => {
-      // Temporary container to parse the HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
-  
-      // Try to get event name from a heading tag (or add a hidden tag for it)
-      const eventTitle = tempDiv.querySelector('.event-title');
-      if (eventTitle) {
-        modalTitle.textContent = eventTitle.textContent;
+    .then(response => {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return response.json();
+      } else {
+        return response.text();
       }
-  
-      modalBody.innerHTML = html;
+    })
+    .then(data => {
+      if (typeof data === 'object' && data.html) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data.html;
+        const eventTitle = tempDiv.querySelector('.event-title');
+        if (eventTitle) modalTitle.textContent = eventTitle.textContent;
+        modalBody.innerHTML = data.html;
+      } else {
+        modalBody.innerHTML = data;
+      }
     });
   }
-  
 
   function closeModal() {
     document.getElementById('eventModal').style.display = 'none';

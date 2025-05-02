@@ -46,21 +46,38 @@ def dashboard(request):
     })
 
 
+
+
+
 # View to create a new event
 @login_required
 def add_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
-        print(form)
         if form.is_valid():
             event = form.save(commit=False)
             event.host = request.user
+            event.save()
             form.save_m2m()
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': True})
             return redirect('events_list')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
+                return JsonResponse({'success': False, 'html': html})
     else:
         form = EventForm()
 
-    return render(request, 'core/add_event.html', {'form': form})
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
+        return JsonResponse({'html': html})
+
+    return render(request, 'core/events.html', {'form': form})
+
+
+
+
 
 
 @login_required
