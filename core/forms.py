@@ -8,7 +8,7 @@ class EventForm(forms.ModelForm):
         fields = [
             'organization',
             'name', 'description', 'location', 
-            'start_datetime', 'end_datetime', 'who_can_attend'
+            'start_datetime', 'end_datetime', 'event_type'
             ]
         
         widgets = {
