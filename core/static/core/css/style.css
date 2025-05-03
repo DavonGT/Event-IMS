@@ -10,9 +10,7 @@ body {
     margin-left: 100px;
     padding: 20px 0px;
     display: block;
-
 }
-
 
 /* Sidebar Navigation */
 .sidebar {
@@ -82,7 +80,6 @@ body {
     margin: 0;
     font-weight: bold;
     margin-left: 10px;
-    
 }
 
 /* Table Wrapper */
@@ -92,7 +89,6 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #f0e5ff;
-
 }
 
 /* Top Section (Tabs + Buttons) */
@@ -223,13 +219,12 @@ body {
     font-size: 1.2em;
     cursor: pointer;
     color: inherit;
-  }
-  
-  .action-link:hover {
+}
+
+.action-link:hover {
     color: #007bff; /* Optional: hover effect */
     text-decoration: none;
-  }
-  
+}
 
 /* Responsive Layout */
 @media (max-width: 768px) {
@@ -257,6 +252,14 @@ body {
 
 
 
+
+
+
+
+
+
+
+/* Modal Styling */
 .custom-modal {
     position: fixed;
     top: 0;
@@ -269,9 +272,9 @@ body {
     align-items: center;
     z-index: 1000;
     overflow-y: auto; /* Allow vertical scroll if modal content is taller than viewport */
-  }
-  
-  .custom-modal-content {
+}
+
+.custom-modal-content {
     background: white;
     width: 90%;
     max-width: 400px;
@@ -284,79 +287,99 @@ body {
     display: flex;
     flex-direction: column;
     max-height: 90vh;
-    overflow: hidden; 
-  }
-  
-  .custom-modal-header {
+    overflow: hidden;
+}
+
+/* Header Styling */
+.custom-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #822780; /* updated header color */
+    background-color: #822780; /* Purple background color */
     color: white;
     padding: 10px 15px;
     border-radius: 15px 15px 0 0;
     font-size: 18px;
     font-weight: bold;
-  }
-  
-  .modal-close {
+    position: sticky; /* Ensures it stays on top */
+    top: 0; /* Sticks to the top of the modal */
+    z-index: 10; /* Keeps it above the body content */
+}
+
+/* Align title to the left */
+.event-title {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left; /* Align text to the left */
+    flex-grow: 1; /* Allow title to take up space between the button */
+}
+
+/* Close button styling */
+.modal-close {
     background: none;
     border: none;
     color: white;
     font-size: 24px;
     cursor: pointer;
-  }
-  
-  .custom-modal-body {
+}
+
+/* Modal Body Styling */
+.custom-modal-body {
     padding: 15px;
     overflow-y: auto;
     max-height: 70vh;
-  }
-  
-  .custom-modal-body p {
+}
+
+.custom-modal-body p {
     margin-bottom: 10px;
     line-height: 1.4;
-  }
-  
-  .custom-modal-body strong {
+}
+
+.custom-modal-body strong {
     font-weight: bold;
-  }
-  
-  .event-icon-row {
+}
+
+.event-icon-row {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-top: 10px;
-    color: #822780; /* updated icon row color */
-  }
-  
-  .event-icon-row svg {
+    color: #822780;
+}
+
+.event-icon-row svg {
     width: 18px;
     height: 18px;
-  }
-  
-  .custom-modal-body label {
+}
+
+.custom-modal-body label {
     display: block;
     margin: 10px 0 5px;
     font-weight: bold;
-  }
-  
-  .custom-modal-body input,
-  .custom-modal-body select,
-  .custom-modal-body textarea {
+}
+
+.custom-modal-body input,
+.custom-modal-body select,
+.custom-modal-body textarea {
     width: 100%;
     padding: 8px 10px;
-    border: 2px solid #822780; /* updated input border color */
+    border: 2px solid #822780;
     border-radius: 20px;
     font-size: 14px;
     color: #4a0052;
     box-sizing: border-box;
     margin-bottom: 10px;
     background: white;
-  }
-  
-  .save-button {
-    background-color: #822780; /* updated button color */
+}
+
+/* Save Button */
+.save-button {
+    background-color: #822780;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -366,9 +389,8 @@ body {
     width: 100%;
     margin-top: 10px;
     cursor: pointer;
-  }
-  
-  .save-button:hover {
-    background-color: #6d1f64; /* updated hover color */
-  }
-  
+}
+
+.save-button:hover {
+    background-color: #6d1f64;
+}

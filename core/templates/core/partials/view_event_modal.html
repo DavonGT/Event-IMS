@@ -1,15 +1,19 @@
-<!-- view_event.html -->
-<h1 class="event-title" style="display: none;">{{ event.name }}</h1>
+<div class="custom-modal">
+  <div class="custom-modal-content">
+      <div class="custom-modal-header">
+          <span class="event-title">{{ event.name }}</span>
+          <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
 
-<div class="event-modal-content">
-  <p><strong><span class="highlight">{{ event.name }}</span> {{ event.start_datetime|date:"Y" }},</strong>
-{{ event.description }}</p>
-
-  <p><strong>By:</strong> {{ event.organization.name }}</p>
-
-  <div class="event-details">
-    <p>📍 {{ event.location }}</p>
-    <p>📅 {{ event.start_datetime|date:"d. m. Y" }} &nbsp;&nbsp; ⏰ {{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</p>
-    <p>👥 {{ event.target_group }}</p>
+      <div class="custom-modal-body">
+          <p><strong><span class="highlight">{{ event.name }}</span> {{ event.start_datetime|date:"Y" }},</strong>
+          {{ event.description }}</p>
+          <p><strong>By:</strong> {{ event.organization.name }}</p>
+          <div class="event-details">
+              <p>📍 {{ event.location }}</p>
+              <p>📅 {{ event.start_datetime|date:"d. m. Y" }} &nbsp;&nbsp; ⏰ {{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</p>
+              <p>👥 {{ event.target_group }}</p>
+          </div>
+      </div>
   </div>
 </div>
