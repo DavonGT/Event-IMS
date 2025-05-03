@@ -11,7 +11,7 @@ class Organization(models.Model):
 
 class Event(models.Model):
 
-    TYPE_OF_ATTENDEES = (
+    TYPE_OF_EVENT = (
         ('University-Wide', 'university-wide'),
         ('College-Wide', 'college-wide'),
         ('Course-Specific', 'course-specific'),
@@ -24,7 +24,7 @@ class Event(models.Model):
     location = models.CharField(max_length=255)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField() 
-    who_can_attend = models.CharField(max_length=20, choices=TYPE_OF_ATTENDEES, default='College-Wide')
+    event_type = models.CharField(max_length=20, choices=TYPE_OF_EVENT, default='College-Wide')
 
     def __str__(self):
         return self.name
