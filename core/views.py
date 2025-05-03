@@ -54,7 +54,6 @@ def dashboard(request):
 def add_event(request):
     print(request.method)
     if request.method == 'POST':
-        print('Post')
         form = EventForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
@@ -71,9 +70,7 @@ def add_event(request):
                 return JsonResponse({'success': False, 'html': html})
 
     form = EventForm()
-    print('lol')
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        print('lol')
         html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
         return JsonResponse({'html': html})
 
