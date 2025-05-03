@@ -1,12 +1,16 @@
-/* === Global Styles === */
+
+
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: url('../images/bg_login.jpg') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
 }
+
 
 .error-message {
     color: red;
@@ -96,3 +100,5 @@ body {
 .register-container form button:hover {
     background-color: #0056b3;
 }
+
+
