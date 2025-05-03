@@ -1,104 +1,150 @@
+/* === Reset and Base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-
-body {
+html, body {
+    height: 100%;
     font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+/* === Background === */
+body::before {
+    content: "";
     background: url('../images/bg_login.jpg') no-repeat center center fixed;
     background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: brightness(0.6);
+    z-index: -1;
+}
+
+/* === Center Container === */
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
 }
 
+/* === Login Card === */
+.login-card {
+    width: 350px;
+    background-color: #e09fe6;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    color: white;
+    text-align: center;
+}
 
+/* === Input Groups === */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 50px;
+    border: none;
+    border-radius: 10px;
+    background-color: #893e8c;
+    color: white;
+    font-size: 16px;
+}
+
+.input-group input::placeholder {
+    color: white;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: #7b007b;
+    padding: 10px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-icon.left {
+    left: -18px;
+}
+
+.input-icon.right {
+    right: -18px;
+}
+
+/* === Login Button === */
+
+.login-button {
+    width: 100%;
+    padding: 12px 24px;  /* Adequate padding for a better button size */
+    background-color: #6b006b;
+    color: white;
+    border: none;
+    border-radius: 40px;  /* Rounded corners */
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth background color transition */
+}
+
+/* Login button hover effect */
+.login-button:hover {
+    background-color: #520052;  /* Darker purple on hover */
+    transform: scale(1.05);  /* Slightly enlarge the button on hover */
+}
+
+/* Login button focus effect */
+.login-button:focus {
+    outline: none;  /* Remove default focus outline */
+    box-shadow: 0 0 8px rgba(107, 0, 107, 0.7);  /* Add a glowing purple border when focused */
+}
+
+/* === Register Link === */
+.register-link {
+    margin-top: 20px;
+    font-size: 13px;
+    color: white;
+}
+
+.register-link a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* === Error Message === */
 .error-message {
     color: red;
-    text-align: center;
     margin-bottom: 1rem;
 }
 
 
-
-
-
-
-/* === Login Styles === */
-.login-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-.login-container h2 {
+.logo-wrapper {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1px;
 }
 
-.login-container form input {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
-    font-size: 15px;
+.logo {
+    max-width: 120px;
+    height: auto;
 }
-
-.login-container form button {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.login-container form button:hover {
-    background-color: #0056b3;
-}
-
-
-
-
-
-/* === Register Styles === */
-.register-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-.register-container h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.register-container form input,
-.register-container form select,
-.register-container form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
-}
-
-.register-container form button {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.register-container form button:hover {
-    background-color: #0056b3;
-}
-
-
