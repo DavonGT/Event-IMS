@@ -102,10 +102,37 @@ def events_list(request, organization_id=None):
     })
 
 
+from django.contrib import messages
+
+
 def delete_event(request, event_id):
-    event = Event.objects.get(pk=event_id)
+    # Make sure the user is the host of the event
+    event = get_object_or_404(Event, id=event_id)
+
+    if request.user != event.host:
+        messages.error(request, "You do not have permission to delete this event.")
+        return redirect('events_list')  # Redirect back to event list
+
+    # Delete the event
     event.delete()
-    return redirect('events_list')
+
+    messages.success(request, "Event deleted successfully.")
+    return redirect('events_list')  # Redirect to event list after deletion
+
+
+
+
+
+
+# def delete_event(request, event_id):
+#     event = get_object_or_404(Event, id=event_id)
+
+#     if request.method == 'POST':
+#         event.delete()
+#         return redirect('events_list')
+
+#     return redirect('events_list')  # fallback in case someone tries to GET this URL
+
 
 # def view_event(request, event_id):
 #     event = Event.objects.get(pk=event_id)
