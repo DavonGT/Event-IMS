@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseForbidden, JsonResponse
-from django.contrib.auth.decorators import login_required
-from .models import Event, Organization
-from .forms import EventForm
 import json
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden, JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Event, Organization
+from .forms import EventForm
 
 @login_required
 def home(request):
@@ -24,9 +23,6 @@ def home(request):
     else:
         return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
     
-
-
-
 # View to display the dashboard calendar
 @login_required
 def dashboard(request):
@@ -44,10 +40,6 @@ def dashboard(request):
     return render(request, 'core/events.html', {
         'events_json': events_json,
     })
-
-
-
-
 
 # View to create a new event
 @login_required
@@ -76,11 +68,6 @@ def add_event(request):
 
     return render(request, 'core/events.html', {'form': form})
 
-
-
-
-
-
 @login_required
 def events_list(request, organization_id=None):
     organizations = Organization.objects.all()
@@ -98,10 +85,6 @@ def events_list(request, organization_id=None):
         'selected_organization_id': selected_organization_id,
     })
 
-
-from django.contrib import messages
-
-
 def delete_event(request, event_id):
     # Make sure the user is the host of the event
     event = get_object_or_404(Event, id=event_id)
@@ -116,40 +99,6 @@ def delete_event(request, event_id):
     messages.success(request, "Event deleted successfully.")
     return redirect('events_list')  # Redirect to event list after deletion
 
-
-
-
-
-
-# def delete_event(request, event_id):
-#     event = get_object_or_404(Event, id=event_id)
-
-#     if request.method == 'POST':
-#         event.delete()
-#         return redirect('events_list')
-
-#     return redirect('events_list')  # fallback in case someone tries to GET this URL
-
-
-# def view_event(request, event_id):
-#     event = Event.objects.get(pk=event_id)
-#     return render(request, 'core/events.html', {'event': event})
-
-
-# def edit_event(request, event_id):
-#     event = Event.objects.get(pk=event_id)
-#     if request.method == 'POST':
-#         form = EventForm(request.POST, instance=event)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('events_list')
-#     else:
-#         form = EventForm(instance=event)
-#     return render(request, 'core/events.html', {'form': form})
-
-
-
-
 def view_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     
@@ -158,9 +107,6 @@ def view_event(request, event_id):
         return HttpResponse(html)
     
     return render(request, 'core/events.html', {'event': event})
-
-
-
 
 def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
