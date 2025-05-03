@@ -7,8 +7,6 @@
         <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
         {% elif user_role == 'Organizer' %}
         <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
-        {% elif user_role == 'Student' %}
-        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
         {% endif %}
 
         <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>

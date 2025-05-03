@@ -39,6 +39,7 @@ def dashboard(request):
     ])
     return render(request, 'core/events.html', {
         'events_json': events_json,
+        'user_role': str(request.user.role).title(),
     })
 
 # View to create a new event
@@ -83,6 +84,7 @@ def events_list(request, organization_id=None):
         'events': events,
         'organizations': organizations,
         'selected_organization_id': selected_organization_id,
+        'user_role': str(request.user.role).title(),
     })
 
 def delete_event(request, event_id):
