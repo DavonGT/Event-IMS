@@ -12,7 +12,7 @@
           <div class="event-details">
               <p>📍 {{ event.location }}</p>
               <p>📅 {{ event.start_datetime|date:"d. m. Y" }} &nbsp;&nbsp; ⏰ {{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</p>
-              <p>👥 {{ event.target_group }}</p>
+              <p>👥 {{ event.event_type }}</p>
           </div>
       </div>
   </div>
