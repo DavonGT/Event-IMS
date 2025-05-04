@@ -15,7 +15,7 @@ html, body {
 /* === Background === */
 body::before {
     content: "";
-    background: url('../images/bg_login.jpg') no-repeat center center fixed;
+    background: url('../images/bg_login_register.jpg') no-repeat center center fixed;
     background-size: cover;
     position: absolute;
     top: 0;
@@ -33,18 +33,37 @@ body {
     align-items: center;
 }
 
-/* === Login Card === */
-.login-card {
-    width: 350px;
+/* === Common Card Styles (Login & Register) === */
+.login-card, .register-card {
+    width: 400px;
     background-color: #e09fe6;
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     color: white;
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
-/* === Input Groups === */
+/* === Logo Inside Card === */
+.logo-wrapper {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 1px;
+}
+
+.logo {
+    max-width: 120px;
+    height: auto;
+}
+
+/* === Form Titles === */
+.form-title {
+    margin-bottom: 1rem;
+}
+
+/* === Input Groups (Login Page) === */
 .input-group {
     position: relative;
     margin-bottom: 20px;
@@ -87,47 +106,82 @@ body {
     right: -18px;
 }
 
-/* === Login Button === */
-
-.login-button {
+/* === Login & Register Button Styles === */
+.login-button, .register-button {
     width: 100%;
-    padding: 12px 24px;  /* Adequate padding for a better button size */
+    padding: 12px 24px;
     background-color: #6b006b;
     color: white;
     border: none;
-    border-radius: 40px;  /* Rounded corners */
+    border-radius: 40px;
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth background color transition */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Login button hover effect */
-.login-button:hover {
-    background-color: #520052;  /* Darker purple on hover */
-    transform: scale(1.05);  /* Slightly enlarge the button on hover */
+.login-button:hover, .register-button:hover {
+    background-color: #520052;
+    transform: scale(1.05);
 }
 
-/* Login button focus effect */
-.login-button:focus {
-    outline: none;  /* Remove default focus outline */
-    box-shadow: 0 0 8px rgba(107, 0, 107, 0.7);  /* Add a glowing purple border when focused */
+.login-button:focus, .register-button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(107, 0, 107, 0.7);
 }
 
-/* === Register Link === */
-.register-link {
+/* === Form Fields (Register Page) === */
+.register-card form p {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.register-card label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6b006b;
+}
+
+.register-card input,
+.register-card select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #893e8c;
+    color: white;
+    font-size: 15px;
+}
+
+.register-card input::placeholder {
+    color: white;
+}
+
+/* === Select Dropdown Arrow === */
+.register-card select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' stroke='white' stroke-width='15' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+}
+
+/* === Links === */
+.register-link, .login-link {
     margin-top: 20px;
     font-size: 13px;
     color: white;
 }
 
-.register-link a {
+.register-link a, .login-link a {
     color: white;
     font-weight: bold;
     text-decoration: none;
 }
 
-.register-link a:hover {
+.register-link a:hover, .login-link a:hover {
     text-decoration: underline;
 }
 
@@ -135,16 +189,5 @@ body {
 .error-message {
     color: red;
     margin-bottom: 1rem;
-}
-
-
-.logo-wrapper {
-    text-align: center;
-    margin-bottom: 1rem;
-    margin-top: 1px;
-}
-
-.logo {
-    max-width: 120px;
-    height: auto;
+    font-size: 14px;
 }
