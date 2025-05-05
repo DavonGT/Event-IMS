@@ -30,15 +30,23 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const calendarEl = document.getElementById('calendar');
+      const eventsData = JSON.parse('{{ events_json|safe }}');
+      
+      // Transform your events data to FullCalendar format
+      const calendarEvents = eventsData.map(event => {
+        return {
+          title: event.name,  // Assuming your event has a 'name' property
+          date: event.date   // Assuming your event has a 'date' property
+          // Add other properties if needed (color, description, etc.)
+        };
+      });
+  
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
-        events: [
-          // Example events
-          { title: 'Orientation', date: '2025-05-05' },
-          { title: 'Workshop', date: '2025-05-12' },
-        ]
+        events: calendarEvents  // Use the transformed events here
       });
+      
       calendar.render();
     });
   </script>

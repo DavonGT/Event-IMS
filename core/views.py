@@ -11,25 +11,8 @@ from .forms import EventForm
 
 @login_required
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    # Role-based access control
-    if request.user.role == 'admin':
-        return render(request, 'core/dashboard.html', {'user_role': 'Admin'})
-    elif request.user.role == 'organizer':
-        return render(request, 'core/dashboard.html', {'user_role': 'Organizer'})
-    elif request.user.role == 'student':
-        return render(request, 'core/dashboard.html', {'user_role': 'Student'})
-    else:
-        return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
-    
-    
-# View to display the dashboard calendar
-@login_required
-def dashboard(request):
     events = Event.objects.all()
-    events_json = json.dumps([
+    events_json = [
         {
             'name': event.name,
             'date': event.start_datetime.strftime('%Y-%m-%d'),
@@ -38,9 +21,38 @@ def dashboard(request):
             'description': event.description
         }
         for event in events
-    ])
+    ]
+
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    # Role-based access control
+    if request.user.role:
+        return render(request, 'core/dashboard.html', {
+        "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
+        'user_role': str(request.user.role).title(),
+    })
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
+    
+    
+# View to display the dashboard calendar
+@login_required
+def dashboard(request):
+    events = Event.objects.all()
+    events_json = [
+        {
+            'name': event.name,
+            'date': event.start_datetime.strftime('%Y-%m-%d'),
+            'time': event.start_datetime.strftime('%H:%M'),
+            'location': event.location,
+            'description': event.description
+        }
+        for event in events
+    ]
+    print(events_json)
     return render(request, 'core/events.html', {
-        'events_json': events_json,
+        "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
         'user_role': str(request.user.role).title(),
     })
 
@@ -165,19 +177,3 @@ def add_organization(request):
         form = OrganizationForm()
 
     return render(request, 'core/partials/add_org_modal.html', {'form': form})
-
-
-def calendar_view(request):
-    events = Event.objects.all()
-    dates = [
-        {
-            "event_name": event.name,
-            "start": event.start_datetime.strftime('%Y-%m-%d'),
-            "end": event.end_datetime.strftime('%Y-%m-%d'),
-        }
-        for event in events
-    ]
-    print(dates)
-    return render(request, 'core/calendar.html',{
-        "events_json": json.dumps(dates, cls=DjangoJSONEncoder),
-    })
