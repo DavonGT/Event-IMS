@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden, JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Event, Organization
@@ -164,3 +165,19 @@ def add_organization(request):
         form = OrganizationForm()
 
     return render(request, 'core/partials/add_org_modal.html', {'form': form})
+
+
+def calendar_view(request):
+    events = Event.objects.all()
+    dates = [
+        {
+            "event_name": event.name,
+            "start": event.start_datetime.strftime('%Y-%m-%d'),
+            "end": event.end_datetime.strftime('%Y-%m-%d'),
+        }
+        for event in events
+    ]
+    print(dates)
+    return render(request, 'core/calendar.html',{
+        "events_json": json.dumps(dates, cls=DjangoJSONEncoder),
+    })
