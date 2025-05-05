@@ -110,7 +110,7 @@ body {
 }
 
 .tab {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 10px 10px 0 0;
     background-color: #f0e5ff;
     color: #4a004a;
@@ -194,8 +194,9 @@ body {
 }
 
 .events-table th {
-    background-color: #f8e6f8;
+    background-color: #4a004a;
     font-weight: bold;
+    color: #fdf2fd;
 }
 
 .events-table td {

@@ -4,14 +4,14 @@
 
 {% block content %}
   <div class="dashboard-container">
-    <h1>{{ user_role }} Dashboard</h1>
+    {% comment %} <h1>{{ user_role }} Dashboard</h1> {% endcomment %}
 
     {% comment %} ma appear in ngin admin {% endcomment %}
-    {% if user_role == 'Admin' or user_role == 'Organizer' %}
+    {% comment %} {% if user_role == 'Admin' or user_role == 'Organizer' %}
       <p>Admin/Organizer ka</p>    
     {% else %}
       <p>Studyante ka lang</p>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     <div id="calendar"></div>
   </div>

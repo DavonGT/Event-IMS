@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('events/<int:event_id>/view/', views.view_event, name='view_event'),
     path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
+    path('organizations/add/', views.add_organization, name='add_organization'),
 
 
 

@@ -23,6 +23,7 @@ def home(request):
     else:
         return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
     
+    
 # View to display the dashboard calendar
 @login_required
 def dashboard(request):
@@ -73,6 +74,7 @@ def add_event(request):
 def events_list(request, organization_id=None):
     organizations = Organization.objects.all()
     events = Event.objects.all()
+    print(organizations)
 
     if organization_id:
         events = events.filter(organization_id=organization_id)
@@ -87,19 +89,38 @@ def events_list(request, organization_id=None):
         'user_role': str(request.user.role).title(),
     })
 
+
+
+
+
+
+
 def delete_event(request, event_id):
-    # Make sure the user is the host of the event
     event = get_object_or_404(Event, id=event_id)
 
+    # Check if the user is the host of the event
     if request.user != event.host:
         messages.error(request, "You do not have permission to delete this event.")
-        return redirect('events_list')  # Redirect back to event list
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+            return JsonResponse({'error': 'Permission Denied'}, status=403)
+        return redirect('events_list')
 
-    # Delete the event
-    event.delete()
+    if request.method == 'POST':
+        event.delete()
+        messages.success(request, "Event deleted successfully.")
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+            return JsonResponse({'message': 'Event deleted successfully.', 'redirect_url': '/events/'})  # Redirect URL after delete
 
-    messages.success(request, "Event deleted successfully.")
-    return redirect('events_list')  # Redirect to event list after deletion
+    # If the request is AJAX, return the delete modal HTML
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+        html = render(request, 'core/partials/delete_event_modal.html', {'event': event}).content.decode('utf-8')
+        return JsonResponse({'html': html})
+
+    return redirect('events_list')
+
+
+
 
 def view_event(request, event_id):
     event = Event.objects.get(pk=event_id)
@@ -127,3 +148,19 @@ def edit_event(request, event_id):
         form = EventForm(instance=event)
     return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
+# events/views.py
+from django.shortcuts import render, redirect
+from .forms import OrganizationForm
+
+def add_organization(request):
+    if request.method == 'POST':
+        print('POST')
+        form = OrganizationForm(request.POST)
+        if form.is_valid():
+            print('valid')
+            form.save()
+            return redirect('events_list')  # Change to your preferred redirect
+    else:
+        form = OrganizationForm()
+
+    return render(request, 'core/partials/add_org_modal.html', {'form': form})

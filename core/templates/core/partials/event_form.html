@@ -1,37 +1,80 @@
-<form action="{% url 'add_event' %}" id="eventForm" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save-button">Save</button>
-  </form>
-  
-  <script>
-    const eventForm = document.getElementById('eventForm');
-  
-    if (eventForm) {
-      eventForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-  
-        const formData = new FormData(eventForm);
-        fetch("{% url 'add_event' %}", {
-          method: 'POST',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            closeModal();
-            // Option 1: reload the page
-            location.reload();
-            // Option 2 (Advanced): use JS to append the new row to the table
-          } else {
-            // Re-render the form with errors
-            document.getElementById('modal-body').innerHTML = data.html;
-          }
-        });
+<div class="custom-modal" style="display: flex;">
+  <div class="custom-modal-overlay" onclick="window.location.href='{% url 'events_list' %}'"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h3 class="modal-title-text">Add New Event</h3>
+      <button class="modal-close" onclick="window.location.href='{% url 'events_list' %}'">×</button>
+    </div>
+    <div id="modal-body" class="custom-modal-body">
+      <form method="post" id="eventForm" action="{% url 'add_event' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="{{ form.organization.id_for_label }}">Organization</label>
+          {{ form.organization }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.name.id_for_label }}">Event Name</label>
+          {{ form.name }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.description.id_for_label }}">Description</label>
+          {{ form.description }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.location.id_for_label }}">Location</label>
+          {{ form.location }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.start_datetime.id_for_label }}">Start Date & Time</label>
+          {{ form.start_datetime }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.end_datetime.id_for_label }}">End Date & Time</label>
+          {{ form.end_datetime }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.event_type.id_for_label }}">Event Type</label>
+          {{ form.event_type }}
+        </div>
+
+        <button type="submit" class="save-button">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const eventForm = document.getElementById('eventForm');
+
+  if (eventForm) {
+    eventForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(eventForm);
+      fetch("{% url 'add_event' %}", {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          closeModal();
+          location.reload();
+        } else {
+          document.getElementById('modal-body').innerHTML = data.html;
+        }
       });
-    }
-  </script>
-  
+    });
+  }
+</script>

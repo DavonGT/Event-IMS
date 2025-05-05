@@ -191,3 +191,17 @@ body {
     margin-bottom: 1rem;
     font-size: 14px;
 }
+
+
+.password-group {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: white
+}

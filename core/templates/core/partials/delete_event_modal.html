@@ -1,0 +1,19 @@
+<div class="custom-modal">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h2>Confirm Deletion?</h2>
+            <button class="modal-close" type="button" onclick="closeModal()">×</button>
+        </div>
+
+        <div class="custom-modal-body">
+            <p>Are you sure you want to delete the event "{{ event.name }}"?</p>
+            <div class="button-row">
+                <form method="POST" action="{% url 'delete_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-button">Yes, Delete</button>
+                </form>
+                <button class="cancel-button" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

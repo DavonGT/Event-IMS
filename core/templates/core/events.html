@@ -22,9 +22,9 @@
 
     <!-- Filter/Search/Add Container -->
     <div class="filter-container">
-      <button class="filter-button">Filter</button>
-      <input type="text" placeholder="Search..." class="search-input" />
-      <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New</button>
+      <input type="text" placeholder="Search..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
+      <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
+      <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
     </div>
   </div>
 
@@ -52,8 +52,8 @@
             <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
             {% if request.user == event.host %}
               <button class="action-link" onclick="openModal('{% url 'edit_event' event.id %}')">✏️</button>
-              <button class="action-link" onclick="openDeleteModal('{{ event.id }}')">🗑️</button>
-            {% endif %}
+              <button class="action-link" onclick="openModal('{% url 'delete_event' event.id %}')">🗑️</button>
+              {% endif %}
           </td>
         </tr>
       {% empty %}
@@ -79,31 +79,13 @@
   </div>
 </div>
 
+
 <!-- Delete Confirmation Modal -->
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="custom-modal" style="display: none;">
-  <div class="custom-modal-overlay" onclick="closeDeleteModal()"></div>
-  <div class="custom-modal-content">
-    <div class="custom-modal-header">
-      <h2 class="event-title">Confirm Deletion?</h2>
-      <button class="modal-close" onclick="closeDeleteModal()">×</button>
-    </div>
-    <div class="custom-modal-body">
-      <p>This action cannot be undone.</p>
-      <div class="button-row">
-        <button id="confirmDeleteButton" class="delete-button" onclick="confirmDelete()">Yes, Delete</button>
-        <button class="cancel-button" onclick="closeDeleteModal()">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- Modal JavaScript -->
+
 <!-- Modal JavaScript -->
 <script>
-  let eventToDelete = null;
-  let deleteUrlTemplate = null;  // Store the delete URL template
 
   // Update this line when the page is loaded to include the proper URL template.
   document.addEventListener('DOMContentLoaded', function() {
@@ -115,21 +97,19 @@
     const modal = document.getElementById('eventModal');
     const modalBody = document.getElementById('modal-body');
     const modalTitle = document.getElementById('modal-title');
-
+  
     modal.style.display = 'flex';
     modalBody.innerHTML = 'Loading...';
     modalTitle.textContent = '';
-
+  
     fetch(url, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => {
       const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return response.json();
-      } else {
-        return response.text();
-      }
+      return contentType && contentType.includes("application/json")
+        ? response.json()
+        : response.text();
     })
     .then(data => {
       if (typeof data === 'object' && data.html) {
@@ -143,29 +123,33 @@
       }
     });
   }
+  
 
   function closeModal() {
     document.getElementById('eventModal').style.display = 'none';
   }
-
-  // Delete modal functions
-  function openDeleteModal(eventId) {
-    eventToDelete = eventId; // Store the event ID to delete
-    document.getElementById('deleteModal').style.display = 'flex';
-  }
-
-  function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
-    eventToDelete = null; // Reset the stored event ID
-  }
-
-  function confirmDelete() {
-    if (eventToDelete) {
-      // Replace the placeholder with the actual event ID
-      const deleteUrl = deleteUrlTemplate.replace('0', eventToDelete);
-      window.location.href = deleteUrl;  // Redirect to the delete URL
+  function filterEvents() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const table = document.querySelector('.events-table tbody');
+    const rows = table.getElementsByTagName('tr');
+  
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('td');
+      let rowMatches = false;
+  
+      for (let j = 0; j < cells.length - 1; j++) {  // exclude action column
+        const cellText = cells[j].textContent || cells[j].innerText;
+        if (cellText.toLowerCase().includes(filter)) {
+          rowMatches = true;
+          break;
+        }
+      }
+  
+      rows[i].style.display = rowMatches ? '' : 'none';
     }
   }
+  
 </script>
 
 {% endblock %}
