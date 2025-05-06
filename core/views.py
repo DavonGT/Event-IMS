@@ -8,10 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Event, Organization
 from .forms import EventForm
+from django.views.decorators.http import require_GET
+from datetime import datetime
 
 @login_required
 def home(request):
     events = Event.objects.all()
+    organizations = Organization.objects.all()
     events_json = [
         {
             'name': event.name,
@@ -31,6 +34,7 @@ def home(request):
         return render(request, 'core/dashboard.html', {
         "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
         'user_role': str(request.user.role).title(),
+        'organizations': organizations
     })
     else:
         return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
@@ -177,3 +181,25 @@ def add_organization(request):
         form = OrganizationForm()
 
     return render(request, 'core/partials/add_org_modal.html', {'form': form})
+
+
+
+@require_GET
+@login_required
+def get_events_by_month(request):
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+
+    if not month or not year:
+        return JsonResponse({'error': 'Missing parameters'}, status=400)
+
+    events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month)
+    data = [
+        {
+            'name': event.name,
+            'date': event.start_datetime.strftime('%d.%m.%y'),
+            'organization': event.organization.acronym
+        }
+        for event in events
+    ]
+    return JsonResponse({'events': data})

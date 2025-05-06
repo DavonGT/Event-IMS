@@ -4,6 +4,22 @@
 
 {% block content %}
 
+{% block extra_css %}
+<style>
+  #calendar,
+  .fc-scroller,
+  .fc-daygrid-body,
+  .fc-daygrid-body-natural {
+    overflow: hidden !important;
+  }
+
+  .fc {
+    height: auto !important;
+  }
+</style>
+
+{% endblock %}
+
 <div class="dashboard-container">
 
   <!-- Main Content -->
@@ -16,29 +32,17 @@
   <!-- Events Sidebar -->
   <div class="events-sidebar">
     <div class="event-box">
-      <h3>FCO Events:</h3>
+      <h3>Empty:</h3>
       <ul>
-        <li>04.01.25 - <span style="font-family: cursive;">ccs feast</span></li>
-      </ul>
-    </div>
-    <div class="event-box">
-      <h3>ITSO Events:</h3>
-      <ul>
-        <li>No events</li>
-      </ul>
-    </div>
-    <div class="event-box">
-      <h3>CSSO Events:</h3>
-      <ul>
-        <li>No events</li>
+        <li>Empty - <span style="font-family: cursive;">Empty</span></li>
       </ul>
     </div>
   </div>
 </div>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
+    const sidebarEl = document.querySelector('.events-sidebar');
     const eventsData = JSON.parse('{{ events_json|safe }}');
 
     const calendarEvents = eventsData.map(event => ({
@@ -60,20 +64,57 @@
           click: function () {}
         }
       },
+      events: JSON.parse('{{ events_json|safe }}').map(event => ({
+        title: event.name,
+        date: event.date
+      })),
       datesSet: function(info) {
-        const visibleMidDate = new Date(info.start);
-        visibleMidDate.setDate(visibleMidDate.getDate() + 15);
+        const midDate = new Date(info.start);
+        midDate.setDate(midDate.getDate() + 15);
+        const month = midDate.getMonth() + 1;
+        const year = midDate.getFullYear();
 
-        const month = visibleMidDate.toLocaleString('default', { month: 'long' });
-        const year = visibleMidDate.getFullYear();
-
+        // Update calendar title
+        const monthName = midDate.toLocaleString('default', { month: 'long' });
         const customTitleEl = document.querySelector('.fc-customTitle-button');
         if (customTitleEl) {
           customTitleEl.innerHTML = `
-            <span class="calendar-month">${month}</span>
+            <span class="calendar-month">${monthName}</span>
             <span class="calendar-year">${year}</span>
           `;
         }
+
+        // Fetch events and update sidebar
+        fetch(`/get-events-by-month?month=${month}&year=${year}`)
+          .then(response => response.json())
+          .then(data => {
+            sidebarEl.innerHTML = '';
+          
+            if (data.events.length === 0) {
+              const noEventsBox = document.createElement('div');
+              noEventsBox.className = 'event-box';
+              noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p>';
+              sidebarEl.appendChild(noEventsBox);
+              return;
+            }
+          
+            const grouped = {};
+            data.events.forEach(event => {
+              if (!grouped[event.organization]) {
+                grouped[event.organization] = [];
+              }
+              grouped[event.organization].push(event);
+            });
+          
+            for (const [org, events] of Object.entries(grouped)) {
+              const box = document.createElement('div');
+              box.className = 'event-box';
+              box.innerHTML = `<h3>${org} Events:</h3><ul>` +
+                events.map(e => `<li>${e.date} - <span style="font-family: cursive;">${e.name}</span></li>`).join('') +
+                `</ul>`;
+              sidebarEl.appendChild(box);
+            }
+          });
       }
     });
 
