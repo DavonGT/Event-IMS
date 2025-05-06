@@ -3,51 +3,81 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-  <div class="dashboard-container">
-    {% comment %} <h1>{{ user_role }} Dashboard</h1> {% endcomment %}
 
-    {% comment %} ma appear in ngin admin {% endcomment %}
-    {% comment %} {% if user_role == 'Admin' or user_role == 'Organizer' %}
-      <p>Admin/Organizer ka</p>    
-    {% else %}
-      <p>Studyante ka lang</p>
-    {% endif %} {% endcomment %}
+<div class="dashboard-container">
 
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Calendar -->
     <div id="calendar"></div>
   </div>
 
-  <style>
-    #calendar {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-  </style>
+  <!-- Events Sidebar -->
+  <div class="events-sidebar">
+    <div class="event-box">
+      <h3>FCO Events:</h3>
+      <ul>
+        <li>04.01.25 - <span style="font-family: cursive;">ccs feast</span></li>
+      </ul>
+    </div>
+    <div class="event-box">
+      <h3>ITSO Events:</h3>
+      <ul>
+        <li>No events</li>
+      </ul>
+    </div>
+    <div class="event-box">
+      <h3>CSSO Events:</h3>
+      <ul>
+        <li>No events</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const calendarEl = document.getElementById('calendar');
-      const eventsData = JSON.parse('{{ events_json|safe }}');
-      
-      // Transform your events data to FullCalendar format
-      const calendarEvents = eventsData.map(event => {
-        return {
-          title: event.name,  // Assuming your event has a 'name' property
-          date: event.date   // Assuming your event has a 'date' property
-          // Add other properties if needed (color, description, etc.)
-        };
-      });
-  
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        height: 'auto',
-        events: calendarEvents  // Use the transformed events here
-      });
-      
-      calendar.render();
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const eventsData = JSON.parse('{{ events_json|safe }}');
+
+    const calendarEvents = eventsData.map(event => ({
+      title: event.name,
+      date: event.date
+    }));
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: calendarEvents,
+      headerToolbar: {
+        left: 'customTitle',
+        center: '',
+        right: 'prev,next'
+      },
+      customButtons: {
+        customTitle: {
+          text: '',
+          click: function () {}
+        }
+      },
+      datesSet: function(info) {
+        const visibleMidDate = new Date(info.start);
+        visibleMidDate.setDate(visibleMidDate.getDate() + 15);
+
+        const month = visibleMidDate.toLocaleString('default', { month: 'long' });
+        const year = visibleMidDate.getFullYear();
+
+        const customTitleEl = document.querySelector('.fc-customTitle-button');
+        if (customTitleEl) {
+          customTitleEl.innerHTML = `
+            <span class="calendar-month">${month}</span>
+            <span class="calendar-year">${year}</span>
+          `;
+        }
+      }
     });
-  </script>
+
+    calendar.render();
+  });
+</script>
 {% endblock %}

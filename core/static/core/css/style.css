@@ -455,3 +455,266 @@ body {
 .delete-button:focus {
     box-shadow: 0 0 8px rgba(217, 53, 79, 0.7);  /* Add a glowing red border when focused for delete button */
 }
+
+
+
+
+
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    position: relative;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 60px;
+  }
+
+  .calendar-header h1 {
+    font-size: 48px;
+    color: #822780;
+    font-family: 'Brush Script MT', cursive;
+    margin: 0;
+  }
+
+  .calendar-header .search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+  }
+
+  .calendar-header input {
+    width: 300px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #aaa;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Set global calendar text color */
+#calendar,
+#calendar .fc,
+#calendar .fc-daygrid-day-number,
+#calendar .fc-toolbar,
+#calendar .fc-button,
+#calendar .fc-event-title,
+#calendar .fc-col-header-cell-cushion,
+#calendar .fc-daygrid-day {
+  color: #5d045d !important;
+}
+
+
+#calendar .fc-scrollgrid,
+#calendar .fc-view-harness,
+#calendar .fc-daygrid,
+#calendar .fc-daygrid-body {
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+
+/* Calendar container styling */
+#calendar {
+  max-width: 600px;
+  max-height: 600px;
+  min-width: 400px;
+  min-height: 400px;
+  margin: 10px;
+  background: #faf7fe;
+  border-radius: 10px;
+  padding: 20px;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Header toolbar */
+.fc-header-toolbar {
+  background-color: #faf7fe !important;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+}
+
+.fc-customTitle-button {
+  background: none !important;
+  border: none !important;
+  pointer-events: none;
+  cursor: default;
+  font-size: 70px;
+  display: flex;
+  align-items: baseline;
+  font-family: 'Brush Script MT', cursive;
+  color: #822780;
+  font-weight: bold;
+}
+
+.fc-customTitle-button:active {
+  background: none !important;
+}
+
+/* Month and year titles */
+.calendar-month {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 48px;
+  margin-right: 10px;
+  color: #822780;
+}
+
+.calendar-year {
+  font-family: sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #6b296e;
+}
+
+/* Button styles */
+.fc .fc-button-group > .fc-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #822780;
+}
+
+/* Day number */
+.fc .fc-daygrid-day-number {
+  color: #000;
+}
+
+/* Calendar grid borders */
+#calendar .fc-daygrid-day,
+#calendar .fc-scrollgrid,
+#calendar .fc-daygrid-day-frame,
+#calendar .fc-daygrid-body,
+#calendar td,
+#calendar th {
+  border: 1px solid #3b003b !important;
+}
+
+#calendar .fc-scrollgrid {
+  border-collapse: collapse;
+}
+
+/* Day-of-week headers (like Mon, Tue, etc.) */
+#calendar .fc-col-header-cell {
+  background-color: #4a024b !important;
+  color: white !important;
+  border: 1px solid #3b003b !important;
+}
+
+#calendar .fc-col-header-cell-cushion {
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Make calendar grid borders dark */
+#calendar .fc-daygrid-day,
+#calendar .fc-scrollgrid,
+#calendar .fc-daygrid-day-frame,
+#calendar .fc-daygrid-body,
+#calendar td,
+#calendar th {
+  border: 1px solid #3b003b !important; /* Dark purple border */
+}
+
+#calendar .fc-scrollgrid {
+  border-collapse: collapse;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  .events-sidebar {
+    width: 250px;
+    padding: 20px;
+    margin-top: 60px;
+  }
+
+  .event-box {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .event-box h3 {
+    margin-top: 0;
+    background-color: #5d045d;
+    color: white;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    font-size: 16px;
+  }
+
+  .event-box ul {
+    padding: 10px;
+    margin: 0;
+    list-style-type: disc;
+  }
+
+  .event-box li {
+    font-family: cursive;
+  }
+
+/* Make calendar events match sidebar style */
+.fc .fc-event {
+    background-color: transparent !important;
+    color: #5d045d  !important;
+    border: none !important;
+    font-family: 'Brush Script MT', cursive ;
+    padding: 2px 20px;
+  }
+  
+
+  .fc-h-event .fc-event-title-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0px;
+    font-family: cursive;
+    font-size: 14px;
+    color: white;
+  }
+  
