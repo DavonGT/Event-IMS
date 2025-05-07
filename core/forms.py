@@ -20,6 +20,7 @@ class EventForm(forms.ModelForm):
             'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
         }
+    
 
 
 
@@ -32,3 +33,14 @@ class OrganizationForm(forms.ModelForm):
             'acronym': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Acronym'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
         }
+    
+    
+
+class UploadFileForm(forms.Form):
+    organization_file = forms.FileField(label='Upload Organization CSV File')
+    event_file = forms.FileField(label='Upload Event CSV File')
+
+    def __init__(self, *args, **kwargs):
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+        self.fields['organization_file'].required = False
+        self.fields['event_file'].required = False

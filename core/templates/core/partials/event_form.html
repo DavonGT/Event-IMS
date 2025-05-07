@@ -5,6 +5,8 @@
       <h3 class="modal-title-text">Add New Event</h3>
       <button class="modal-close" onclick="window.location.href='{% url 'events_list' %}'">×</button>
     </div>
+
+    
     <div id="modal-body" class="custom-modal-body">
       <form method="post" id="eventForm" action="{% url 'add_event' %}">
         {% csrf_token %}

@@ -7,9 +7,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Event, Organization
-from .forms import EventForm
+from .forms import EventForm, OrganizationForm, UploadFileForm
 from django.views.decorators.http import require_GET
-from datetime import datetime
+from openpyxl import load_workbook
 
 @login_required
 def home(request):
@@ -152,7 +152,6 @@ def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
-        print("hello")
         print(form)
         if form.is_valid():
             print("hello")
@@ -204,3 +203,33 @@ def get_events_by_month(request):
         })
 
     return JsonResponse({'events_by_org': data})
+
+
+def upload_file_view(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            organization_file = request.FILES.get('organization_file')
+            event_file = request.FILES.get('event_file')
+
+            if organization_file:
+                wb = load_workbook(organization_file)
+                sheet = wb.active
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    Organization.objects.create(name=row[0], acronym=row[1], description=row[2])
+
+            if event_file:
+                wb = load_workbook(event_file)
+                sheet = wb.active
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    organization_name = row[0]
+                    organization = Organization.objects.get(name=organization_name)
+                    print(organization.id)
+                    print(row[1], row[2], row[3], row[4], row[5], row[6])
+                    Event.objects.create(organization_id=organization.id, name=row[1], description=row[2], location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
+
+            return redirect('events_list')
+    else:
+        form = UploadFileForm()
+
+    return render(request, 'core/partials/upload_file.html', {'form': form})
