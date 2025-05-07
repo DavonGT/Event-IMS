@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Event, Organization
-from .forms import EventForm
+from .forms import EventForm, OrganizationForm
 
 @login_required
 def home(request):
@@ -162,8 +162,7 @@ def edit_event(request, event_id):
     return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
 # events/views.py
-from django.shortcuts import render, redirect
-from .forms import OrganizationForm
+
 
 def add_organization(request):
     if request.method == 'POST':
