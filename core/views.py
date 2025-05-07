@@ -232,4 +232,6 @@ def upload_file_view(request):
     else:
         form = UploadFileForm()
 
-    return render(request, 'core/partials/upload_file.html', {'form': form})
+    return render(request, 'core/partials/upload_file.html', {
+        'form': form,
+        'user_role': str(request.user.role).title(),})
