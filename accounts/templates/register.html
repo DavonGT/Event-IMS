@@ -24,18 +24,33 @@
                     <div class="input-group">
                         <span class="input-icon left"><i class="fas fa-user"></i></span>
                         {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="error-message-container" id="error-username">
+                                <p class="error-message">{{ form.username.errors|striptags }}</p>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Email -->
                     <div class="input-group">
                         <span class="input-icon left"><i class="fas fa-envelope"></i></span>
                         {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="error-message-container" id="error-email">
+                                <p class="error-message">{{ form.email.errors|striptags }}</p>
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Password -->
                     <div class="input-group password-group">
                         <span class="input-icon left"><i class="fas fa-lock"></i></span>
                         {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="error-message-container" id="error-password">
+                                <p class="error-message">{{ form.password.errors|striptags }}</p>
+                            </div>
+                        {% endif %}
                         <span class="toggle-password">
                             <i class="fas fa-eye" id="toggle-password-icon"></i>
                         </span>
@@ -45,16 +60,22 @@
                     <div class="input-group password-group">
                         <span class="input-icon left"><i class="fas fa-lock"></i></span>
                         {{ form.confirm_password }}
+                        {% if form.confirm_password.errors %}
+                            <div class="error-message-container" id="error-confirm-password">
+                                <p class="error-message">{{ form.confirm_password.errors|striptags }}</p>
+                            </div>
+                        {% endif %}
                         <span class="toggle-password">
                             <i class="fas fa-eye" id="toggle-confirm-password-icon"></i>
                         </span>
                     </div>
 
+                    <!-- Role (if needed) -->
                     {{ form.role }}
-
-                    {% if error %}
-                    <div class="error-message-container">
-                        <p class="error-message">{{ error }}</p>
+                    
+                    {% if form.non_field_errors %}
+                    <div class="error-message-container" id="error-non-field">
+                        <p class="error-message">{{ form.non_field_errors|striptags }}</p>
                     </div>
                     {% endif %}
 
@@ -76,6 +97,19 @@
     </div>
 
     <script>
+        // Function to hide error messages after 5 seconds
+        function hideErrors() {
+            setTimeout(function () {
+                const errorElements = document.querySelectorAll('.error-message-container');
+                errorElements.forEach(function (element) {
+                    element.style.display = 'none';
+                });
+            }, 2000); // Errors will disappear after 5 seconds
+        }
+
+        // Trigger hideErrors function once page loads
+        window.onload = hideErrors;
+
         // Toggle password visibility for password field
         const togglePasswordIcon = document.getElementById('toggle-password-icon');
         const passwordInput = document.querySelector('[name="password"]');
