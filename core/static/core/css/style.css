@@ -1,7 +1,7 @@
 /* General Reset and Background */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0e5ff;
+    background-color: #f5eeff;
     margin: 0;
     padding: 0;
 }
@@ -223,7 +223,7 @@ body {
 }
 
 .action-link:hover {
-    color: #007bff; /* Optional: hover effect */
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -272,7 +272,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow-y: auto; /* Allow vertical scroll if modal content is taller than viewport */
+    overflow-y: auto; 
 }
 
 .custom-modal-content {
@@ -280,7 +280,7 @@ body {
     width: 90%;
     max-width: 400px;
     border-radius: 20px;
-    padding: 0; /* Removed padding here so only internal sections control it */
+    padding: 0;
     position: relative;
     font-family: "Segoe UI", sans-serif;
     color: #4a0052;
@@ -394,7 +394,7 @@ body {
 
 .save-button:hover {
     background-color: #6d1f64;  /* Darker purple on hover */
-    transform: scale(1.05);  /* Slightly enlarge the button on hover */
+    transform: scale(1.05); 
 }
 
 /* Focus effect */
@@ -415,30 +415,30 @@ body {
 
 /* Common button styles */
 .cancel-button, .delete-button {
-    padding: 12px 24px;  /* Adequate padding for better button size */
-    border-radius: 40px;  /* Rounded corners */
+    padding: 12px 24px;
+    border-radius: 40px;
     border: none;
-    font-weight: bold;  /* Make text bold */
-    font-size: 16px;  /* Adjusted font size for readability */
-    cursor: pointer;  /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth background color transition */
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
 /* Cancel button specific styles */
 .cancel-button {
-    background-color: #822780;  /* Purple background */
-    color: white;  /* White text */
+    background-color: #822780;
+    color: white;
 }
 
 .cancel-button:hover {
-    background-color: #660f60;  /* Darker purple on hover */
-    transform: scale(1.05);  /* Slightly enlarge the button on hover */
+    background-color: #660f60;
+    transform: scale(1.05);
 }
 
 /* Delete button specific styles */
 .delete-button {
-    background-color: #d9534f;  /* Red background for delete */
-    color: white;  /* White text */
+    background-color: #d9534f;
+    color: white;
 }
 
 .delete-button:hover {
@@ -460,10 +460,41 @@ body {
 
 
 
+
+
+.title-container {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.dashboard-title {
+  font-size: 40px;
+  color: #5d045d;
+  
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  font-size: 18px;
+  color: #5d045d;
+  margin-top: 5px;
+}
+
+.content-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+
+
+
+
+
 .dashboard-container {
-    display: flex;
-    flex-direction: row;
+    padding: 20px;
   }
+
 
   .main-content {
     flex: 1;
@@ -536,8 +567,8 @@ body {
 
 /* Calendar container styling */
 #calendar {
-  max-width: 600px;
-  max-height: 600px;
+  max-width: 900px;
+  max-height: 900px;
   min-width: 400px;
   min-height: 400px;
   margin: 10px;
@@ -675,25 +706,28 @@ body {
   .event-box {
     background-color: #fff;
     border-radius: 20px;
-    padding: 15px;
+    overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding-bottom: 15px; /* Only bottom padding now */
   }
-
+  
   .event-box h3 {
-    margin-top: 0;
     background-color: #5d045d;
     color: white;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
+    padding: 12px 20px;
     font-size: 16px;
+    margin: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
   }
-
+  
   .event-box ul {
-    padding: 10px;
+    padding: 15px 20px; /* Add padding to content here instead */
     margin: 0;
     list-style-type: disc;
   }
+  
 
   .event-box li {
     font-family: cursive;
@@ -717,4 +751,7 @@ body {
     font-size: 14px;
     color: white;
   }
+  
+
+
   

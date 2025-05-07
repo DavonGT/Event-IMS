@@ -21,24 +21,32 @@
 {% endblock %}
 
 <div class="dashboard-container">
-
-  <!-- Main Content -->
-  <div class="main-content">
-
-    <!-- Calendar -->
-    <div id="calendar"></div>
+  
+  <!-- Title Section on Top -->
+  <div class="title-container">
+    <h1 class="dashboard-title">Events and Extension</h1>
+    <p class="dashboard-subtitle">Information Management</p>
   </div>
 
-  <!-- Events Sidebar -->
-  <div class="events-sidebar">
-    <div class="event-box">
-      <h3>Empty:</h3>
-      <ul>
-        <li>Empty - <span style="font-family: cursive;">Empty</span></li>
-      </ul>
+  <!-- Flex Layout Below -->
+  <div class="content-layout">
+    <!-- Main Calendar -->
+    <div class="main-content">
+      <div id="calendar"></div>
+    </div>
+
+    <!-- Events Sidebar -->
+    <div class="events-sidebar">
+      <div class="event-box">
+        <h3>Empty:</h3>
+        <ul>
+          <li>Empty - <span style="font-family: cursive;">Empty</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
