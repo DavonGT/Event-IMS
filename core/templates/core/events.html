@@ -24,7 +24,9 @@
     <div class="filter-container">
       <input type="text" placeholder="Search..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
       <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
-      <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
+      {% if user_role == "Admin" %}
+        <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
+      {% endif %}
       <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
     </div>
   </div>
@@ -51,10 +53,10 @@
           <td>{{ event.event_type }}</td>
           <td>
             <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
-            {% if request.user == event.host %}
+            {% if request.user == event.host or user_role == 'Admin' %}
               <button class="action-link" onclick="openModal('{% url 'edit_event' event.id %}')">✏️</button>
               <button class="action-link" onclick="openModal('{% url 'delete_event' event.id %}')">🗑️</button>
-              {% endif %}
+            {% endif %}
           </td>
         </tr>
       {% empty %}
