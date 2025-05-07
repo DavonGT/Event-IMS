@@ -15,9 +15,8 @@
             <!-- Left Panel (Form) -->
             <div class="form-panel">
                 <h2 class="login-title">Register</h2>
-                
+                <p class="login-subtitle">*STUDENTS*</p>
 
-                
                 <form method="post">
                     {% csrf_token %}
 
@@ -37,14 +36,20 @@
                     <div class="input-group password-group">
                         <span class="input-icon left"><i class="fas fa-lock"></i></span>
                         {{ form.password }}
+                        <span class="toggle-password">
+                            <i class="fas fa-eye" id="toggle-password-icon"></i>
+                        </span>
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="input-group password-group">
                         <span class="input-icon left"><i class="fas fa-lock"></i></span>
                         {{ form.confirm_password }}
+                        <span class="toggle-password">
+                            <i class="fas fa-eye" id="toggle-confirm-password-icon"></i>
+                        </span>
                     </div>
-                    
+
                     {{ form.role }}
 
                     {% if error %}
@@ -55,7 +60,7 @@
 
                     <button type="submit" class="login-button">Register</button>
                 </form>
-                
+
                 <div class="register-link centered">
                     <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </div>
@@ -69,6 +74,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Toggle password visibility for password field
+        const togglePasswordIcon = document.getElementById('toggle-password-icon');
+        const passwordInput = document.querySelector('[name="password"]');
+
+        togglePasswordIcon.addEventListener('click', function () {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePasswordIcon.classList.toggle('fa-eye');
+            togglePasswordIcon.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle password visibility for confirm password field
+        const toggleConfirmPasswordIcon = document.getElementById('toggle-confirm-password-icon');
+        const confirmPasswordInput = document.querySelector('[name="confirm_password"]');
+
+        toggleConfirmPasswordIcon.addEventListener('click', function () {
+            const isPassword = confirmPasswordInput.type === 'password';
+            confirmPasswordInput.type = isPassword ? 'text' : 'password';
+            toggleConfirmPasswordIcon.classList.toggle('fa-eye');
+            toggleConfirmPasswordIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 
 </body>
 </html>
