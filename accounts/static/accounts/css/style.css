@@ -10,6 +10,7 @@ html, body {
     font-family: Arial, sans-serif;
     background-color: #f1dcff;
     overflow: hidden;
+    overflow-y: auto;
 }
 
 /* === Main Layout === */
@@ -189,22 +190,55 @@ html, body {
 
 
 /* === Responsive Design === */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .main-box {
-        flex-direction: column;
-        border-radius: 25px;
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
     }
 
-    .logo-panel-box,
     .form-panel {
-        width: 100%;
+        padding: 1.5rem 1rem;
     }
 
     .logo-panel-box {
-        padding: 2rem;
+        padding: 1.5rem 1rem;
     }
 
-    .form-panel {
-        padding: 2rem;
+    .login-title {
+        font-size: 22px;
+    }
+
+    .input-group input,
+    .input-group select {
+        padding: 10px 40px;
+        font-size: 14px;
+    }
+
+    .input-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .input-icon.left {
+        left: -15px;
+    }
+
+    .login-button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .register-link {
+        font-size: 12px;
+    }
+
+    .system-title {
+        font-size: 30px;
+    }
+
+    .system-subtitle {
+        font-size: 14px;
     }
 }
