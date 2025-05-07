@@ -194,12 +194,14 @@ def get_events_by_month(request):
         return JsonResponse({'error': 'Missing parameters'}, status=400)
 
     events = Event.objects.filter(start_datetime__year=year, start_datetime__month=month)
-    data = [
-        {
+    data = {}
+    for event in events:
+        org = event.organization.acronym
+        if org not in data:
+            data[org] = []
+        data[org].append({
             'name': event.name,
             'date': event.start_datetime.strftime('%d.%m.%y'),
-            'organization': event.organization.acronym
-        }
-        for event in events
-    ]
-    return JsonResponse({'events': data})
+        })
+
+    return JsonResponse({'events_by_org': data})

@@ -89,24 +89,18 @@
           .then(response => response.json())
           .then(data => {
             sidebarEl.innerHTML = '';
-          
-            if (data.events.length === 0) {
+
+            const eventsByOrg = data.events_by_org;
+
+            if (Object.keys(eventsByOrg).length === 0) {
               const noEventsBox = document.createElement('div');
               noEventsBox.className = 'event-box';
               noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p>';
               sidebarEl.appendChild(noEventsBox);
               return;
             }
-          
-            const grouped = {};
-            data.events.forEach(event => {
-              if (!grouped[event.organization]) {
-                grouped[event.organization] = [];
-              }
-              grouped[event.organization].push(event);
-            });
-          
-            for (const [org, events] of Object.entries(grouped)) {
+
+            for (const [org, events] of Object.entries(eventsByOrg)) {
               const box = document.createElement('div');
               box.className = 'event-box';
               box.innerHTML = `<h3>${org} Events:</h3><ul>` +
