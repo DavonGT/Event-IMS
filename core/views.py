@@ -199,7 +199,7 @@ def get_events_by_month(request):
             data[org] = []
         data[org].append({
             'name': event.name,
-            'date': event.start_datetime.strftime('%d.%m.%y'),
+            'date': event.start_datetime.strftime('%m.%d.%y'),
         })
 
     return JsonResponse({'events_by_org': data})
@@ -226,7 +226,9 @@ def upload_file_view(request):
                     organization = Organization.objects.get(acronym=organization_acronym,)
                     print(organization.id)
                     print(row[1], row[2], row[3], row[4], row[5], row[6])
-                    Event.objects.create(organization_id=organization.id, name=row[1], description=row[2], location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
+                    name = row[1].replace("'","").replace("`","")
+
+                    Event.objects.create(organization_id=organization.id, name=name, description=row[2], location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
 
             return redirect('events_list')
     else:
