@@ -7,42 +7,45 @@
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <div class="login-container">
-        <div class="logo-panel">
-            <img src="{% static 'accounts/images/logo_ccs.png' %}" alt="ESSU Logo">
-        </div>
+        <div class="main-box">
+            <!-- Left Panel -->
+            <div class="logo-panel-box">
+                <img src="{% static 'accounts/images/ccs_logo.png' %}" alt="ESSU Logo">
+                <h2 class="system-title">Extension activities/events</h2>
+                <p class="system-subtitle">INFORMATION MANAGEMENT SYSTEM</p>
+            </div>
 
-        <div class="form-panel">
-            <h2 class="system-title">Extension activities/events</h2>
-            <p class="system-subtitle">INFORMATION MANAGEMENT SYSTEM</p>
+            <!-- Right Panel -->
+            <div class="form-panel">
+                <form method="post">
+                    <h2 class="login-title">Login</h2> 
+                    {% csrf_token %}
+                    {% if error %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endif %}
 
-            <form method="post">
-                {% csrf_token %}
-                {% if error %}
-                    <p class="error-message">{{ error }}</p>
-                {% endif %}
+                    <div class="input-group">
+                        <span class="input-icon left"><i class="fas fa-user"></i></span>
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
 
-                <div class="input-group">
-                    <span class="input-icon left"><i class="fas fa-user"></i></span>
-                    <input type="text" name="username" placeholder="Username" required>
-                </div>
+                    <div class="input-group password-group">
+                        <span class="input-icon left"><i class="fas fa-lock"></i></span>
+                        <input type="password" name="password" id="password-input" placeholder="Password" required>
+                        <span class="toggle-password">
+                            <i class="fas fa-eye" id="toggle-password-icon"></i>
+                        </span>
+                    </div>
 
-                <div class="input-group password-group">
-                    <span class="input-icon left"><i class="fas fa-lock"></i></span>
-                    <input type="password" name="password" id="password-input" placeholder="Password" required>
-                    <span class="toggle-password">
-                        <i class="fas fa-eye" id="toggle-password-icon"></i>
-                    </span>
-                </div>
+                    <button type="submit" class="login-button">LOGIN</button>
 
-                <button type="submit" class="login-button">LOGIN</button>
-            </form>
-
-            <div class="register-link">
-                <p>Don't have an account? <a href="{% url 'register' %}">REGISTER</a></p>
+                    <div class="register-link centered">
+                        <p>Don't have an account? <a href="{% url 'register' %}">REGISTER</a></p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

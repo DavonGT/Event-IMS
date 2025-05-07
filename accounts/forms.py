@@ -12,6 +12,15 @@ class UserRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['role'].choices = [('student', 'Student')]
-        for field in self.fields:
-            if field != 'role':
-                self.fields[field].label = None
+
+        placeholders = {
+            'username': 'Username',
+            'email': 'Email',
+            'password': 'Password',
+            'confirm_password': 'Confirm Password',
+        }
+
+        for field_name, field in self.fields.items():
+            if field_name != 'role':
+                field.label = None
+                field.widget.attrs.update({'placeholder': placeholders.get(field_name, '')})

@@ -5,20 +5,62 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="register-card">
+    <div class="login-container">
+        <!-- Ensure this div has the 'reverse' class applied correctly -->
+        <div class="main-box">
+            <!-- Left Panel (Form) -->
+            <div class="form-panel">
+                <h2 class="login-title">Register</h2>
+                <form method="post">
+                    {% csrf_token %}
 
-        <h2 class="form-title">Register</h2>
+                    <!-- Username -->
+                    <div class="input-group">
+                        <span class="input-icon left"><i class="fas fa-user"></i></span>
+                        {{ form.username }}
+                    </div>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}  <!-- This will render the form with no labels for fields except 'role' -->
-            <button type="submit" class="register-button">Register</button>
-        </form>
+                    <!-- Email -->
+                    <div class="input-group">
+                        <span class="input-icon left"><i class="fas fa-envelope"></i></span>
+                        {{ form.email }}
+                    </div>
 
-        <div class="login-link">
-            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    <!-- Password -->
+                    <div class="input-group password-group">
+                        <span class="input-icon left"><i class="fas fa-lock"></i></span>
+                        {{ form.password }}
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="input-group password-group">
+                        <span class="input-icon left"><i class="fas fa-lock"></i></span>
+                        {{ form.confirm_password }}
+                    </div>
+
+                    <!-- Role -->
+                    <div class="input-group">
+                        <span class="input-icon left"><i class="fas fa-users"></i></span>
+                        {{ form.role }}
+                    </div>
+
+                    <button type="submit" class="login-button">Register</button>
+                </form>
+                <div class="register-link centered">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </div>
+            </div>
+
+            <!-- Right Panel (Logo & Title) -->
+            <div class="logo-panel-box">
+                <img src="{% static 'accounts/images/ccs_logo.png' %}" alt="ESSU Logo">
+                <h2 class="system-title">Extension activities/events</h2>
+                <p class="system-subtitle">INFORMATION MANAGEMENT SYSTEM</p>
+            </div>
         </div>
     </div>
 </body>

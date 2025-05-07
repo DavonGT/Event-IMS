@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Event, Organization
-from .forms import EventForm, OrganizationForm, UploadFileForm
+from .forms import EventForm
 from django.views.decorators.http import require_GET
 from openpyxl import load_workbook
 
