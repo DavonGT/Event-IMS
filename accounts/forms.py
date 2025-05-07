@@ -7,11 +7,10 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password', 'role']
+        fields = ['username', 'email', 'password', 'confirm_password']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['role'].choices = [('student', 'Student')]
 
         placeholders = {
             'username': 'Username',
