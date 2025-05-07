@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body>
     <div class="login-container">
-        <!-- Ensure this div has the 'reverse' class applied correctly -->
         <div class="main-box">
             <!-- Left Panel (Form) -->
             <div class="form-panel">
                 <h2 class="login-title">Register</h2>
+                
+
+                
                 <form method="post">
                     {% csrf_token %}
 
@@ -43,15 +44,18 @@
                         <span class="input-icon left"><i class="fas fa-lock"></i></span>
                         {{ form.confirm_password }}
                     </div>
+                    
+                    {{ form.role }}
 
-                    <!-- Role -->
-                    <div class="input-group">
-                        <span class="input-icon left"><i class="fas fa-users"></i></span>
-                        {{ form.role }}
+                    {% if error %}
+                    <div class="error-message-container">
+                        <p class="error-message">{{ error }}</p>
                     </div>
+                    {% endif %}
 
                     <button type="submit" class="login-button">Register</button>
                 </form>
+                
                 <div class="register-link centered">
                     <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </div>
@@ -65,5 +69,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>

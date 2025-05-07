@@ -1,5 +1,31 @@
-<form method="POST" enctype="multipart/form-data" action="{% url 'upload_files' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload Files</button>
-</form>
+<div class="custom-modal">
+    <div class="custom-modal-content">
+      
+      <div class="custom-modal-header">
+        <h2 class="event-title">Upload CSV Files</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      
+      <div class="custom-modal-body">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_files' %}">
+          {% csrf_token %}
+          
+          <label for="{{ form.organization_file.id_for_label }}">Organization CSV File</label>
+          <div class="input-icon-row">
+            <i class="fas fa-building"></i>
+            {{ form.organization_file }}
+          </div>
+  
+          <label for="{{ form.event_file.id_for_label }}">Event CSV File</label>
+          <div class="input-icon-row">
+            <i class="fas fa-calendar-alt"></i>
+            {{ form.event_file }}
+          </div>
+  
+          <button type="submit" class="save-button">Upload Files</button>
+        </form>
+      </div>
+  
+    </div>
+  </div>
+  
