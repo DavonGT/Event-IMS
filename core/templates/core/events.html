@@ -44,7 +44,7 @@
       {% for event in events %}
         <tr>
           <td>{{ event.name }}</td>
-          <td>{{ event.start_datetime|date:"d. m. Y" }}</td>
+          <td>{{ event.start_datetime|date:"m. d. Y" }}</td>
           <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
           <td>{{ event.location }}</td>
           <td>{{ event.event_type }}</td>
