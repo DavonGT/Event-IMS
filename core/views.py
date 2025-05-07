@@ -166,8 +166,7 @@ def edit_event(request, event_id):
     return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
 # events/views.py
-from django.shortcuts import render, redirect
-from .forms import OrganizationForm
+
 
 def add_organization(request):
     if request.method == 'POST':

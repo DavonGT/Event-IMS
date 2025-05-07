@@ -1,3 +1,8 @@
+
+
+
+
+
 /* === Reset and Base === */
 * {
     margin: 0;
@@ -8,62 +13,57 @@
 html, body {
     height: 100%;
     font-family: Arial, sans-serif;
+    background-color: #f1dcff;
     overflow: hidden;
-    position: relative;
 }
 
-/* === Background === */
-body::before {
-    content: "";
-    background: url('../images/bg_login_register.jpg') no-repeat center center fixed;
-    background-size: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    filter: brightness(0.6);
-    z-index: -1;
-}
-
-/* === Center Container === */
-body {
+/* === Full Page Layout === */
+.login-container {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    height: 100vh;
+    padding: 1rem;
 }
 
-/* === Common Card Styles (Login & Register) === */
-.login-card, .register-card {
-    width: 400px;
-    background-color: #e09fe6;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    color: white;
-    text-align: center;
-    position: relative;
-    z-index: 2;
+/* === Logo Panel === */
+.logo-panel {
+    flex-shrink: 0;
 }
 
-/* === Logo Inside Card === */
-.logo-wrapper {
-    text-align: center;
-    margin-bottom: 1rem;
-    margin-top: 1px;
-}
-
-.logo {
-    max-width: 120px;
+.logo-panel img {
+    max-width: 320px;
     height: auto;
 }
 
-/* === Form Titles === */
-.form-title {
-    margin-bottom: 1rem;
+/* === Form Panel === */
+.form-panel {
+    background-color: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
 }
 
-/* === Input Groups (Login Page) === */
+/* === Titles === */
+.system-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 50px;
+    color: #893e8c;
+    margin-bottom: 0.3rem;
+}
+
+
+.system-subtitle {
+    font-weight: bold;
+    color: #893e8c;
+    font-size: 16px;
+    margin-bottom: 2rem;
+}
+
+/* === Input Groups === */
 .input-group {
     position: relative;
     margin-bottom: 20px;
@@ -102,12 +102,22 @@ body {
     left: -18px;
 }
 
-.input-icon.right {
-    right: -18px;
+/* === Password Toggle Icon === */
+.password-group {
+    position: relative;
 }
 
-/* === Login & Register Button Styles === */
-.login-button, .register-button {
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: white;
+}
+
+/* === Login Button === */
+.login-button {
     width: 100%;
     padding: 12px 24px;
     background-color: #6b006b;
@@ -120,69 +130,14 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.login-button:hover, .register-button:hover {
+.login-button:hover {
     background-color: #520052;
     transform: scale(1.05);
 }
 
-.login-button:focus, .register-button:focus {
+.login-button:focus {
     outline: none;
     box-shadow: 0 0 8px rgba(107, 0, 107, 0.7);
-}
-
-/* === Form Fields (Register Page) === */
-.register-card form p {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.register-card label {
-    display: block;
-    margin-bottom: 5px;
-    color: #6b006b;
-}
-
-.register-card input,
-.register-card select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background-color: #893e8c;
-    color: white;
-    font-size: 15px;
-}
-
-.register-card input::placeholder {
-    color: white;
-}
-
-/* === Select Dropdown Arrow === */
-.register-card select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' stroke='white' stroke-width='15' fill='none'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 10px;
-}
-
-/* === Links === */
-.register-link, .login-link {
-    margin-top: 20px;
-    font-size: 13px;
-    color: white;
-}
-
-.register-link a, .login-link a {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.register-link a:hover, .login-link a:hover {
-    text-decoration: underline;
 }
 
 /* === Error Message === */
@@ -192,16 +147,19 @@ body {
     font-size: 14px;
 }
 
-
-.password-group {
-    position: relative;
+/* === Register Link === */
+.register-link {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #893e8c;
 }
 
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: white
+.register-link a {
+    color: #893e8c;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.register-link a:hover {
+    text-decoration: none;
 }
