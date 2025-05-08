@@ -7,7 +7,7 @@
 
 html, body {
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: "Cal Sans", sans-serif;
     background-color: #f1dcff;
     overflow: hidden;
     overflow-y: auto;
@@ -150,25 +150,31 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-radius: 40px;
+    
+    
 }
 
 .logo-panel-box img {
-    max-width: 100px;
+    max-width: 130px;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
 .system-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 40px;
+    font-family: "Parisienne", cursive;
+    font-size: 30px;
     color: #ffffff;
     margin-bottom: 0.5rem;
+    line-height: 1.2;
 }
 
 .system-subtitle {
     font-weight: bold;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 13px;
+    letter-spacing: 1px; 
+    line-height: 0;
 }
 
 
@@ -204,8 +210,7 @@ html, body {
     padding: 15px;
     margin: 15px 0; 
     max-width: 500px; 
-    font-family: Arial, sans-serif;
-    
+        
     
     display: flex;
     justify-content: center; 
@@ -255,6 +260,7 @@ html, body {
         width: 100%;
         border-radius: 0;
         box-shadow: none;
+        
     }
 
     .form-panel {
@@ -263,6 +269,7 @@ html, body {
 
     .logo-panel-box {
         padding: 1.5rem 1rem;
+        
     }
 
     .login-title {

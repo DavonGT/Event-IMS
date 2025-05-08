@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Playwrite+IN:wght@100..400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -15,7 +18,7 @@
             <!-- Left Panel (Form) -->
             <div class="form-panel">
                 <h2 class="login-title">Register</h2>
-                <p class="login-subtitle">*STUDENTS*</p>
+                <p class="login-subtitle">STUDENTS</p>
 
                 <form method="post">
                     {% csrf_token %}
@@ -79,18 +82,18 @@
                     </div>
                     {% endif %}
 
-                    <button type="submit" class="login-button">Register</button>
+                    <button type="submit" class="login-button">REGISTER</button>
                 </form>
 
                 <div class="register-link centered">
-                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    <p>Already have an account? <a href="{% url 'login' %}">LOGIN</a></p>
                 </div>
             </div>
 
             <!-- Right Panel (Logo & Title) -->
             <div class="logo-panel-box">
                 <img src="{% static 'accounts/images/ccs_logo.png' %}" alt="ESSU Logo">
-                <h2 class="system-title">Extension activities/events</h2>
+                <h2 class="system-title">Extension activities and events</h2>
                 <p class="system-subtitle">INFORMATION MANAGEMENT SYSTEM</p>
             </div>
         </div>
