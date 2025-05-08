@@ -18,10 +18,14 @@
   }
 </style>
 
+<!-- Tippy.js for tooltips -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
 {% endblock %}
 
 <div class="dashboard-container">
-  
+
   <!-- Title Section on Top -->
   <div class="title-container">
     <h1 class="dashboard-title">Events and Extension</h1>
@@ -53,6 +57,18 @@
     const sidebarEl = document.querySelector('.events-sidebar');
     const eventsData = JSON.parse('{{ events_json|safe }}');
 
+    // Group events by local date
+    const eventsByDate = {};
+    eventsData.forEach(event => {
+      const dateObj = new Date(event.date);
+      const dateKey = dateObj.getFullYear() + '-' +
+                      String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                      String(dateObj.getDate()).padStart(2, '0');
+
+      if (!eventsByDate[dateKey]) eventsByDate[dateKey] = [];
+      eventsByDate[dateKey].push(event);
+    });
+
     const calendarEvents = eventsData.map(event => ({
       title: event.name,
       date: event.date
@@ -72,10 +88,31 @@
           click: function () {}
         }
       },
-      events: JSON.parse('{{ events_json|safe }}').map(event => ({
-        title: event.name,
-        date: event.date
-      })),
+      dayCellDidMount: function(info) {
+        const d = info.date;
+        const dateKey = d.getFullYear() + '-' +
+                        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(d.getDate()).padStart(2, '0');
+
+        const events = eventsByDate[dateKey];
+        if (events && events.length > 0) {
+          const content = events.map(e => 
+            `<strong>${e.name}</strong><br>` +
+            `📅 ${e.date}<br>` +
+            `📍 ${e.location}<br>` +
+            `📝 ${e.description}<br>` +
+            `🏢 ${e.type}`
+          ).join('<hr>');
+          console.log(events)
+
+          tippy(info.el, {
+            content: content,
+            allowHTML: true,
+            placement: 'top',
+            theme: 'light-border'
+          });
+        }
+      },
       datesSet: function(info) {
         const midDate = new Date(info.start);
         midDate.setDate(midDate.getDate() + 15);
@@ -123,4 +160,6 @@
     calendar.render();
   });
 </script>
+
+
 {% endblock %}

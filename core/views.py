@@ -200,6 +200,9 @@ def get_events_by_month(request):
         data[org].append({
             'name': event.name,
             'date': event.start_datetime.strftime('%m.%d.%y'),
+            'description': event.description,
+            'location': event.location,
+            'type': event.event_type,
         })
 
     return JsonResponse({'events_by_org': data})
