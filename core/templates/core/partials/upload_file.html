@@ -10,11 +10,14 @@
         <form method="POST" enctype="multipart/form-data" action="{% url 'upload_files' %}">
           {% csrf_token %}
           
-          <label for="{{ form.organization_file.id_for_label }}">Organization CSV File</label>
-          <div class="input-icon-row">
-            <i class="fas fa-building"></i>
-            {{ form.organization_file }}
-          </div>
+
+          {% if user_role == "Admin" %}
+            <label for="{{ form.organization_file.id_for_label }}">Organization CSV File</label>
+            <div class="input-icon-row">
+                <i class="fas fa-building"></i>
+                {{ form.organization_file }}
+            </div>
+          {% endif %}
   
           <label for="{{ form.event_file.id_for_label }}">Event CSV File</label>
           <div class="input-icon-row">
