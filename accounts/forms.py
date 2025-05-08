@@ -7,7 +7,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password']
+        fields = ['username', 'email', 'password', 'confirm_password', 'organization']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,6 +17,7 @@ class UserRegistrationForm(forms.ModelForm):
             'email': 'Email',
             'password': 'Password',
             'confirm_password': 'Confirm Password',
+            'organization': 'Organization'
         }
 
         for field_name, field in self.fields.items():

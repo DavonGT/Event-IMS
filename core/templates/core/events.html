@@ -54,8 +54,10 @@
           <td>{{ event.event_type }}</td>
           <td>
             <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
-            {% if request.user == event.host or user_role == 'Admin' %}
+            {% if request.user == event.host or user_role == 'Admin' or request.user.organization == event.organization%}
               <button class="action-link" onclick="openModal('{% url 'edit_event' event.id %}')">✏️</button>
+            {% endif %}
+            {% if user_role == "Admin" %}
               <button class="action-link" onclick="openModal('{% url 'delete_event' event.id %}')">🗑️</button>
             {% endif %}
           </td>
