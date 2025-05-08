@@ -21,7 +21,10 @@ def home(request):
             'date': event.start_datetime.strftime('%Y-%m-%d'),
             'time': event.start_datetime.strftime('%H:%M'),
             'location': event.location,
-            'description': event.description
+            'description': event.description,
+            'type': event.event_type,
+            'organization': event.organization.name,
+
         }
         for event in events
     ]
