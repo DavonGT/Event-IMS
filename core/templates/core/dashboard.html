@@ -32,21 +32,10 @@
     <p class="dashboard-subtitle">Information Management</p>
   </div>
 
-  <!-- Flex Layout Below -->
+  <!-- Calendar Layout Only -->
   <div class="content-layout">
-    <!-- Main Calendar -->
     <div class="main-content">
       <div id="calendar"></div>
-    </div>
-
-    <!-- Events Sidebar -->
-    <div class="events-sidebar">
-      <div class="event-box">
-        <h3>Empty:</h3>
-        <ul>
-          <li>Empty - <span style="font-family: cursive;">Empty</span></li>
-        </ul>
-      </div>
     </div>
   </div>
 </div>
@@ -54,7 +43,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
-    const sidebarEl = document.querySelector('.events-sidebar');
     const eventsData = JSON.parse('{{ events_json|safe }}');
 
     // Group events by local date
@@ -104,7 +92,6 @@
             `🏢 ${e.organization}<br>` +
             `Type: ${e.type}`
           ).join('<hr>');
-          console.log(events)
 
           tippy(info.el, {
             content: content,
@@ -117,11 +104,9 @@
       datesSet: function(info) {
         const midDate = new Date(info.start);
         midDate.setDate(midDate.getDate() + 15);
-        const month = midDate.getMonth() + 1;
+        const monthName = midDate.toLocaleString('default', { month: 'long' });
         const year = midDate.getFullYear();
 
-        // Update calendar title
-        const monthName = midDate.toLocaleString('default', { month: 'long' });
         const customTitleEl = document.querySelector('.fc-customTitle-button');
         if (customTitleEl) {
           customTitleEl.innerHTML = `
@@ -129,38 +114,11 @@
             <span class="calendar-year">${year}</span>
           `;
         }
-
-        // Fetch events and update sidebar
-        fetch(`/get-events-by-month?month=${month}&year=${year}`)
-          .then(response => response.json())
-          .then(data => {
-            sidebarEl.innerHTML = '';
-
-            const eventsByOrg = data.events_by_org;
-
-            if (Object.keys(eventsByOrg).length === 0) {
-              const noEventsBox = document.createElement('div');
-              noEventsBox.className = 'event-box';
-              noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p>';
-              sidebarEl.appendChild(noEventsBox);
-              return;
-            }
-
-            for (const [org, events] of Object.entries(eventsByOrg)) {
-              const box = document.createElement('div');
-              box.className = 'event-box';
-              box.innerHTML = `<h3>${org} Events:</h3><ul>` +
-                events.map(e => `<li>${e.date} - <span style="font-family: cursive;">${e.name}</span></li>`).join('') +
-                `</ul>`;
-              sidebarEl.appendChild(box);
-            }
-          });
       }
     });
 
     calendar.render();
   });
 </script>
-
 
 {% endblock %}

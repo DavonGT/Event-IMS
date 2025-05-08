@@ -497,24 +497,24 @@ body {
 }
 
 .title-container {
-  text-align: center;
+  text-align: right;
   margin-bottom: 10px;
 
 }
 
 .dashboard-title {
-  font-size:70px;
+  font-size:35px;
   color: #3b003b;
-  font-family: "Parisienne", cursive;
+  font-family: "Cal Sans", sans-serif;
   margin: 0;
   margin-bottom: 0px; 
   
 }
 
 .dashboard-subtitle {
-  font-size: 28px;
+  font-size: 25px;
   color: #3b003b;
-  margin-top: -20px;
+  margin-top: -10px;
   margin-left: 0px;
   font-family: "Cal Sans", sans-serif;
 }
