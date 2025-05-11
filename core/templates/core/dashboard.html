@@ -28,9 +28,14 @@
 
   <!-- Title Section on Top -->
   <div class="title-container">
-    <h1 class="dashboard-title">Events and Extension</h1>
-    <p class="dashboard-subtitle">Information Management</p>
-  </div>
+    <h1 class="dashboard-title">Hello, {{ request.user.username }}!</h1>
+    {% if request.user.is_superuser or request.user.is_staff %}
+      <p class="dashboard-subtitle">Admin</p>
+    {% else %}
+      <p class="dashboard-subtitle">Student</p>
+    {% endif %}
+
+    </div>
 
   <!-- Calendar Layout Only -->
   <div class="content-layout">
@@ -39,6 +44,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -90,7 +97,7 @@
             `📍 ${e.location}<br>` +
             `📝 ${e.description}<br>` +
             `🏢 ${e.organization}<br>` +
-            `Type: ${e.type}`
+            `👤 ${e.type}`
           ).join('<hr>');
 
           tippy(info.el, {
