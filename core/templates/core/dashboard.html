@@ -16,10 +16,16 @@
   .fc {
     height: auto !important;
   }
+  
+  .fc-event-hidden {
+    display: none !important;
+  }
 </style>
 
 <!-- Tippy.js for tooltips -->
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+{% endblock %}
+{% block extra_js %}
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 {% endblock %}
@@ -31,6 +37,14 @@
     <h1 class="dashboard-title">Events and Extension</h1>
     <p class="dashboard-subtitle">Information Management</p>
   </div>
+
+  <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+  <button class="today-button" id="todayButton">TODAY</button>
+
+  {% if user.is_authenticated %}
+  <p class="user-name">{{ user.get_full_name }}</p>
+  <p class="user-role">{{user_role}}</p>
+  {% endif %}
 
   <!-- Flex Layout Below -->
   <div class="content-layout">
@@ -55,7 +69,11 @@
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
     const sidebarEl = document.querySelector('.events-sidebar');
+    const searchInput = document.getElementById('searchInput');
+    const todayButton = document.getElementById('todayButton');
     const eventsData = JSON.parse('{{ events_json|safe }}');
+    
+    let calendar; // Declare calendar variable at a higher scope
 
     // Group events by local date
     const eventsByDate = {};
@@ -71,10 +89,16 @@
 
     const calendarEvents = eventsData.map(event => ({
       title: event.name,
-      date: event.date
+      date: event.date,
+      extendedProps: {
+        description: event.description,
+        location: event.location,
+        organization: event.organization,
+        type: event.type
+      }
     }));
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       events: calendarEvents,
       headerToolbar: {
@@ -104,7 +128,6 @@
             `🏢 ${e.organization}<br>` +
             `Type: ${e.type}`
           ).join('<hr>');
-          console.log(events)
 
           tippy(info.el, {
             content: content,
@@ -141,7 +164,7 @@
             if (Object.keys(eventsByOrg).length === 0) {
               const noEventsBox = document.createElement('div');
               noEventsBox.className = 'event-box';
-              noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p>';
+              noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p><br>';
               sidebarEl.appendChild(noEventsBox);
               return;
             }
@@ -150,7 +173,7 @@
               const box = document.createElement('div');
               box.className = 'event-box';
               box.innerHTML = `<h3>${org} Events:</h3><ul>` +
-                events.map(e => `<li>${e.date} - <span style="font-family: cursive;">${e.name}</span></li>`).join('') +
+                events.map(e => `<li>${e.date} - <span style="font-family: cursive;">${e.name}</span></li><br>`).join('') +
                 `</ul>`;
               sidebarEl.appendChild(box);
             }
@@ -159,8 +182,77 @@
     });
 
     calendar.render();
+    
+    // Search functionality
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const allEvents = calendar.getEvents();
+    let matchingEvents = [];
+    
+    allEvents.forEach(event => {
+      const eventTitle = event.title.toLowerCase();
+      const eventDescription = event.extendedProps.description.toLowerCase();
+      const eventLocation = event.extendedProps.location.toLowerCase();
+      const eventOrganization = event.extendedProps.organization.toLowerCase();
+      
+      if (eventTitle.includes(searchTerm) || 
+          eventDescription.includes(searchTerm) || 
+          eventLocation.includes(searchTerm) || 
+          eventOrganization.includes(searchTerm)) {
+        event.setProp('display', 'auto');
+        matchingEvents.push(event);
+        
+        // Highlight the day cell
+        const dateStr = event.startStr.split('T')[0];
+        const dayEl = document.querySelector(`.fc-day[data-date="${dateStr}"]`);
+        if (dayEl) {
+          dayEl.style.backgroundColor = 'rgba(255, 255, 0, 0.2)';
+        }
+      } else {
+        event.setProp('display', 'none');
+      }
+    });
+    
+    // If we found matches and have search term, navigate to most recent match
+    if (matchingEvents.length > 0 && searchTerm.length > 0) {
+      // Sort matching events by date (newest first)
+      matchingEvents.sort((a, b) => b.start - a.start);
+      
+      // Get the most recent event
+      const mostRecentEvent = matchingEvents[0];
+      
+      // Navigate to that date
+      calendar.gotoDate(mostRecentEvent.start);
+      }
+    });
+    
+    // Clear highlighting when search is cleared
+    searchInput.addEventListener('keyup', function() {
+      if (this.value === '') {
+        const highlightedDays = document.querySelectorAll('.fc-day[style*="background-color"]');
+        highlightedDays.forEach(day => {
+          day.style.backgroundColor = '';
+        });
+        // Reset view to current date when search is cleared
+        calendar.today();
+      }
+    });
+    
+    // Today button functionality
+    todayButton.addEventListener('click', function() {
+      calendar.today();
+      searchInput.value = ''; // Clear search when going to today
+      // Clear any highlighting
+      const highlightedDays = document.querySelectorAll('.fc-day[style*="background-color"]');
+      highlightedDays.forEach(day => {
+        day.style.backgroundColor = '';
+      });
+      // Reset all events to visible
+      calendar.getEvents().forEach(event => {
+        event.setProp('display', 'auto');
+      });
+    });
   });
 </script>
-
 
 {% endblock %}

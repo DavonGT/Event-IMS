@@ -11,9 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Playwrite+IN:wght@100..400&display=swap" rel="stylesheet">
+  {% block extra_css %}{% endblock %}
+  {% block extra_js %}{% endblock %}
 </head>
 <body>
-  {% block extra_css %}{% endblock %}
+  
   {% include 'core/navbar.html' %}
 
   <div class="content">

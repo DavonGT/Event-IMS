@@ -36,9 +36,19 @@ class User(AbstractUser):
         ('student', 'Student'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
+    first_name = models.CharField(max_length=20, blank=False)
+    middle_name = models.CharField(max_length=20, blank=True)
+    last_name = models.CharField(max_length=20, blank=False)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
 
     objects = UserManager()  # Use the custom manager
 
     def __str__(self):
         return f"{self.username} ({self.role})"
+    
+    @property
+    def get_full_name(self):
+        if self.middle_name:
+            return f"{self.first_name} {self.middle_name} {self.last_name}"
+        else:
+            return f"{self.first_name} {self.last_name}"
