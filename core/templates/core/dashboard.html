@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -38,13 +39,27 @@
     <p class="dashboard-subtitle">Information Management</p>
   </div>
 
-  <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
-  <button class="today-button" id="todayButton">TODAY</button>
+  <hr class="title-divider" />
 
-  {% if user.is_authenticated %}
-  <p class="user-name">{{ user.get_full_name }}</p>
-  <p class="user-role">{{user_role}}</p>
-  {% endif %}
+  <div class="header-container">
+    <div class="search-today">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+        <span class="search-icon">🔍</span>
+      </div>
+      <button class="today-button" id="todayButton">TODAY</button>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="user-info">
+      <div class="user-text">
+        <p class="user-name">{{ user.get_full_name }}</p>
+        <p class="user-role">{{ user_role }}</p>
+      </div>
+      <img src="{% static 'core/images/ccs_logo.png' %}" alt="ESSU Logo" class="user-logo">
+    </div>
+    {% endif %}
+  </div>
 
   <!-- Flex Layout Below -->
   <div class="content-layout">
