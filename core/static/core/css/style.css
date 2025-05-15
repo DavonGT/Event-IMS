@@ -240,6 +240,45 @@ body {
     text-decoration: none;
 }
 
+/* Set fixed widths for table columns */
+.events-table th:nth-child(1), /* Event Name */
+.events-table td:nth-child(1) {
+    width: 220px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.events-table th:nth-child(2), /* Date */
+.events-table td:nth-child(2) {
+    width: 120px;
+}
+
+.events-table th:nth-child(3), /* Time */
+.events-table td:nth-child(3) {
+    width: 180px;
+}
+
+.events-table th:nth-child(4), /* Venue */
+.events-table td:nth-child(4) {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.events-table th:nth-child(5), /* Type */
+.events-table td:nth-child(5) {
+    width: 130px;
+}
+
+.events-table th:nth-child(6), /* Action */
+.events-table td:nth-child(6) {
+    width: 120px;
+}
+
+
 /* Responsive Layout */
 @media (max-width: 768px) {
     .top-container {
