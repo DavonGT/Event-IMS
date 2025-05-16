@@ -240,6 +240,45 @@ body {
     text-decoration: none;
 }
 
+/* Set fixed widths for table columns */
+.events-table th:nth-child(1), /* Event Name */
+.events-table td:nth-child(1) {
+    width: 220px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.events-table th:nth-child(2), /* Date */
+.events-table td:nth-child(2) {
+    width: 120px;
+}
+
+.events-table th:nth-child(3), /* Time */
+.events-table td:nth-child(3) {
+    width: 180px;
+}
+
+.events-table th:nth-child(4), /* Venue */
+.events-table td:nth-child(4) {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.events-table th:nth-child(5), /* Type */
+.events-table td:nth-child(5) {
+    width: 130px;
+}
+
+.events-table th:nth-child(6), /* Action */
+.events-table td:nth-child(6) {
+    width: 120px;
+}
+
+
 /* Responsive Layout */
 @media (max-width: 768px) {
     .top-container {
@@ -529,6 +568,96 @@ body {
 .dashboard-container {
     padding: 20px;
   }
+
+
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5eeff;
+  padding: 10px 20px;
+}
+
+.search-today {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  padding: 10px 35px 10px 15px;
+  border: 2px solid #660f60;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #660f60;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #660f60;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.today-button {
+  background-color: #660f60;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-text {
+  text-align: right;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 18px;
+  color: #660f60;
+}
+
+.user-role {
+  margin: 0;
+  font-weight: 600;
+  color: purple;
+  font-size: 14px;
+}
+
+.user-logo {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+}
+
+
+.title-divider {
+  border: none;
+  border-top: 2px solid #660f60;
+  margin: 15px 0 20px 0;
+}
+
+
+
 
 
   .main-content {

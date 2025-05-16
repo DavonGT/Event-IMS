@@ -4,10 +4,11 @@ from .models import User
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
+    middle_name = forms.CharField(required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password', 'organization']
+        fields = ['username', 'email', 'password', 'confirm_password','first_name','middle_name', 'last_name', 'organization']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,6 +18,9 @@ class UserRegistrationForm(forms.ModelForm):
             'email': 'Email',
             'password': 'Password',
             'confirm_password': 'Confirm Password',
+            'first_name': 'First Name',
+            'middle_name': 'Middle Name',
+            'last_name': 'Last Name',
             'organization': 'Organization'
         }
 
