@@ -535,42 +535,114 @@ body {
     box-shadow: 0 0 8px rgba(217, 53, 79, 0.7);  
 }
 
-.title-container {
-  text-align: right;
-  margin-bottom: 10px;
-
-}
-
-.dashboard-title {
-  font-size:35px;
-  color: #3b003b;
-  font-family: "Cal Sans", sans-serif;
-  margin: 0;
-  margin-bottom: 0px; 
-  
-}
-
-.dashboard-subtitle {
-  font-size: 25px;
-  color: #3b003b;
-  margin-top: -10px;
-  margin-left: 0px;
-  font-family: "Cal Sans", sans-serif;
-}
-
-.content-layout {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
 
 
 .dashboard-container {
-    padding: 20px;
-  }
+  padding: 20px;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+/* Left: Search + Today */
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.today-button {
+  padding: 8px 16px;
+  background-color: #3b003b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.today-button:hover {
+  background-color: #4c005c;
+}
+
+/* Center: Title and Subtitle */
+.title-text {
+  text-align: center;
+  flex-grow: 1;
+  min-width: 200px;
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+.title-logo-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-text {
+  text-align: right;
+}
+
+.dashboard-title {
+  font-size: 20px;
+  font-family: "Cal Sans", sans-serif;
+  color: #760376;
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  font-size: 15px;
+  font-family: "Cal Sans", sans-serif;
+  color: #760376;
+  margin: 0;
+}
+
+.logo-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Right: Logo */
+.title-logo {
+  display: flex;
+  align-items: center;
+}
+
+.title-logo img.logo-img {
+  height: 60px;
+  width: auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 .header-container {
   display: flex;
@@ -625,10 +697,6 @@ body {
   gap: 10px;
 }
 
-.user-text {
-  text-align: right;
-}
-
 .user-name {
   margin: 0;
   font-weight: 700;
@@ -650,11 +718,18 @@ body {
 }
 
 
-.title-divider {
-  border: none;
-  border-top: 2px solid #660f60;
-  margin: 15px 0 20px 0;
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
