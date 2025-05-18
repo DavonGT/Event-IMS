@@ -20,7 +20,7 @@ class Event(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(default='No description provided')
     location = models.CharField(max_length=255)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField() 

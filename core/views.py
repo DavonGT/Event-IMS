@@ -136,7 +136,6 @@ def edit_event(request, event_id):
         form = EventForm(request.POST, instance=event)
         print(form)
         if form.is_valid():
-            print("hello")
             form.save()
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({'message': 'Event updated successfully'})
@@ -212,8 +211,9 @@ def upload_file_view(request):
                     print(organization.id)
                     print(row[1], row[2], row[3], row[4], row[5], row[6])
                     name = row[1].replace("'","").replace("`","")
+                    description = row[2].replace("'","").replace("`","")
 
-                    Event.objects.create(organization_id=organization.id, name=name, description=row[2], location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
+                    Event.objects.create(organization_id=organization.id, name=name, description=description, location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
 
             return redirect('events_list')
     else:
