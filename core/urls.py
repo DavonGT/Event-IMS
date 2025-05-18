@@ -26,8 +26,8 @@ urlpatterns = [
 
 
 
-    path('admin-dashboard/', views.home, name='admin_dashboard'),
-    path('organizer-dashboard/', views.home, name='organizer_dashboard'),
-    path('student-dashboard/', views.home, name='student_dashboard'),
+    # path('admin-dashboard/', views.home, name='admin_dashboard'),
+    # path('organizer-dashboard/', views.home, name='organizer_dashboard'),
+    # path('student-dashboard/', views.home, name='student_dashboard'),
     path('logout/', lambda request: redirect('login'), name='logout'),
 ]

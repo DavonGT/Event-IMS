@@ -8,14 +8,13 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password','first_name','middle_name', 'last_name', 'organization']
+        fields = ['username', 'password', 'confirm_password','first_name','middle_name', 'last_name', 'organization']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         placeholders = {
             'username': 'Username',
-            'email': 'Email',
             'password': 'Password',
             'confirm_password': 'Confirm Password',
             'first_name': 'First Name',

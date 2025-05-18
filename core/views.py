@@ -41,27 +41,6 @@ def home(request):
     })
     else:
         return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
-    
-    
-# View to display the dashboard calendar
-@login_required
-def dashboard(request):
-    events = Event.objects.all()
-    events_json = [
-        {
-            'name': event.name,
-            'date': event.start_datetime.strftime('%Y-%m-%d'),
-            'time': event.start_datetime.strftime('%H:%M'),
-            'location': event.location,
-            'description': event.description
-        }
-        for event in events
-    ]
-    print(events_json)
-    return render(request, 'core/events.html', {
-        "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
-        'user_role': str(request.user.role).title(),
-    })
 
 # View to create a new event
 @login_required

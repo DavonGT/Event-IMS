@@ -35,7 +35,11 @@
 
   <!-- Title Section on Top -->
   <div class="title-container">
-    <h1 class="dashboard-title">Hello, {{ request.user.username }}!</h1>
+    {% if request.user.first_name %}
+      <h1 class="dashboard-title">Hello, {{ request.user.get_full_name|title }}!</h1>
+    {% else %}
+      <h1 class="dashboard-title">Hello, {{ request.user.username|title }}!</h1>
+    {% endif %}
     {% if request.user.is_superuser or request.user.is_staff %}
       <p class="dashboard-subtitle">Admin</p>
     {% else %}

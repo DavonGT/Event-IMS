@@ -3,15 +3,14 @@ from django.db import models
 from core.models import Organization
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email=None, password=None, **extra_fields):
+    def create_user(self, username, password=None, **extra_fields):
         if not username:
             raise ValueError('The Username field must be set')
-        email = self.normalize_email(email)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(username, email, password, **extra_fields)
+        return self._create_user(username, password, **extra_fields)
 
-    def create_superuser(self, username, email=None, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'admin')  # Ensure superusers are admins
@@ -21,10 +20,10 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(username, email, password, **extra_fields)
+        return self._create_user(username, password, **extra_fields)
 
-    def _create_user(self, username, email, password, **extra_fields):
-        user = self.model(username=username, email=email, **extra_fields)
+    def _create_user(self, username, password, **extra_fields):
+        user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -49,6 +48,6 @@ class User(AbstractUser):
     @property
     def get_full_name(self):
         if self.middle_name:
-            return f"{self.first_name} {self.middle_name} {self.last_name}"
+            return f"{self.first_name} {self.middle_name[0]}. {self.last_name}"
         else:
             return f"{self.first_name} {self.last_name}"
