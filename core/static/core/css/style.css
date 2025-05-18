@@ -66,6 +66,19 @@ body {
     color: white;
 }
 
+/* Sidebar Navigation */
+.sidebar ul li a.active {
+    background-color: #670467;
+    color: white;
+}
+
+.sidebar ul li a.active i {
+    color: white;
+}
+
+
+
+
 /* Full-width Title Bar */
 .title-full {
     width: auto;

@@ -1,14 +1,46 @@
 <div class="sidebar">
     <ul>
-        <li><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+        <li>
+            <a href="{% url 'home' %}" class="{% if request.path == '/' or request.path == '/home/' %}active{% endif %}">
+                <i class="fas fa-home"></i>
+            </a>
+        </li>
 
         <!-- Role-based links with checklist icon -->
         {% if user_role == 'Admin' %}
-        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
+        <li>
+            <a href="{% url 'events_list' %}" class="{% if request.path == '/events_list/' %}active{% endif %}">
+                <i class="fas fa-list-check"></i>
+            </a>
+        </li>
         {% elif user_role == 'Organizer' %}
-        <li><a href="{% url 'events_list' %}"><i class="fas fa-list-check"></i></a></li>
+        <li>
+            <a href="{% url 'events_list' %}" class="{% if request.path == '/events_list/' %}active{% endif %}">
+                <i class="fas fa-list-check"></i>
+            </a>
+        </li>
         {% endif %}
 
-        <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a></li>
+        <li>
+            <a href="{% url 'logout' %}" class="{% if request.path == '/logout/' %}active{% endif %}">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </li>
     </ul>
 </div>
+
+
+<script>
+// JavaScript to toggle the active class
+const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        // Remove 'active' class from all links
+        sidebarLinks.forEach(item => item.classList.remove('active'));
+
+        // Add 'active' class to the clicked link
+        link.classList.add('active');
+    });
+});
+</script>
