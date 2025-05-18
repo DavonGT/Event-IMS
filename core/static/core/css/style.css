@@ -624,22 +624,22 @@ body {
 }
 
 .dashboard-title {
-  font-size: 20px;
+  font-size: 25px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
 }
 
 .dashboard-subtitle {
-  font-size: 15px;
+  font-size: 20px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
 }
 
 .logo-img {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
   object-fit: cover;
 }
