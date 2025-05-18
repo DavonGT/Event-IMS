@@ -42,36 +42,6 @@
       <p class="dashboard-subtitle">Student</p>
     {% endif %}
 
-<<<<<<< HEAD
-=======
-  <hr class="title-divider" />
-
-  <div class="header-container">
-    <div class="search-today">
-      <div class="search-wrapper">
-        <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
-        <span class="search-icon">🔍</span>
-      </div>
-      <button class="today-button" id="todayButton">TODAY</button>
-    </div>
-
-    {% if user.is_authenticated %}
-    <div class="user-info">
-      <div class="user-text">
-        <p class="user-name">{{ user.get_full_name }}</p>
-        <p class="user-role">{{ user_role }}</p>
-      </div>
-      <img src="{% static 'core/images/ccs_logo.png' %}" alt="ESSU Logo" class="user-logo">
-    </div>
-    {% endif %}
-  </div>
-
-  <!-- Flex Layout Below -->
-  <div class="content-layout">
-    <!-- Main Calendar -->
-    <div class="main-content">
-      <div id="calendar"></div>
->>>>>>> 87dee005a25e3605dd517addcd4d4e5a94d0003a
     </div>
 
   <!-- Calendar Layout Only -->
@@ -87,12 +57,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
-<<<<<<< HEAD
-=======
-    const sidebarEl = document.querySelector('.events-sidebar');
-    const searchInput = document.getElementById('searchInput');
-    const todayButton = document.getElementById('todayButton');
->>>>>>> 87dee005a25e3605dd517addcd4d4e5a94d0003a
     const eventsData = JSON.parse('{{ events_json|safe }}');
     
     let calendar; // Declare calendar variable at a higher scope
@@ -172,35 +136,6 @@
             <span class="calendar-year">${year}</span>
           `;
         }
-<<<<<<< HEAD
-=======
-
-        // Fetch events and update sidebar
-        fetch(`/get-events-by-month?month=${month}&year=${year}`)
-          .then(response => response.json())
-          .then(data => {
-            sidebarEl.innerHTML = '';
-
-            const eventsByOrg = data.events_by_org;
-
-            if (Object.keys(eventsByOrg).length === 0) {
-              const noEventsBox = document.createElement('div');
-              noEventsBox.className = 'event-box';
-              noEventsBox.innerHTML = '<h3>No Events</h3><p>No events scheduled for this month.</p><br>';
-              sidebarEl.appendChild(noEventsBox);
-              return;
-            }
-
-            for (const [org, events] of Object.entries(eventsByOrg)) {
-              const box = document.createElement('div');
-              box.className = 'event-box';
-              box.innerHTML = `<h3>${org} Events:</h3><ul>` +
-                events.map(e => `<li>${e.date} - <span style="font-family: cursive;">${e.name}</span></li><br>`).join('') +
-                `</ul>`;
-              sidebarEl.appendChild(box);
-            }
-          });
->>>>>>> 87dee005a25e3605dd517addcd4d4e5a94d0003a
       }
     });
 
@@ -278,8 +213,4 @@
   });
 </script>
 
-<<<<<<< HEAD
 {% endblock %}
-=======
-{% endblock %}
->>>>>>> 87dee005a25e3605dd517addcd4d4e5a94d0003a
