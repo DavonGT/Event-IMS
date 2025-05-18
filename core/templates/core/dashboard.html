@@ -57,6 +57,10 @@
       <p class="dashboard-subtitle">Student</p>
     {% endif %}
 
+    <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+    <button class="today-button" id="todayButton">TODAY</button>
+
+
     </div>
 
   <!-- Calendar Layout Only -->
@@ -73,6 +77,8 @@
   document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
     const eventsData = JSON.parse('{{ events_json|safe }}');
+    const searchInput = document.getElementById('searchInput');
+    const todayButton = document.getElementById('todayButton');
     
     let calendar; // Declare calendar variable at a higher scope
 
