@@ -45,7 +45,6 @@ def home(request):
 # View to create a new event
 @login_required
 def add_event(request):
-    print(request.method)
     if request.method == 'POST':
         form = EventForm(request.POST)
         if form.is_valid():
@@ -57,7 +56,6 @@ def add_event(request):
                 return JsonResponse({'success': True})
             return redirect('events_list')
         else:
-            print(form.errors)
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
                 return JsonResponse({'success': False, 'html': html})
@@ -73,7 +71,6 @@ def add_event(request):
 def events_list(request, organization_id=None):
     organizations = Organization.objects.all()
     events = Event.objects.all()
-    print(organizations)
 
     if organization_id:
         events = events.filter(organization_id=organization_id)
@@ -134,7 +131,6 @@ def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
-        print(form)
         if form.is_valid():
             form.save()
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -150,10 +146,8 @@ def edit_event(request, event_id):
 
 def add_organization(request):
     if request.method == 'POST':
-        print('POST')
         form = OrganizationForm(request.POST)
         if form.is_valid():
-            print('valid')
             form.save()
             return redirect('events_list')  # Change to your preferred redirect
     else:
@@ -208,8 +202,6 @@ def upload_file_view(request):
                 for row in sheet.iter_rows(min_row=2, values_only=True):
                     organization_acronym = row[0]
                     organization = Organization.objects.get(acronym=organization_acronym,)
-                    print(organization.id)
-                    print(row[1], row[2], row[3], row[4], row[5], row[6])
                     name = row[1].replace("'","").replace("`","")
                     description = row[2].replace("'","").replace("`","")
 
