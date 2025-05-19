@@ -565,7 +565,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 15px 0;
+  padding: 0px 0;
 }
 
 /* Left: Search + Today */
@@ -584,8 +584,7 @@ body {
 }
 
 .search-label {
-  font-size: 22px;
-  margin-bottom: 10px ;
+  font-size: 20px;
   color: #4c005c ;
   font-family: "Cal Sans", sans-serif;
 
