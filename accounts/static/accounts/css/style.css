@@ -25,12 +25,18 @@ html, body {
 /* === Box that wraps both panels === */
 .main-box {
     display: flex;
-    border-radius: 35px;
+    border-radius: 40px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+    box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.15), 
+        0 0 30px rgba(139, 0, 139, 0.5), 
+        0 0 60px rgba(139, 0, 139, 0.4); 
+
     width: 800px;
     max-width: 95%;
 }
+
 
 /* === Left Panel (Form) === */
 .form-panel {
@@ -150,7 +156,6 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 40px 0 0 40px;
     
     
 }
