@@ -336,7 +336,7 @@ body {
     border-radius: 20px;
     padding: 0;
     position: relative;
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Cal Sans", sans-serif;
     color: #4a0052;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -363,7 +363,7 @@ body {
 
 /* Align title to the left */
 .event-title {
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Cal Sans", sans-serif;
     font-size: 20px;
     color: white;
     font-weight: bold;
@@ -567,7 +567,7 @@ body {
 .search-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .search-input {
@@ -948,15 +948,16 @@ body {
   
 
   .event-box li {
-    font-family: cursive;
-  }
+    font-family: "Cal Sans", sans-serif;
+
+    }
 
 /* Make calendar events match sidebar style */
 .fc .fc-event {
     background-color: transparent !important;
     color: #5d045d  !important;
     border: none !important;
-    font-family: 'Brush Script MT', cursive ;
+    font-family: "Cal Sans", sans-serif;
     padding: 2px 20px;
   }
   
@@ -965,7 +966,7 @@ body {
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0px;
-    font-family: cursive;
+    font-family: "Cal Sans", sans-serif;
     font-size: 14px;
     color: white;
   }
