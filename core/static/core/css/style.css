@@ -52,13 +52,13 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #812081;
+    background-color: #4a004a;
     color: white;
 }
 
 .sidebar ul li a i {
     font-size: 24px;
-    color: #670467;
+    color: #4a004a;
     transition: color 0.3s ease;
 }
 
@@ -68,7 +68,7 @@ body {
 
 /* Sidebar Navigation */
 .sidebar ul li a.active {
-    background-color: #670467;
+    background-color: #4a004a;
     color: white;
 }
 
