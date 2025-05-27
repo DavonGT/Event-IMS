@@ -1,0 +1,94 @@
+{% extends "core/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Profile</h1>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Username: {{ user.username }}</h5>
+            <p class="card-text">Email: {{ user.email }}</p>
+            <p class="card-text">Name: {{ user.get_full_name }}</p>
+            <p class="card-text">Role: {{ user_role }}</p>
+            <p class="card-text">Joined: {{ user.date_joined|date:"F j, Y" }}</p>
+            <button class="add-new-button" onclick="openModal('{% url 'edit_profile' user.id %}')">Edit</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Profile View/Edit Modal -->
+<div id="profileModal" class="custom-modal" style="display: none;">
+  <div class="custom-modal-overlay" onclick="closeModal()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h2 id="modal-title" class="modal-title-text">Loading title...</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-body" class="custom-modal-body">
+      Loading...
+    </div>
+  </div>
+</div>
+
+<script>
+    function openModal(url) {
+    const modal = document.getElementById('profileModal');
+    const modalBody = document.getElementById('modal-body');
+    const modalTitle = document.getElementById('modal-title');
+  
+    modal.style.display = 'flex';
+    modalBody.innerHTML = 'Loading...';
+    modalTitle.textContent = '';
+  
+    fetch(url, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => {
+      const contentType = response.headers.get("content-type");
+      return contentType && contentType.includes("application/json")
+        ? response.json()
+        : response.text();
+    })
+    .then(data => {
+      if (typeof data === 'object' && data.html) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data.html;
+        const profileTitle = tempDiv.querySelector('.profile-title');
+        if (profileTitle) modalTitle.textContent = profileTitle.textContent;
+        modalBody.innerHTML = data.html;
+      } else {
+        modalBody.innerHTML = data;
+      }
+    });
+  }
+  
+
+  function closeModal() {
+    document.getElementById('profileModal').style.display = 'none';
+  }
+  function filterprofiles() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const table = document.querySelector('.profiles-table tbody');
+    const rows = table.getElementsByTagName('tr');
+  
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('td');
+      let rowMatches = false;
+  
+      for (let j = 0; j < cells.length - 1; j++) {  // exclude action column
+        const cellText = cells[j].textContent || cells[j].innerText;
+        if (cellText.toLowerCase().includes(filter)) {
+          rowMatches = true;
+          break;
+        }
+      }
+  
+      rows[i].style.display = rowMatches ? '' : 'none';
+    }
+  }
+</script>
+
+{% endblock %}

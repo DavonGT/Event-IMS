@@ -42,3 +42,22 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'middle_name', 'last_name', 'organization']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        placeholders = {
+            'first_name': 'First Name',
+            'middle_name': 'Middle Name',
+            'last_name': 'Last Name',
+            'organization': 'Organization'
+        }
+
+        for field_name, field in self.fields.items():
+            field.label = None
+            field.widget.attrs.update({'placeholder': placeholders.get(field_name, '')})

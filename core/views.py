@@ -10,6 +10,8 @@ from .models import Event, Organization
 from .forms import EventForm, UploadFileForm, OrganizationForm
 from django.views.decorators.http import require_GET
 from openpyxl import load_workbook
+from accounts.forms import UserProfileForm
+from accounts.models import User
 
 @login_required
 def home(request):
@@ -214,3 +216,33 @@ def upload_file_view(request):
     return render(request, 'core/partials/upload_file.html', {
         'form': form,
         'user_role': str(request.user.role).title(),})
+
+
+def profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('profile')
+
+    form = UserProfileForm(instance=user)
+    return render(request, 'core/profile.html', {
+        'user': user,
+        'form':form,
+        'user_role': str(user.role).title(),
+    })
+
+def edit_profile(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User profile updated successfully.")
+            return redirect('profile')
+
+    else:
+        form = UserProfileForm(instance=user)
+    return render(request, 'core/partials/edit_profile_modal.html', {'form': form, 'user': user})

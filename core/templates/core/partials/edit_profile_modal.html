@@ -1,0 +1,23 @@
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="custom-modal-body">
+  
+          <label for="id_first_name">First Name:</label>
+          {{ form.first_name }}
+
+          <label for="id_middle_name">Middle Name:</label>
+          {{ form.middle_name }}
+
+          <label for="id_last_name">Last Name:</label>
+          {{ form.last_name }}
+
+          {% if user.role == 'admin' %}
+            <label for="id_organization">Organization:</label>
+            {{ form.organization }}
+          {% endif %}
+  
+          <button type="submit" class="save-button">Update Profile</button>
+        </div>
+    </form>
+</div>

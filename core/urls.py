@@ -23,7 +23,8 @@ urlpatterns = [
     path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
     path('organizations/add/', views.add_organization, name='add_organization'),
 
-
+    path('profile/', views.profile, name='profile'),
+    path('profile/edit/<int:user_id>/', views.edit_profile, name='edit_profile'),
 
 
     # path('admin-dashboard/', views.home, name='admin_dashboard'),

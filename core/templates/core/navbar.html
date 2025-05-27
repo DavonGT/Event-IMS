@@ -22,10 +22,18 @@
         {% endif %}
 
         <li>
+            <a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}">
+                <i class="fas fa-user"></i>
+            </a>
+        </li>
+
+        <li>
             <a href="{% url 'logout' %}" class="{% if request.path == '/logout/' %}active{% endif %}">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
         </li>
+
+        
     </ul>
 </div>
 
