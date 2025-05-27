@@ -43,35 +43,38 @@
 {% endblock %}
 
 <div class="dashboard-container">
-  <label for="searchInput" class="search-label">Extension Events and Activities Information Management System</label>
-<!-- Title and Header Section -->
-<div class="title-container">
-  <!-- Left: Search + TODAY button -->
-<div class="search-section">
-  <div class="search-group">
+  <!-- Header Container -->
+  <div class="header-container">
     
-    <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+    <!-- LEFT SIDE: Title + Search -->
+  <div class="left-header">
+    <label for="searchInput" class="search-label">Extension Events and Activities Information Management System</label>
+    <div class="search-section">
+      <div class="search-group">
+        <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+      </div>
+      <button class="today-button" id="todayButton">TODAY</button>
+    </div>
   </div>
-  <button class="today-button" id="todayButton">TODAY</button>
-</div>
 
-
-  <!-- Center: User greeting and role -->
-  <!-- Right: Logo + User Info -->
-<div class="title-logo-user">
-  <div class="user-text">
-    {% if request.user.first_name %}
-      <h1 class="dashboard-title">Hello, {{ request.user.get_full_name|title }}!</h1>
-    {% else %}
-      <h1 class="dashboard-title">Hello, {{ request.user.username|title }}!</h1>
-    {% endif %}
-    {% if request.user.is_superuser or request.user.is_staff %}
-      <p class="dashboard-subtitle">Admin</p>
-    {% else %}
-      <p class="dashboard-subtitle">Student</p>
-    {% endif %}
+    <!-- RIGHT SIDE: User Greeting + Logo -->
+  <div class="title-logo-user">
+    <div class="user-text">
+      {% if request.user.first_name %}
+        <h1 class="dashboard-title">Hello, {{ request.user.get_full_name|title }}!</h1>
+      {% else %}
+        <h1 class="dashboard-title">Hello, {{ request.user.username|title }}!</h1>
+        {% endif %}
+      {% if request.user.is_superuser or request.user.is_staff %}
+        <p class="dashboard-subtitle">Admin</p>
+      {% else %}
+        <p class="dashboard-subtitle">Student</p>
+      {% endif %}
+    </div>
+    <img src="{% static 'core/images/ccs_logo.png' %}" alt="Logo" class="logo-img">
   </div>
-  <img src="{% static 'core/images/ccs_logo.png' %}" alt="Logo" class="logo-img">
+
+  </div>
 </div>
 
 </div>

@@ -52,13 +52,13 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #812081;
+    background-color: #4a004a;
     color: white;
 }
 
 .sidebar ul li a i {
     font-size: 24px;
-    color: #670467;
+    color: #4a004a;
     transition: color 0.3s ease;
 }
 
@@ -68,7 +68,7 @@ body {
 
 /* Sidebar Navigation */
 .sidebar ul li a.active {
-    background-color: #670467;
+    background-color: #4a004a;
     color: white;
 }
 
@@ -608,7 +608,7 @@ td:nth-child(5) {
 }
 
 .search-label {
-  font-size: 20px;
+  font-size: 25px;
   color: #4c005c ;
   font-family: "Cal Sans", sans-serif;
 
@@ -662,15 +662,17 @@ td:nth-child(5) {
 
 
 
-
-
 .title-logo-user {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 🔧 Ensures vertical alignment of Hello text */
 .user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: right;
 }
 
@@ -695,7 +697,6 @@ td:nth-child(5) {
   object-fit: cover;
 }
 
-/* Right: Logo */
 .title-logo {
   display: flex;
   align-items: center;
@@ -714,6 +715,31 @@ td:nth-child(5) {
   align-items: center;
   background-color: #f5eeff;
   padding: 10px 20px;
+  flex-wrap: wrap;
+  margin-top: -25px;
+}
+
+/* 🔧 Group label + search in vertical column */
+.left-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 🔧 Style the system title label */
+.search-label {
+  font-size: 22px;
+  font-weight: 600;
+  color: #660f60;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* 🔧 Used for horizontal layout of search + button */
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-today {
@@ -802,7 +828,7 @@ td:nth-child(5) {
   .main-content {
     flex: 1;
     padding: 20px;
-    position: relative;
+    margin-left: 8px;
   }
 
   .calendar-header {
@@ -828,10 +854,10 @@ td:nth-child(5) {
   }
 
   .calendar-header input {
-    width: 300px;
+    width: 200px;
     padding: 5px 10px;
     border-radius: 20px;
-    border: 1px solid #aaa;
+    border: 1px solid #5d045d;
   }
 
 /* Set global calendar text color */
@@ -858,15 +884,19 @@ td:nth-child(5) {
 
 /* Calendar container styling */
 #calendar {
-  max-width: 1970px;
-  max-height: 600px;
+  max-width: 1370px;
+  max-height: 610px;
   min-width: 400px;
   min-height: 200px;
   margin:-10px;
+  margin-left: 100px;
+  margin-top: -40px;
   background: #faf7fe;
   border-radius: 10px;
-  padding: 14px;
+  padding: 30px;
   border: none;
+   
+
   
     box-shadow: 
         0 0 5px rgba(0, 0, 0, 0.15), 
@@ -1081,6 +1111,7 @@ td:nth-child(5) {
   .content-layout {
       flex-direction: column;
       align-items: stretch;
+      display: flex;
   }
 
   .calendar-header {
