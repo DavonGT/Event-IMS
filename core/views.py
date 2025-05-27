@@ -101,7 +101,7 @@ def delete_event(request, event_id):
         messages.error(request, "You do not have permission to delete this event.")
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
             return JsonResponse({'error': 'Permission Denied'}, status=403)
-        return redirect('events_list')
+        return redirect(reverse('events_list', args=[id]))
 
     if request.method == 'POST':
         event.delete()
@@ -203,7 +203,10 @@ def upload_file_view(request):
                 sheet = wb.active
                 for row in sheet.iter_rows(min_row=2, values_only=True):
                     organization_acronym = row[0]
-                    organization = Organization.objects.get(acronym=organization_acronym,)
+                    try: 
+                        organization = Organization.objects.get(acronym=organization_acronym,)
+                    except:
+                        return redirect('events_list')
                     name = row[1].replace("'","").replace("`","")
                     description = row[2].replace("'","").replace("`","")
 

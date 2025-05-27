@@ -222,6 +222,7 @@ body {
     text-align: center;
     border-bottom: 1px solid #ddd;
     color: #4a004a;
+   
 }
 
 .events-table th {
@@ -229,7 +230,30 @@ body {
     font-weight: bold;
     color: #fdf2fd;
 }
+.events-table th:nth-child(4), .events-table td:nth-child(1) {
+    width: 120px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.events-table th,
+td:nth-child(4),
+td:nth-child(1) {
+    width: 120px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
 
+td:nth-child(5) {
+    width: 200px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
 .events-table td {
     background-color: #fff;
 }
