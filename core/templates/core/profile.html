@@ -3,12 +3,11 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mt-4">Profile</h1>
+<div class="profile-container">
+    <h1 class="mt-4">PROFILE</h1>
     <div class="card mt-3">
         <div class="card-body">
             <h5 class="card-title">Username: {{ user.username }}</h5>
-            <p class="card-text">Email: {{ user.email }}</p>
             <p class="card-text">Name: {{ user.get_full_name }}</p>
             <p class="card-text">Role: {{ user_role }}</p>
             <p class="card-text">Joined: {{ user.date_joined|date:"F j, Y" }}</p>

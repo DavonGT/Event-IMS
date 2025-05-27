@@ -598,6 +598,7 @@ td:nth-child(5) {
   align-items: center;
   gap: 0px;
   margin-left: 10px;
+  margin-bottom: -40px;
 }
 
 .search-input {
@@ -677,14 +678,14 @@ td:nth-child(5) {
 }
 
 .dashboard-title {
-  font-size: 35px;
+  font-size: 30px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
 }
 
 .dashboard-subtitle {
-  font-size: 30px;
+  font-size: 25px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
@@ -1054,6 +1055,81 @@ td:nth-child(5) {
     font-size: 14px;
     color: white;
   }
+
+
+.profile-container {
+  background-color: #5d045d;
+  margin: 100px auto;
+  padding: 20px;
+  width: auto;
+  max-width: 400px;
+  box-shadow: 
+        0 0 5px rgba(0, 0, 0, 0.15), 
+        0 0 10px rgba(139, 0, 139, 0.5), 
+        0 0 20px rgba(139, 0, 139, 0.4); 
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.profile-container h1 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color:white;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+}
+
+.card-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #5d045d;
+}
+
+.card-text {
+  margin: 8px 0;
+  color: #333;
+}
+
+.add-new-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #5d045d;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-new-button:hover {
+  background-color: #440344; /* slightly darker shade for hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
 
