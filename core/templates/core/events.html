@@ -15,6 +15,7 @@
     <!-- Tabs Container -->
     <div class="tabs-container">
       <div class="tabs"> 
+         <a href="{% url 'events_list' %}" class="tab {% if selected_organization is None %}active{% endif %}">ALL</a>
         {% for organization in organizations %}
           <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
         {% endfor %}
