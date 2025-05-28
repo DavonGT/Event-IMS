@@ -12,6 +12,7 @@ from django.views.decorators.http import require_GET
 from openpyxl import load_workbook
 from accounts.forms import UserProfileForm
 from accounts.models import User
+from django.urls import reverse
 
 @login_required
 def home(request):
@@ -44,6 +45,24 @@ def home(request):
     else:
         return HttpResponseForbidden("You do not have permission to access this page.")  # Handle unknown roles
 
+@login_required
+def events_list(request, organization_id=None):
+    organizations = Organization.objects.all()
+    events = Event.objects.all()
+
+    if organization_id:
+        events = events.filter(organization_id=organization_id)
+        selected_organization_id = organization_id
+    else:
+        selected_organization_id = None
+
+    return render(request, 'core/events.html', {
+        'events': events,
+        'organizations': organizations,
+        'selected_organization_id': selected_organization_id,
+        'user_role': str(request.user.role).title(),
+    })
+
 # View to create a new event
 @login_required
 def add_event(request):
@@ -69,30 +88,6 @@ def add_event(request):
 
     return render(request, 'core/events.html', {'form': form})
 
-@login_required
-def events_list(request, organization_id=None):
-    organizations = Organization.objects.all()
-    events = Event.objects.all()
-
-    if organization_id:
-        events = events.filter(organization_id=organization_id)
-        selected_organization_id = organization_id
-    else:
-        selected_organization_id = None
-
-    return render(request, 'core/events.html', {
-        'events': events,
-        'organizations': organizations,
-        'selected_organization_id': selected_organization_id,
-        'user_role': str(request.user.role).title(),
-    })
-
-
-
-
-
-
-
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
 
@@ -117,9 +112,6 @@ def delete_event(request, event_id):
 
     return redirect('events_list')
 
-
-
-
 def view_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     
@@ -143,9 +135,6 @@ def edit_event(request, event_id):
         form = EventForm(instance=event)
     return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
-# events/views.py
-
-
 def add_organization(request):
     if request.method == 'POST':
         form = OrganizationForm(request.POST)
@@ -156,8 +145,6 @@ def add_organization(request):
         form = OrganizationForm()
 
     return render(request, 'core/partials/add_org_modal.html', {'form': form})
-
-
 
 @require_GET
 @login_required
