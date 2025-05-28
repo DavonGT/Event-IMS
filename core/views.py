@@ -60,17 +60,22 @@ def events_list(request, organization_id=None):
         'events': events,
         'organizations': organizations,
         'selected_organization_id': selected_organization_id,
+        'selected_organization': Organization.objects.get(id=selected_organization_id).name if selected_organization_id else None,
         'user_role': str(request.user.role).title(),
+        'user_org':str(request.user.organization) if hasattr(request.user, 'organization') else None,
     })
 
 # View to create a new event
 @login_required
 def add_event(request):
     if request.method == 'POST':
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, user=request.user)
         if form.is_valid():
             event = form.save(commit=False)
             event.host = request.user
+            # If organizer, ensure event.organization is set to user's org
+            if hasattr(request.user, 'role') and request.user.role == 'organizer':
+                event.organization = request.user.organization
             event.save()
             form.save_m2m()
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -81,7 +86,7 @@ def add_event(request):
                 html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
                 return JsonResponse({'success': False, 'html': html})
 
-    form = EventForm()
+    form = EventForm(user=request.user)
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         html = render_to_string('core/partials/event_form.html', {'form': form}, request=request)
         return JsonResponse({'html': html})

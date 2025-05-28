@@ -23,12 +23,13 @@
 
     <!-- Filter/Search/Add Container -->
     <div class="filter-container">
-      
-      <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
+      {% if user_role == "Admin" or user_org == selected_organization %}
+        <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
+        <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
+      {% endif %}
       {% if user_role == "Admin" %}
         <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
       {% endif %}
-      <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
       <input type="text" placeholder="Search..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
     </div>
   </div>

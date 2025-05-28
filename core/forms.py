@@ -3,6 +3,16 @@ from .models import Event, Organization
 
 
 class EventForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            if hasattr(user, 'role') and user.role == 'organizer':
+                if user.organization:
+                    self.fields['organization'].initial = user.organization.id
+                    self.fields['organization'].disabled = True
+            elif hasattr(user, 'role') and user.role == 'admin':
+                self.fields['organization'].disabled = False
     
     class Meta:
         model = Event

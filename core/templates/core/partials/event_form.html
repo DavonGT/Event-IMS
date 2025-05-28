@@ -6,15 +6,22 @@
       <button class="modal-close" onclick="window.location.href='{% url 'events_list' %}'">×</button>
     </div>
 
-    
     <div id="modal-body" class="custom-modal-body">
       <form method="POST" id="eventForm" action="{% url 'add_event' %}">
         {% csrf_token %}
 
+        {% if request.user.role == 'admin' %}
         <div class="form-group">
           <label for="{{ form.organization.id_for_label }}">Organization</label>
           {{ form.organization }}
         </div>
+        {% elif request.user.role == 'organizer' %}
+        <div class="form-group">
+          <label for="{{ form.organization.id_for_label }}">Organization</label>
+          <input type="text" class="form-control" value="{{ request.user.organization }}" disabled>
+          {{ form.organization.as_hidden }}
+        </div>
+        {% endif %}
 
         <div class="form-group">
           <label for="{{ form.name.id_for_label }}">Event Name</label>

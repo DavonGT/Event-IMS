@@ -10,9 +10,19 @@
         {% csrf_token %}
         <div class="custom-modal-body">
 
-          <label for="id_organization">Organization</label>
-          {{ form.organization }}
-  
+          {% if request.user.role == 'admin' %}
+            <div class="form-group">
+              <label for="{{ form.organization.id_for_label }}">Organization</label>
+              {{ form.organization }}
+            </div>
+            {% elif request.user.role == 'organizer' %}
+            <div class="form-group">
+              <label for="{{ form.organization.id_for_label }}">Organization</label>
+              <input type="text" class="form-control" value="{{ request.user.organization }}" disabled>
+              {{ form.organization.as_hidden }}
+            </div>
+          {% endif %}
+
           <label for="id_name">Event Name:</label>
           {{ form.name }}
 
