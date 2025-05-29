@@ -23,15 +23,35 @@
     </div>
 
     <!-- Filter/Search/Add Container -->
-    <div class="filter-container">
-      {% if user_role == "Admin" or user_org == selected_organization %}
-        <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
-        <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
-      {% endif %}
-      {% if user_role == "Admin" %}
-        <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
-      {% endif %}
-      <input type="text" placeholder="Search..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
+    <div class="filter-container enhanced-filters">
+      <div class="filter-row">
+        <input type="text" placeholder="🔍 Search events..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
+        <select id="typeFilter" class="filter-select" onchange="filterEvents()">
+          <option value="">All Types</option>
+          {% for event_type in event_types %}
+            <option value="{{ event_type }}">{{ event_type }}</option>
+          {% endfor %}
+        </select>
+        <select id="venueFilter" class="filter-select" onchange="filterEvents()">
+          <option value="">All Venues</option>
+          {% for venue in venues %}
+            <option value="{{ venue }}">{{ venue }}</option>
+          {% endfor %}
+        </select>
+        <input type="date" id="startDateFilter" class="filter-date" onchange="filterEvents()" />
+        <span style="color:#822780;font-weight:bold;">to</span>
+        <input type="date" id="endDateFilter" class="filter-date" onchange="filterEvents()" />
+        <button class="clear-filters-btn" onclick="clearFilters()">Clear</button>
+      </div>
+      <div class="quick-actions">
+        {% if user_role == "Admin" or user_org == selected_organization %}
+          <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
+          <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
+        {% endif %}
+        {% if user_role == "Admin" %}
+          <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
+        {% endif %}
+      </div>
     </div>
   </div>
 
@@ -140,25 +160,107 @@
   function filterEvents() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toLowerCase();
+    const typeFilter = document.getElementById('typeFilter').value;
+    const venueFilter = document.getElementById('venueFilter').value;
+    const startDateFilter = document.getElementById('startDateFilter').value;
+    const endDateFilter = document.getElementById('endDateFilter').value;
     const table = document.querySelector('.events-table tbody');
     const rows = table.getElementsByTagName('tr');
-  
+
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('td');
-      let rowMatches = false;
-  
-      for (let j = 0; j < cells.length - 1; j++) {  // exclude action column
+      if (cells.length < 6) continue; // skip empty row
+      let rowMatches = true;
+
+      // Search filter
+      let searchMatch = false;
+      for (let j = 0; j < cells.length - 1; j++) {
         const cellText = cells[j].textContent || cells[j].innerText;
         if (cellText.toLowerCase().includes(filter)) {
-          rowMatches = true;
+          searchMatch = true;
           break;
         }
       }
-  
+      if (!searchMatch) rowMatches = false;
+
+      // Type filter
+      if (typeFilter && cells[4].textContent.trim() !== typeFilter) rowMatches = false;
+      // Venue filter
+      if (venueFilter && cells[3].textContent.trim() !== venueFilter) rowMatches = false;
+      // Date range filter
+      if (startDateFilter || endDateFilter) {
+        const eventDate = cells[1].textContent.trim(); // m. d. Y
+        const [month, day, year] = eventDate.split('.').map(s => s.trim());
+        const eventDateISO = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        if (startDateFilter && eventDateISO < startDateFilter) rowMatches = false;
+        if (endDateFilter && eventDateISO > endDateFilter) rowMatches = false;
+      }
       rows[i].style.display = rowMatches ? '' : 'none';
     }
   }
+
+  function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('typeFilter').value = '';
+    document.getElementById('venueFilter').value = '';
+    document.getElementById('startDateFilter').value = '';
+    document.getElementById('endDateFilter').value = '';
+    filterEvents();
+  }
   
 </script>
+<style>
+.enhanced-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.filter-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.quick-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-select, .filter-date, .search-input {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #822780;
+  background: #fff;
+  font-size: 1rem;
+  color: #822780;
+  min-width: 120px;
+}
+.filter-select:focus, .filter-date:focus, .search-input:focus {
+  outline: 2px solid #822780;
+  border-color: #822780;
+}
+.clear-filters-btn {
+  background: #f5eeff;
+  color: #822780;
+  border: 1px solid #822780;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.clear-filters-btn:hover {
+  background: #822780;
+  color: #fff;
+}
+@media (max-width: 768px) {
+  .filter-row, .quick-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}
+</style>
 
 {% endblock %}

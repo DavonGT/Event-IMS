@@ -13,6 +13,7 @@ from openpyxl import load_workbook
 from accounts.forms import UserProfileForm
 from accounts.models import User
 from django.urls import reverse
+from django.db.models import F
 
 @login_required
 def home(request):
@@ -56,6 +57,10 @@ def events_list(request, organization_id=None):
     else:
         selected_organization_id = None
 
+    # Get unique event types and venues for filters
+    event_types = list(events.order_by('event_type').values_list('event_type', flat=True).distinct())
+    venues = list(events.order_by('location').values_list('location', flat=True).distinct())
+
     return render(request, 'core/events.html', {
         'events': events,
         'organizations': organizations,
@@ -63,6 +68,8 @@ def events_list(request, organization_id=None):
         'selected_organization': Organization.objects.get(id=selected_organization_id).name if selected_organization_id else None,
         'user_role': str(request.user.role).title(),
         'user_org':str(request.user.organization) if hasattr(request.user, 'organization') else None,
+        'event_types': event_types,
+        'venues': venues,
     })
 
 # View to create a new event
