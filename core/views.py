@@ -201,8 +201,9 @@ def upload_file_view(request):
                         return redirect('events_list')
                     name = row[1].replace("'","").replace("`","")
                     description = row[2].replace("'","").replace("`","")
+                    location = row[3].replace("'","").replace("`","")
 
-                    Event.objects.create(organization_id=organization.id, name=name, description=description, location=row[3], start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
+                    Event.objects.create(organization_id=organization.id, name=name, description=description, location=location, start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
 
             return redirect('events_list')
     else:
