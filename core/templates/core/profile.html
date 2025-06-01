@@ -3,18 +3,28 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+{% load static %}
 <div class="profile-container">
-    <h1 class="mt-4">PROFILE</h1>
-    <div class="card mt-3">
-        <div class="card-body">
-            <h5 class="card-title">Username: {{ user.username }}</h5>
-            <p class="card-text">Name: {{ user.get_full_name }}</p>
-            <p class="card-text">Role: {{ user_role }}</p>
-            <p class="card-text">Joined: {{ user.date_joined|date:"F j, Y" }}</p>
-            <button class="add-new-button" onclick="openModal('{% url 'edit_profile' user.id %}')">Edit</button>
-        </div>
+  {% if user.username %}
+  <div class="modern-profile-card">
+    <div class="profile-header">
+      <div class="avatar"></div>
     </div>
+    <div class="profile-body">
+      <h2>{{ user.get_full_name|default:"Unnamed User" }}</h2>
+      <p class="handle">@{{ user.username }}</p>
+      <p>{{ user_role }}</p>
+      <p><span class="calendar-icon">📅</span>Joined {{ user.date_joined|date:"F Y" }}</p>
+      <button class="edit-button" onclick="openModal('{% url 'edit_profile' user.id %}')">Edit Profile</button>
+    </div>
+  </div>
+  {% else %}
+  <p>No user data available</p>
+  {% endif %}
 </div>
+
+
+
 
 
 <!-- Profile View/Edit Modal -->
