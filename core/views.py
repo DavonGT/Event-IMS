@@ -16,7 +16,7 @@ from django.urls import reverse
 from django.db.models import F
 
 @login_required
-def home(request):
+def calendar(request):
     events = Event.objects.all()
     organizations = Organization.objects.all()
     events_json = [
@@ -38,7 +38,7 @@ def home(request):
 
     # Role-based access control
     if request.user.role:
-        return render(request, 'core/dashboard.html', {
+        return render(request, 'core/calendar.html', {
         "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
         'user_role': str(request.user.role).title(),
         'organizations': organizations

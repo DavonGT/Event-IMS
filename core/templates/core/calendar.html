@@ -1,0 +1,342 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+
+{% block extra_css %}
+
+
+<!-- Tippy.js for tooltips -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+{% endblock %}
+{% block extra_js %}
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+{% endblock %}
+
+<div class="dashboard-container">
+  <label for="searchInput" class="search-label">Extension Events and Activities Information Management System</label>
+  <!-- Event Count and Filters -->
+  <div class="dashboard-stats-filters">
+    <div class="event-count">
+      Total Events: <span id="eventCount">0</span>
+    </div>
+    <div class="filters">
+      <select id="typeFilter" class="filter-select">
+        <option value="">All Types</option>
+      </select>
+      <select id="orgFilter" class="filter-select">
+        <option value="">All Organizations</option>
+      </select>
+      <input type="date" id="startDateFilter" class="filter-date" />
+      <span>to</span>
+      <input type="date" id="endDateFilter" class="filter-date" />
+      <button id="clearFilters" class="today-button">Clear Filters</button>
+    </div>
+  </div>
+  <!-- Header Container -->
+  <div class="header-container">
+    
+    <!-- LEFT SIDE: Title + Search -->
+     
+  <div class="left-header">
+    
+    <div class="search-section">
+      <div class="search-group">
+        <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
+      </div>
+      <button class="today-button" id="todayButton">TODAY</button>
+    </div>
+  </div>
+
+    <!-- RIGHT SIDE: User Greeting + Logo -->
+  <div class="title-logo-user">
+    <div class="user-text">
+      {% if request.user.first_name %}
+        <h1 class="dashboard-title">Hello, {{ request.user.get_full_name|title }}!</h1>
+      {% else %}
+        <h1 class="dashboard-title">Hello, {{ request.user.username|title }}!</h1>
+        {% endif %}
+      {% if request.user.is_superuser or request.user.is_staff %}
+        <p class="dashboard-subtitle">Admin</p>
+      {% else %}
+        <p class="dashboard-subtitle">Student</p>
+      {% endif %}
+    </div>
+    <img src="{% static 'core/images/ccs_logo.png' %}" alt="Logo" class="logo-img">
+  </div>
+
+  </div>
+</div>
+<div class="content-layout">
+    <div class="main-content">
+      <div id="calendar"></div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const eventsData = JSON.parse('{{ events_json|safe }}');
+    const searchInput = document.getElementById('searchInput');
+    const todayButton = document.getElementById('todayButton');
+    const eventCountEl = document.getElementById('eventCount');
+    const typeFilter = document.getElementById('typeFilter');
+    const orgFilter = document.getElementById('orgFilter');
+    const startDateFilter = document.getElementById('startDateFilter');
+    const endDateFilter = document.getElementById('endDateFilter');
+    const clearFilters = document.getElementById('clearFilters');
+
+    let calendar; // Declare calendar variable at a higher scope
+
+    // Populate filter dropdowns
+    const uniqueTypes = [...new Set(eventsData.map(e => e.type))].filter(Boolean);
+    uniqueTypes.forEach(type => {
+      const opt = document.createElement('option');
+      opt.value = type;
+      opt.textContent = type;
+      typeFilter.appendChild(opt);
+    });
+    const uniqueOrgs = [...new Set(eventsData.map(e => e.organization))].filter(Boolean);
+    uniqueOrgs.forEach(org => {
+      const opt = document.createElement('option');
+      opt.value = org;
+      opt.textContent = org;
+      orgFilter.appendChild(opt);
+    });
+
+    // Group events by local date
+    const eventsByDate = {};
+    eventsData.forEach(event => {
+      const dateObj = new Date(event.date);
+      const dateKey = dateObj.getFullYear() + '-' +
+                      String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                      String(dateObj.getDate()).padStart(2, '0');
+
+      if (!eventsByDate[dateKey]) eventsByDate[dateKey] = [];
+      eventsByDate[dateKey].push(event);
+    });
+
+    // Helper: filter events
+    function getFilteredEvents() {
+      let filtered = eventsData;
+      const typeVal = typeFilter.value;
+      const orgVal = orgFilter.value;
+      const startVal = startDateFilter.value;
+      const endVal = endDateFilter.value;
+      if (typeVal) filtered = filtered.filter(e => e.type === typeVal);
+      if (orgVal) filtered = filtered.filter(e => e.organization === orgVal);
+      if (startVal) filtered = filtered.filter(e => e.date >= startVal);
+      if (endVal) filtered = filtered.filter(e => e.date <= endVal);
+      return filtered;
+    }
+
+    // Helper: update event count
+    function updateEventCount(count) {
+      eventCountEl.textContent = count;
+    }
+
+    // Helper: render calendar events
+    function renderCalendarEvents(events) {
+      calendar.removeAllEvents();
+      events.forEach(event => {
+        calendar.addEvent({
+          title: event.name,
+          date: event.date,
+          extendedProps: {
+            description: event.description,
+            location: event.location,
+            organization: event.organization,
+            type: event.type
+          }
+        });
+      });
+      updateEventCount(events.length);
+    }
+
+    // Initial calendar events
+    const calendarEvents = eventsData.map(event => ({
+      title: event.name,
+      date: event.date,
+      extendedProps: {
+        description: event.description,
+        location: event.location,
+        organization: event.organization,
+        type: event.type
+      }
+    }));
+
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: calendarEvents,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      },
+      buttonText: {
+        today: 'Today',
+        month: 'Month',
+        week: 'Week',
+        day: 'Day',
+        list: 'List'
+      },
+      navLinks: true,
+      selectable: true,
+      selectMirror: true,
+      eventClick: function(info) {
+        // Show a modal or alert with event details for better UX
+        const e = info.event;
+        const details = `
+          <div style='font-size:1.1rem;'>
+            <strong>${e.title}</strong><br>
+            <b>Date:</b> ${e.startStr.split('T')[0]}<br>
+            <b>Location:</b> ${e.extendedProps.location}<br>
+            <b>Description:</b> ${e.extendedProps.description}<br>
+            <b>Organization:</b> ${e.extendedProps.organization}<br>
+            <b>Type:</b> ${e.extendedProps.type}
+          </div>
+        `;
+        tippy(document.body, {
+          content: details,
+          allowHTML: true,
+          trigger: 'manual',
+          placement: 'auto',
+          theme: 'light-border',
+          onHidden(instance) { instance.destroy(); },
+        }).show();
+        setTimeout(() => {
+          document.querySelectorAll('.tippy-box').forEach(box => box.parentNode._tippy.hide());
+        }, 3500);
+      },
+      dayMaxEvents: 3,
+      moreLinkClick: 'popover',
+      dayCellDidMount: function(info) {
+        const d = info.date;
+        const dateKey = d.getFullYear() + '-' +
+                        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(d.getDate()).padStart(2, '0');
+        const events = eventsByDate[dateKey];
+        if (events && events.length > 0) {
+          const content = events.map(e => 
+            `<strong>${e.name}</strong><br>` +
+            `📅 ${e.date}<br>` +
+            `📍 ${e.location}<br>` +
+            `📝 ${e.description}<br>` +
+            `🏢 ${e.organization}<br>` +
+            `👤 ${e.type}`
+          ).join('<hr>');
+          tippy(info.el, {
+            content: content,
+            allowHTML: true,
+            placement: 'bottom',
+            theme: 'dark-border'
+          });
+        }
+      },
+      datesSet: function(info) {
+        // Default FullCalendar title UX
+      }
+    });
+
+    calendar.render();
+    updateEventCount(eventsData.length);
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const allEvents = calendar.getEvents();
+      let matchingEvents = [];
+      allEvents.forEach(event => {
+        const eventTitle = event.title.toLowerCase();
+        const eventDescription = event.extendedProps.description.toLowerCase();
+        const eventLocation = event.extendedProps.location.toLowerCase();
+        const eventOrganization = event.extendedProps.organization.toLowerCase();
+        if (eventTitle.includes(searchTerm) || 
+            eventDescription.includes(searchTerm) || 
+            eventLocation.includes(searchTerm) || 
+            eventOrganization.includes(searchTerm)) {
+          event.setProp('display', 'auto');
+          matchingEvents.push(event);
+          // Highlight the day cell
+          const dateStr = event.startStr.split('T')[0];
+          const dayEl = document.querySelector(`.fc-day[data-date="${dateStr}"]`);
+          if (dayEl) {
+            dayEl.style.backgroundColor = 'rgba(255, 255, 0, 0.2)';
+          }
+        } else {
+          event.setProp('display', 'none');
+        }
+      });
+      updateEventCount(matchingEvents.length);
+      // If we found matches and have search term, navigate to most recent match
+      if (matchingEvents.length > 0 && searchTerm.length > 0) {
+        // Sort matching events by date (newest first)
+        matchingEvents.sort((a, b) => b.start - a.start);
+        // Get the most recent event
+        const mostRecentEvent = matchingEvents[0];
+        // Navigate to that date
+        calendar.gotoDate(mostRecentEvent.start);
+      }
+    });
+
+    // Clear highlighting when search is cleared
+    searchInput.addEventListener('keyup', function() {
+      if (this.value === '') {
+        const highlightedDays = document.querySelectorAll('.fc-day[style*="background-color"]');
+        highlightedDays.forEach(day => {
+          day.style.backgroundColor = '';
+        });
+        // Reset view to current date when search is cleared
+        calendar.today();
+        updateEventCount(calendar.getEvents().length);
+      }
+    });
+
+    // Today button functionality
+    todayButton.addEventListener('click', function() {
+      calendar.today();
+      searchInput.value = '';
+      // Clear any highlighting
+      const highlightedDays = document.querySelectorAll('.fc-day[style*="background-color"]');
+      highlightedDays.forEach(day => {
+        day.style.backgroundColor = '';
+      });
+      // Reset all events to visible
+      calendar.getEvents().forEach(event => {
+        event.setProp('display', 'auto');
+      });
+      updateEventCount(calendar.getEvents().length);
+    });
+
+    // Filter functionality
+    function applyFilters() {
+      const filtered = getFilteredEvents();
+      renderCalendarEvents(filtered);
+      // Remove search highlight and clear search
+      searchInput.value = '';
+      const highlightedDays = document.querySelectorAll('.fc-day[style*="background-color"]');
+      highlightedDays.forEach(day => {
+        day.style.backgroundColor = '';
+      });
+    }
+    [typeFilter, orgFilter, startDateFilter, endDateFilter].forEach(f => f.addEventListener('change', applyFilters));
+    clearFilters.addEventListener('click', function() {
+      typeFilter.value = '';
+      orgFilter.value = '';
+      startDateFilter.value = '';
+      endDateFilter.value = '';
+      applyFilters();
+    });
+  });
+</script>
+
+{% endblock %}
