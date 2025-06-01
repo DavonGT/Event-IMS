@@ -1,0 +1,203 @@
+{# templates/core/dashboard.html #}
+{% extends 'core/base.html' %}
+
+{% block title %}Events Dashboard{% endblock %}
+
+{% block extra_css %}
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet"/>
+  <style>
+    /* --- Your custom styles (as you already posted) --- */
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .card, .chart, .orgs, .upcoming, .event-detail {
+      background: #fff;
+      border: 2px solid #a500a5;
+      border-radius: 10px;
+      padding: 15px;
+    }
+    .card {
+      text-align: center;
+      background-color: #f5e1ff;
+      cursor: pointer;
+    }
+    .card.active {
+      border: 3px solid #760467;
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      grid-column: span 4;
+    }
+    .chart canvas {
+      width: 100% !important;
+      height: 300px !important;
+    }
+    .upcoming {
+      grid-column: span 3;
+    }
+    .search-bar {
+      margin: 10px 0;
+      text-align: right;
+    }
+    .search-bar input {
+      padding: 5px 10px;
+      border: 2px solid #760467;
+      border-radius: 20px;
+      outline: none;
+    }
+    .event-item {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .event-date {
+      background: #c274d8;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      margin-right: 10px;
+    }
+    .event-info {
+      flex-grow: 1;
+    }
+    .event-info h4 {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .event-info small {
+      font-size: 12px;
+      color: #760467;
+    }
+    .event-detail {
+      position: relative;
+      grid-column: span 3;
+      margin-top: 10px;
+      background: #ffe8fc;
+    }
+    .event-detail h3 {
+      margin-bottom: 10px;
+    }
+    .event-detail .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #760467;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    .orgs {
+      grid-column: span 1;
+      background: #e6d6f3;
+    }
+    .orgs h4 {
+      margin-bottom: 10px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <h1>Events Dashboard</h1>
+  <div class="dashboard">
+    <div class="card active">Upcoming Events</div>
+    <div class="card">Total Events</div>
+    <div class="card">Total Organizations</div>
+    <div class="card">ALL ▼</div>
+
+    <div class="charts">
+      <div class="chart">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart">
+        <canvas id="pieChart"></canvas>
+      </div>
+    </div>
+
+    <div class="upcoming">
+      <div class="search-bar">
+        <input type="text" placeholder="Search...">
+      </div>
+      <h3>Upcoming Events:</h3>
+      <div class="event-item">
+        <div class="event-date">
+          <strong>01</strong><br>July
+        </div>
+        <div class="event-info">
+          <h4>NEW IT LABORATORY BUILDING</h4>
+          <small>JUL 01, 2025 • 08:00 AM • ALL CCS STUDENTS</small>
+        </div>
+        <button style="background:#760467; color:#fff; border:none; border-radius:5px; padding:5px 10px;">View Details</button>
+      </div>
+    </div>
+
+    <div class="event-detail">
+      <button class="close-btn">×</button>
+      <h3>CCS FEAST</h3>
+      <p>Join us as we enjoy the most awaited COLLEGE FEAST. Watch out for games, booths, music, food and more!</p>
+      <ul>
+        <li>📍 CCS BUILDING</li>
+        <li>📅 JULY 1, 2025</li>
+        <li>⏰ 8:00 AM</li>
+        <li>🎓 All CCS Students</li>
+        <li>🏢 Organized by: Any CCS-based Organization</li>
+      </ul>
+    </div>
+
+    <div class="orgs">
+      <h4>Top Organizations</h4>
+      <p>01 - GROUP 8</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
+        datasets: [{
+          label: 'Last Week',
+          data: [10, 15, 20, 30],
+          backgroundColor: ['#d9a8ff', '#b368ff', '#a83fff', '#760467']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Item 1', 'Item 2', 'Item 3'],
+        datasets: [{
+          label: 'Last Week',
+          data: [62.5, 25, 12.5],
+          backgroundColor: ['#760467', '#c274d8', '#e6d6f3']
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
+{% endblock %}

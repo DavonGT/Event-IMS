@@ -9,21 +9,7 @@
   <h1 class="page-title">College of Computer Studies Extension Activities and Events:</h1>
 </div>
 
-<div class="table_container">
-  <p id="error-message" style="color: red;">{{ error }}</p>
-  <div class="top-container">
-    <!-- Tabs Container -->
-    <div class="tabs-container">
-      <div class="tabs"> 
-         <a href="{% url 'events_list' %}" class="tab {% if selected_organization is None %}active{% endif %}">ALL</a>
-        {% for organization in organizations %}
-          <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Filter/Search/Add Container -->
-    <div class="filter-container enhanced-filters">
+<div class="filter-container enhanced-filters">
       <div class="filter-row">
         <input type="text" placeholder="🔍 Search events..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
         <select id="typeFilter" class="filter-select" onchange="filterEvents()">
@@ -43,6 +29,22 @@
         <input type="date" id="endDateFilter" class="filter-date" onchange="filterEvents()" />
         <button class="clear-filters-btn" onclick="clearFilters()">Clear</button>
       </div>
+
+<div class="table_container">
+  <p id="error-message" style="color: red;">{{ error }}</p>
+  <div class="top-container">
+    <!-- Tabs Container -->
+    <div class="tabs-container">
+      <div class="tabs"> 
+         <a href="{% url 'events_list' %}" class="tab {% if selected_organization is None %}active{% endif %}">ALL</a>
+        {% for organization in organizations %}
+          <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Filter/Search/Add Container -->
+    
       <div class="quick-actions">
         {% if user_role == "Admin" or user_org == selected_organization %}
           <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>

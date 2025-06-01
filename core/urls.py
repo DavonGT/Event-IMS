@@ -4,7 +4,9 @@ from django.shortcuts import redirect
 
 
 urlpatterns = [
-    path('', views.calendar, name='calendar'),
+    path('calendar/', views.calendar, name='calendar'),
+    path('', views.events_dashboard, name='events_dashboard'),
+
     path('get-events-by-month', views.get_events_by_month, name='get_events_by_month'),
 
     # path('dashboard/', views.dashboard, name='dashboard'),

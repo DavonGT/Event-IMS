@@ -15,6 +15,15 @@ from accounts.models import User
 from django.urls import reverse
 from django.db.models import F
 
+
+def events_dashboard(request):
+    return render(request, 'core/dashboard.html')
+
+
+
+
+
+
 @login_required
 def calendar(request):
     events = Event.objects.all()

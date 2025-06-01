@@ -144,6 +144,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #f5eeff;
+    padding: 0px;
 }
 
 /* Top Section (Tabs + Buttons) */
@@ -249,7 +250,7 @@ body {
 .events-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 190;
+    margin: 20px 0;
      box-shadow: 
         0 0 5px rgba(0, 0, 0, 0.15), 
         0 0 10px rgba(139, 0, 139, 0.5), 
@@ -264,6 +265,7 @@ body {
     text-align: center;
     border-bottom: 1px solid #ddd;
     color: #4a004a;
+    max-width: 200px !important;
    
 }
 
@@ -271,9 +273,10 @@ body {
     background-color: #4a004a;
     font-weight: bold;
     color: #fdf2fd;
+    
 }
 .events-table th:nth-child(4), .events-table td:nth-child(1) {
-    width: 120px;
+    width: 1px;
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -320,15 +323,14 @@ td:nth-child(5) {
 }
 
 .action-link:hover {
-    color: #007bff;
     text-decoration: none;
 }
 
 /* Set fixed widths for table columns */
 .events-table th:nth-child(1), /* Event Name */
 .events-table td:nth-child(1) {
-    width: 220px;
-    max-width: 220px;
+    width: 150px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -359,7 +361,7 @@ td:nth-child(5) {
 
 .events-table th:nth-child(6), /* Action */
 .events-table td:nth-child(6) {
-    width: 120px;
+    width: 180px;
 }
 
 
