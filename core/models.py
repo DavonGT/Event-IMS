@@ -38,7 +38,7 @@ class Event(models.Model):
     )
 
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)  # temporarily nullable
     name = models.CharField(max_length=100)
     description = models.TextField(default='No description provided')
     location = models.CharField(max_length=255)
@@ -60,7 +60,7 @@ class Event(models.Model):
 
 class ExtensionActivity(models.Model):
     name = models.CharField(max_length=100)
-    host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)  # temporarily nullable
     college = models.ForeignKey(College, on_delete=models.CASCADE, related_name='extension_activities')
     description = models.TextField(default='No description provided')
     location = models.CharField(max_length=255)
