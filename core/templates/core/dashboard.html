@@ -5,172 +5,239 @@
 {% block extra_css %}
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet"/>
   <style>
+    /* Calendar container */
+#calendar {
+  max-width: 1370px;
+  max-height: 610px;
+  min-width: 400px;
+  min-height: 200px;
+  margin-bottom: 0;
+  background: #faf7fe;
+  border-radius: 10px;
+  padding: 30px;
+  border: none;
+  box-shadow: 
+    0 0 5px rgba(0, 0, 0, 0.15), 
+    0 0 10px rgba(139, 0, 139, 0.5), 
+    0 0 20px rgba(139, 0, 139, 0.4);
+  overflow-x: auto; /* Allow horizontal scroll if needed */
+}
 
-    .upcoming-events-calendar {
+/* Global text color inside calendar */
+#calendar,
+#calendar .fc,
+#calendar .fc-daygrid-day-number,
+#calendar .fc-toolbar,
+#calendar .fc-button,
+#calendar .fc-event-title,
+#calendar .fc-col-header-cell-cushion,
+#calendar .fc-daygrid-day {
+  color: #5d045d !important;
+}
+
+/* Fix scrollgrid overflow */
+#calendar .fc-scrollgrid,
+#calendar .fc-view-harness,
+#calendar .fc-daygrid,
+#calendar .fc-daygrid-body {
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+/* Uniform day cells */
+#calendar .fc-daygrid-day {
+  flex: 1 1 0;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100px; /* Adjust for desired height */
+  box-sizing: border-box;
+}
+
+/* Consistent day number placement */
+#calendar .fc-daygrid-day-top {
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 24px;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 4px 6px 0 0;
+  height: 24px;
+  overflow: hidden;
 }
 
-/* Upcoming Events Section */
-.upcoming {
-  flex: 1;
-  padding: 16px;
-  background-color: #f9e6ff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(118, 4, 103, 0.1);
+/* Uniform day number styling */
+#calendar .fc-daygrid-day-number {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  display: inline-block;
+  min-width: 18px;
+  text-align: right;
+  white-space: nowrap;
+  color: #000;
 }
 
-/* Calendar Section */
-.calendar-container {
-  flex: 1;
-  padding: 16px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow-x: auto;
+/* Equal header columns */
+#calendar .fc-col-header-cell {
+  background-color: #4a024b !important;
+  color: white !important;
+  border: 1px solid #3b003b !important;
+  width: 14.2857% !important; /* 100% ÷ 7 */
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* Custom header (replaces FullCalendar header) */
+/* Header cushion styling */
+#calendar .fc-col-header-cell-cushion {
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Force day content to fill */
+#calendar .fc-daygrid-body .fc-daygrid-day-frame {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header toolbar */
+.fc-header-toolbar {
+  background-color: #faf7fe !important;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+}
+
+/* Custom Title */
+.fc-customTitle-button {
+  background: none !important;
+  border: none !important;
+  pointer-events: none;
+  cursor: default;
+  font-size: 70px;
+  display: flex;
+  align-items: baseline;
+  font-family: "Cal Sans", sans-serif;
+  color: #822780;
+  font-weight: bold;
+}
+
+/* Month and Year styling */
+.calendar-month {
+  font-family: "Cal Sans", sans-serif;
+  font-size: 48px;
+  margin-right: 0;
+  color: #822780;
+}
+
+.calendar-year {
+  font-family: "Cal Sans", sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  color: #6b296e;
+}
+
+/* Buttons */
+.fc .fc-button-group > .fc-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #822780;
+}
+
+/* Grid borders for calendar */
+#calendar .fc-daygrid-day,
+#calendar .fc-scrollgrid,
+#calendar .fc-daygrid-day-frame,
+#calendar .fc-daygrid-body,
+#calendar td,
+#calendar th {
+  border: 1px solid #3b003b !important;
+}
+
+/* Collapsing border for scrollgrid */
+#calendar .fc-scrollgrid {
+  border-collapse: collapse;
+  table-layout: fixed !important; /* Fix layout to avoid stretching */
+  width: 100% !important;
+}
+
+/* Events */
+.fc .fc-event {
+  background-color: transparent !important;
+  color: #5d045d !important;
+  border: none !important;
+  font-family: "Cal Sans", sans-serif;
+  padding: 2px 20px;
+}
+
+.fc-h-event .fc-event-title-container {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  font-family: "Cal Sans", sans-serif;
+  font-size: 14px;
+  color: white;
+}
+
+/* Calendar header layout */
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-left: 60px;
 }
 
-.calendar-header button {
-  background-color: #760467;
-  color: #ffffff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.calendar-header h1 {
+  font-size: 48px;
+  color: #822780;
+  font-family: 'Brush Script MT', cursive;
+  margin: 0;
 }
 
-.calendar-header button:hover {
-  background-color: #a500a5;
-}
-
-/* Upcoming Events Styling */
-.event-item {
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 8px;
-  align-items: center;
-}
-
-.event-date {
-  background: #760467;
-  color: white;
-  min-width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.event-details {
+.calendar-header .search-bar {
   flex: 1;
-}
-
-.event-details strong {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: #760467;
-}
-
-.event-details p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.event-details small {
-  display: block;
-  margin-top: 0.25rem;
-  color: #888;
-  font-size: 0.8rem;
-}
-
-.view-button {
-  background: #760467;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.view-button:hover {
-  background: #a500a5;
-}
-
-.no-events {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-}
-
-/* Optional: If you still use a manual calendar grid elsewhere */
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-  text-align: center;
-}
-
-.calendar-grid div {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: #f9e6ff;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-left: 60px;
 }
 
-.calendar-grid .day-name {
-  font-weight: 700;
-  background-color: #e6d6f3;
-  color: #760467;
+.calendar-header input {
+  width: 200px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #5d045d;
 }
 
-.calendar-grid .day:hover {
-  background-color: #bc52ba;
-  color: white;
+/* Force all day columns to have equal width */
+#calendar td.fc-daygrid-day,
+#calendar th.fc-col-header-cell {
+  width: 14.2857% !important; /* 100% / 7 days */
+  max-width: 14.2857% !important;
+  min-width: 14.2857% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.selected-day {
-  background-color: #a500a5;
-  color: white;
+/* Prevent day number from stretching */
+#calendar .fc-daygrid-day-number {
+  display: inline-block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
-.selected-day:hover {
-  background-color: #8b008b;
-}
-
-.selected-date {
-  margin-top: 16px;
-  font-size: 18px;
-  color: #5d045d;
-  font-weight: bold;
-}
 
   </style>
+
 {% endblock %}
 
 {% block content %}
@@ -250,10 +317,7 @@
     <div class="calendar-upcoming-container" style="display: flex; gap: 2rem; margin-top: 1rem;">
       <div style="flex: 2; min-width: 0;">
         <!-- Custom Header -->
-        <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-          <button id="prevBtn">&#8592;</button>
-          <span id="monthYear" style="font-size: 1.2rem; font-weight: bold;"></span>
-          <button id="nextBtn">&#8594;</button>
+        <div class="calendar-header">
         </div>
         <!-- FullCalendar Target -->
         <div id="calendar"></div>

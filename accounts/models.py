@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from core.models import Organization
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -39,7 +38,7 @@ class User(AbstractUser):
     middle_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=False)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default-avatar.png')
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
+    organization = models.ForeignKey('core.Organization', on_delete=models.SET_NULL, null=True, blank=True)
 
     objects = UserManager()  # Use the custom manager
 

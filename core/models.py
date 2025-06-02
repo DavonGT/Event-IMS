@@ -1,6 +1,13 @@
 from django.db import models
 from django.conf import settings  # Import settings for custom user model
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+import os
+
+def validate_pdf(value):
+    ext = os.path.splitext(value.name)[1]
+    if ext.lower() != '.pdf':
+        raise ValidationError('File must be a PDF document.')
 
 class Organization(models.Model):
     name = models.CharField(max_length=100)
@@ -38,6 +45,13 @@ class Event(models.Model):
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField() 
     event_type = models.CharField(max_length=20, choices=TYPE_OF_EVENT, default='College-Wide')
+    soft_copy = models.FileField(
+        upload_to='event_documents/',
+        validators=[validate_pdf],
+        help_text='Upload PDF document only',
+        null=False,
+        blank=False
+    )
 
     objects = EventManager()
     def __str__(self):
@@ -51,7 +65,14 @@ class ExtensionActivity(models.Model):
     description = models.TextField(default='No description provided')
     location = models.CharField(max_length=255)
     start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField() 
+    end_datetime = models.DateTimeField()
+    soft_copy = models.FileField(
+        upload_to='extension_documents/',
+        validators=[validate_pdf],
+        help_text='Upload PDF document only',
+        null=False,
+        blank=False
+    )
 
     def __str__(self):
         return self.name

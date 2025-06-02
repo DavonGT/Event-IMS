@@ -161,6 +161,7 @@ def events_dashboard(request):
     ]
 
     context = {
+        "user_role": str(request.user.role).title(),
         'organizations': organizations,
         'upcoming_events': upcoming_events,
         'upcoming_events_count': Event.objects.filter(end_datetime__gte=now, start_datetime__lte=end_date).count(),

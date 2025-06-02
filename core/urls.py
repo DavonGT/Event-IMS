@@ -28,9 +28,9 @@ urlpatterns = [
     path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
     path('organizations/add/', views.add_organization, name='add_organization'),
 
-    path('activity/<int:event_id>/delete/', views.delete_activity, name='delete_activity'),
-    path('activity/<int:event_id>/view/', views.view_activity, name='view_activity'),
-    path('activity/<int:event_id>/edit/', views.edit_activity, name='edit_activity'),
+    path('activity/<int:activity_id>/delete/', views.delete_activity, name='delete_activity'),
+    path('activity/<int:activity_id>/view/', views.view_activity, name='view_activity'),
+    path('activity/<int:activity_id>/edit/', views.edit_activity, name='edit_activity'),
     path('college/add/', views.add_college, name='add_college'),
 
     path('profile/', views.profile, name='profile'),

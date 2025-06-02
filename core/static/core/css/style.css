@@ -230,7 +230,7 @@ body {
 }
 
 .add-new-button {
-    background: linear-gradient(135deg, #5d045d, #bc52ba);
+    background: #5d045d;
     color: white;
     padding: 8px 14px;
     text-decoration: none;
@@ -1957,45 +1957,71 @@ td:nth-child(5) {
 
 
 
+/* === Layout Section === */
+.upcoming-events-calendar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
 
+.upcoming {
+  flex: 1;
+  padding: 16px;
+  background-color: #f9e6ff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(118, 4, 103, 0.1);
+}
 
-/* Calendar Component */
 .calendar-container {
   flex: 2;
-  min-width: 280px;
-  max-width: 500px;
+  min-width: 6010px;        
+  max-width: 800px;        
   font-family: 'Segoe UI', sans-serif;
-  background: #fff;
+  background-color: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #d0b6f8;
+  padding: 16px;
+  overflow-x: auto;
 }
 
-/* Calendar Header */
-/* .calendar-header {
+
+
+
+/* === Calendar Header === */
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #5d045d, #bc52ba);
-  color: white;
-  padding: 1rem;
-} */
+  margin-bottom: 16px;
+}
 
 .calendar-header button {
-  background: transparent;
-  border: none;
+  background-color: #760467;
   color: white;
-  font-size: 1.2rem;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+}
+
+.calendar-header button:hover {
+  background-color: #a500a5;
 }
 
 #month-year {
   font-weight: bold;
   font-size: 1.1rem;
+  color: #5d045d;
 }
 
-/* Calendar Days Grid */
+/* === Calendar Weekday Labels === */
 .calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -2007,21 +2033,27 @@ td:nth-child(5) {
   font-size: 0.85rem;
 }
 
-/* Calendar Dates Grid */
+/* === Calendar Dates === */
 .calendar-dates {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   padding: 0.5rem;
+  gap: 4px;
 }
 
 .calendar-dates div {
   width: 40px;
   height: 40px;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #5d045d;
+  background-color: white;
+  transition: background-color 0.2s ease;
 }
 
 .calendar-dates div:hover {
@@ -2033,4 +2065,51 @@ td:nth-child(5) {
   color: white;
   font-weight: bold;
   border-radius: 8px;
+}
+
+/* === Optional Manual Grid Calendar === */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+
+.calendar-grid div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9e6ff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-grid .day-name {
+  font-weight: 700;
+  background-color: #e6d6f3;
+  color: #760467;
+}
+
+.calendar-grid .day:hover {
+  background-color: #bc52ba;
+  color: white;
+}
+
+.selected-day {
+  background-color: #a500a5;
+  color: white;
+}
+
+.selected-day:hover {
+  background-color: #8b008b;
+}
+
+.selected-date {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #5d045d;
+  font-weight: bold;
 }
