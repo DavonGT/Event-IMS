@@ -8,7 +8,12 @@
   {% if user.username %}
   <div class="modern-profile-card">
     <div class="profile-header">
-      <div class="avatar"></div>
+      <div class="avatar" style="
+        background-image: url('{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}');
+        background-size: cover;
+        background-position: center;
+        ">
+      </div>
     </div>
     <div class="profile-body">
       <h2>{{ user.get_full_name|default:"Unnamed User" }}</h2>
@@ -22,10 +27,6 @@
   <p>No user data available</p>
   {% endif %}
 </div>
-
-
-
-
 
 <!-- Profile View/Edit Modal -->
 <div id="profileModal" class="custom-modal" style="display: none;">
@@ -42,15 +43,15 @@
 </div>
 
 <script>
-    function openModal(url) {
+  function openModal(url) {
     const modal = document.getElementById('profileModal');
     const modalBody = document.getElementById('modal-body');
     const modalTitle = document.getElementById('modal-title');
-  
+
     modal.style.display = 'flex';
     modalBody.innerHTML = 'Loading...';
     modalTitle.textContent = '';
-  
+
     fetch(url, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
@@ -72,32 +73,31 @@
       }
     });
   }
-  
 
   function closeModal() {
     document.getElementById('profileModal').style.display = 'none';
   }
+
   function filterprofiles() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toLowerCase();
     const table = document.querySelector('.profiles-table tbody');
     const rows = table.getElementsByTagName('tr');
-  
+
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].getElementsByTagName('td');
       let rowMatches = false;
-  
-      for (let j = 0; j < cells.length - 1; j++) {  // exclude action column
+
+      for (let j = 0; j < cells.length - 1; j++) {
         const cellText = cells[j].textContent || cells[j].innerText;
         if (cellText.toLowerCase().includes(filter)) {
           rowMatches = true;
           break;
         }
       }
-  
+
       rows[i].style.display = rowMatches ? '' : 'none';
     }
   }
 </script>
-
 {% endblock %}

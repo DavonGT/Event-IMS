@@ -388,6 +388,7 @@ td:nth-child(5) {
 
 
 /* Modal Styling */
+/* Modal Styling */
 .custom-modal {
     position: fixed;
     top: 0;
@@ -423,18 +424,17 @@ td:nth-child(5) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #822780; 
+    background: linear-gradient(135deg, #5d045d, #bc52ba);
     color: white;
     padding: 10px 15px;
     border-radius: 15px 15px 0 0;
     font-size: 18px;
     font-weight: bold;
-    position: sticky; 
+    position: sticky;
     top: 0;
     z-index: 10;
 }
 
-/* Align title to the left */
 .event-title {
     font-family: "Cal Sans", sans-serif;
     font-size: 20px;
@@ -446,7 +446,6 @@ td:nth-child(5) {
     flex-grow: 1;
 }
 
-/* Close button styling */
 .modal-close {
     background: none;
     border: none;
@@ -455,7 +454,6 @@ td:nth-child(5) {
     cursor: pointer;
 }
 
-/* Modal Body Styling */
 .custom-modal-body {
     padding: 15px;
     overflow-y: auto;
@@ -476,7 +474,7 @@ td:nth-child(5) {
     align-items: center;
     gap: 8px;
     margin-top: 10px;
-    color: #822780;
+    color: #5d045d;
 }
 
 .event-icon-row svg {
@@ -495,7 +493,7 @@ td:nth-child(5) {
 .custom-modal-body textarea {
     width: 100%;
     padding: 8px 10px;
-    border: 2px solid #822780;
+    border: 2px solid #5d045d;
     border-radius: 20px;
     font-size: 14px;
     color: #4a0052;
@@ -506,7 +504,7 @@ td:nth-child(5) {
 
 /* Save Button */
 .save-button {
-    background-color: #822780; 
+    background: linear-gradient(135deg, #5d045d, #bc52ba);
     color: white; 
     border: none;
     padding: 10px 20px;
@@ -516,51 +514,47 @@ td:nth-child(5) {
     width: 100%;  
     margin-top: 10px;
     cursor: pointer; 
-   transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .save-button:hover {
-    background-color: #6d1f64;
-    transform: scale(1.05); 
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
-/* Focus effect */
 .save-button:focus {
     outline: none; 
-    box-shadow: 0 0 8px rgba(130, 39, 128, 0.7); 
+    box-shadow: 0 0 8px rgba(93, 4, 93, 0.7); 
 }
 
-
-
 .input-icon-row {
-  display: flex;
-  align-items: center;
-  background: #f9eaff;
-  border: 2px dashed #822780;
-  padding: 10px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  transition: border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    background: #f9eaff;
+    border: 2px dashed #5d045d;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
 }
 
 .input-icon-row:hover {
-  border-color: #6d1f64;
+    border-color: #bc52ba;
 }
 
 .input-icon-row i {
-  color: #822780;
-  margin-right: 10px;
-  font-size: 18px;
+    color: #5d045d;
+    margin-right: 10px;
+    font-size: 18px;
 }
 
 .custom-modal-body input[type="file"] {
-  border: none;
-  padding: 0;
-  font-size: 14px;
-  color: #4a0052;
-  background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    color: #4a0052;
+    background: transparent;
 }
-
 
 
 
@@ -1202,7 +1196,7 @@ td:nth-child(5) {
 
 
   /* === Profile container === */
-  .profile-container {
+.profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1222,7 +1216,7 @@ td:nth-child(5) {
 }
 
 .profile-header {
-  background: linear-gradient(135deg, #a24cf3, #ca6df5);
+  background: linear-gradient(135deg, #5d045d, #bc52ba);
   padding: 40px 0 20px;
   position: relative;
 }
@@ -1247,7 +1241,6 @@ td:nth-child(5) {
   border: 4px solid #fff;
   margin-bottom: -40px;
   margin: 0 auto;
-  
 }
 
 .profile-body {
@@ -1262,13 +1255,13 @@ td:nth-child(5) {
 }
 
 .handle {
-  color: #a24cf3;
+  color: #5d045d;
   margin-bottom: 5px;
 }
 
 .calendar-icon {
   margin-right: 5px;
-  color: #a24cf3;
+  color: #5d045d;
 }
 
 .stats {
@@ -1288,7 +1281,7 @@ td:nth-child(5) {
 }
 
 .edit-button {
-  background-color: #a24cf3;
+  background-color: #5d045d;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -1299,7 +1292,7 @@ td:nth-child(5) {
 }
 
 .edit-button:hover {
-  background-color: #932de0;
+  background-color: #4a034a;
 }
 
 
