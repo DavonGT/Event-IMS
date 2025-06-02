@@ -56,6 +56,73 @@
   background-color: #a500a5;
 }
 
+/* Upcoming Events Styling */
+.event-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  align-items: center;
+}
+
+.event-date {
+  background: #760467;
+  color: white;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.event-details {
+  flex: 1;
+}
+
+.event-details strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #760467;
+}
+
+.event-details p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.event-details small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.view-button {
+  background: #760467;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-button:hover {
+  background: #a500a5;
+}
+
+.no-events {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
 /* Optional: If you still use a manual calendar grid elsewhere */
 .calendar-grid {
   display: grid;
@@ -121,29 +188,29 @@
             <div class="quick-stats">
               <div class="card">
                 <div class="card-header">Upcoming Events</div>
-                <div class="card-body">{{ upcoming_events_count }} event{{ upcoming_events_count|pluralize }} this week</div>
-
+                <div class="card-body">{{ upcoming_events_count }} event{{ upcoming_events_count|pluralize }} {% if time_range == 'week' %}this week{% elif time_range == 'month' %}this month{% else %}this year{% endif %}</div>
               </div>
               <div class="card">
                 <div class="card-header">Total Events</div>
-                <div class="card-body">125 events this year</div>
+                <div class="card-body">{{ total_events_this_year }} event{{ total_events_this_year|pluralize }} this year</div>
               </div>
               <div class="card">
                 <div class="card-header">Total Organizations</div>
-                <div class="card-body">12 active organizations</div>
+                <div class="card-body">{{ total_organizations }} active organization{{ total_organizations|pluralize }}</div>
               </div>
             </div>
           </div>
         </div>
         <div class="dropdown-container" style="width: 200px; user-select: none;">
           <div class="dropdown-header" id="dropdownHeader">
-            <span id="selectedOrgName">Select Organization</span>
+            <span id="selectedOrgName">{% if selected_org %}{{ selected_org.name }}{% else %}Select Organization{% endif %}</span>
             <button class="dropdown-btn" onclick="toggleDropdown(event)">&#9660;</button>
           </div>
           <div class="dropdown-content" id="dropdownMenu">
-            <a href="#" onclick="selectOption(event, 'Organization A')">Organization A</a>
-            <a href="#" onclick="selectOption(event, 'Organization B')">Organization B</a>
-            <a href="#" onclick="selectOption(event, 'Organization C')">Organization C</a>
+            <a href="?organization=" onclick="selectOption(event, 'All Organizations')">All Organizations</a>
+            {% for org in organizations %}
+            <a href="?organization={{ org.id }}" onclick="selectOption(event, '{{ org.name }}')">{{ org.name }}</a>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -151,12 +218,31 @@
   </div>
 
   <!-- Charts -->
-  <div class="charts">
-    <div class="chart">
-      <canvas id="barChart"></canvas>
+  <div class="charts-section">
+    <div class="chart-filters" style="margin-bottom: 20px; display: flex; gap: 20px;">
+      <div class="filter-group">
+        <label for="activityType">Show:</label>
+        <select id="activityType" onchange="updateBarChart()" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+          <option value="events">Events</option>
+          <option value="activities">Extension Activities</option>
+          <option value="both">Both</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="timeFrame">Time Frame:</label>
+        <select id="timeFrame" onchange="updateBarChart()" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+          <option value="yearly">Yearly</option>
+          <option value="semester">Per Semester</option>
+        </select>
+      </div>
     </div>
-    <div class="chart">
-      <canvas id="pieChart"></canvas>
+    <div class="charts">
+      <div class="chart">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart">
+        <canvas id="pieChart"></canvas>
+      </div>
     </div>
   </div>
 
@@ -176,23 +262,31 @@
 
   
     <div class="upcoming">
-      <h3>Upcoming Events</h3>
-      <div class="event-item">
-        <div class="event-date">05</div>
-        <div class="event-details">
-          <strong>Event 1</strong>
-          <p>Description for the event goes here.</p>
-        </div>
-        <button class="view-button">View</button>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3>Upcoming Events</h3>
+        <select id="timeRange" onchange="updateUpcomingEvents()" style="padding: 6px; border-radius: 4px; border: 1px solid #ddd; background: white;">
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="year">This Year</option>
+        </select>
       </div>
-      <div class="event-item">
-        <div class="event-date">12</div>
-        <div class="event-details">
-          <strong>Event 2</strong>
-          <p>Short description for the event.</p>
+      {% if upcoming_events %}
+        {% for event in upcoming_events %}
+        <div class="event-item">
+          <div class="event-date">{{ event.start_datetime|date:"d" }}</div>
+          <div class="event-details">
+            <strong>{{ event.name }}</strong>
+            <p>{{ event.description|truncatechars:100 }}</p>
+            <small>📍 {{ event.location }} | 🕒 {{ event.start_datetime|date:"g:i A" }}</small>
+          </div>
+          <button class="view-button" onclick="showEventDetails('{{ event.name }}', '{{ event.start_datetime|date:"Y-m-d g:i A" }}', '{{ event.location }}', '{{ event.description|escapejs }}', '{{ event.organization.name }}')">View</button>
         </div>
-        <button class="view-button">View</button>
-      </div>
+        {% endfor %}
+      {% else %}
+        <div class="no-events">
+          <p>No upcoming events{% if selected_org %} for {{ selected_org.name }}{% endif %}</p>
+        </div>
+      {% endif %}
     </div>
   </div>
 
@@ -207,72 +301,200 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
   <script>
-    function toggleDropdown(event) {
-    event.stopPropagation(); // prevent document click from firing
-    const dropdown = document.getElementById('dropdownMenu');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize dropdown functionality
+      function toggleDropdown(event) {
+        event.stopPropagation();
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      }
 
-  function selectOption(event, name) {
-    event.preventDefault();
-    const selectedOrgName = document.getElementById('selectedOrgName');
-    const dropdown = document.getElementById('dropdownMenu');
-    selectedOrgName.textContent = name;
-    dropdown.style.display = 'none';
-  }
-
-  // Close dropdown if clicking outside
-  document.addEventListener('click', function() {
-    const dropdown = document.getElementById('dropdownMenu');
-    if (dropdown.style.display === 'block') {
-      dropdown.style.display = 'none';
-    }
-  });
-
-    // =================== CHARTS ===================
-    const barCtx = document.getElementById('barChart').getContext('2d');
-    new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-        datasets: [{
-          label: 'Last Week',
-          data: [10, 15, 20, 30],
-          backgroundColor: ['#d9a8ff', '#b368ff', '#a83fff', '#760467']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
+      function selectOption(event, name) {
+        event.preventDefault();
+        const selectedOrgName = document.getElementById('selectedOrgName');
+        const dropdown = document.getElementById('dropdownMenu');
+        selectedOrgName.textContent = name;
+        dropdown.style.display = 'none';
+        
+        const href = event.target.getAttribute('href');
+        if (href) {
+          window.location.href = href;
         }
       }
-    });
 
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
-    new Chart(pieCtx, {
-      type: 'pie',
-      data: {
-        labels: ['Item 1', 'Item 2', 'Item 3'],
-        datasets: [{
-          label: 'Last Week',
-          data: [62.5, 25, 12.5],
-          backgroundColor: ['#760467', '#c274d8', '#e6d6f3']
-        }]
-      },
-      options: {
-        responsive: true
+      // Assign dropdown functions to window for HTML onclick access
+      window.toggleDropdown = toggleDropdown;
+      window.selectOption = selectOption;
+
+      // Close dropdown if clicking outside
+      document.addEventListener('click', function() {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown.style.display === 'block') {
+          dropdown.style.display = 'none';
+        }
+      });
+
+      // Chart data and variables
+      let barChart;
+      const chartData = {
+        eventsByYear: {{ events_by_year|safe }},
+        activitiesByYear: {{ activities_by_year|safe }},
+        semestersData: {{ semesters_data|safe }},
+        orgEventsData: {{ org_events_data|safe }}
+      };
+
+      // Function for updating bar chart
+      function updateBarChart() {
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const activityType = document.getElementById('activityType').value;
+        const timeFrame = document.getElementById('timeFrame').value;
+        
+        let labels, datasets;
+
+        if (timeFrame === 'yearly') {
+          const years = Object.keys(chartData.eventsByYear).sort();
+          labels = years;
+          
+          datasets = [];
+          if (activityType === 'events' || activityType === 'both') {
+            datasets.push({
+              label: 'Events',
+              data: years.map(year => chartData.eventsByYear[year]),
+              backgroundColor: '#760467',
+              borderRadius: 6
+            });
+          }
+          if (activityType === 'activities' || activityType === 'both') {
+            datasets.push({
+              label: 'Extension Activities',
+              data: years.map(year => chartData.activitiesByYear[year]),
+              backgroundColor: '#c274d8',
+              borderRadius: 6
+            });
+          }
+        } else {
+          labels = ['1st Semester', '2nd Semester'];
+          datasets = [];
+          if (activityType === 'events' || activityType === 'both') {
+            datasets.push({
+              label: 'Events',
+              data: labels.map(sem => chartData.semestersData[sem].events),
+              backgroundColor: '#760467',
+              borderRadius: 6
+            });
+          }
+          if (activityType === 'activities' || activityType === 'both') {
+            datasets.push({
+              label: 'Extension Activities',
+              data: labels.map(sem => chartData.semestersData[sem].activities),
+              backgroundColor: '#c274d8',
+              borderRadius: 6
+            });
+          }
+        }
+
+        if (barChart) {
+          barChart.destroy();
+        }
+
+        barChart = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top'
+              },
+              title: {
+                display: true,
+                text: timeFrame === 'yearly' ? 'Activities by Year' : 'Activities by Semester',
+                font: {
+                  size: 16
+                },
+                padding: {
+                  top: 10,
+                  bottom: 30
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1
+                }
+              }
+            }
+          }
+        });
       }
-    });
 
-    // =================== CALENDAR ===================
-    document.addEventListener('DOMContentLoaded', function () {
+      // Function to initialize pie chart
+      function initializePieChart() {
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        // Using chartData.orgEventsData from above
+        new Chart(pieCtx, {
+          type: 'pie',
+          data: {
+            labels: chartData.orgEventsData.map(item => item.acronym),
+            datasets: [{
+              label: 'Events per Organization',
+              data: chartData.orgEventsData.map(item => item.count),
+              backgroundColor: [
+                '#760467',  // Primary purple
+                '#c274d8',  // Secondary purple
+                '#e6d6f3',  // Light purple
+                '#a500a5',  // Bright purple
+                '#d9a8ff',  // Soft purple
+                '#b368ff',  // Medium purple
+                '#a83fff',  // Vivid purple
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20
+                }
+              },
+              title: {
+                display: true,
+                text: 'Events by Organization',
+                font: {
+                  size: 16
+                },
+                padding: {
+                  top: 10,
+                  bottom: 30
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Make updateBarChart accessible to HTML events
+      window.updateBarChart = updateBarChart;
+
+      // Initialize the charts
+      updateBarChart();
+      initializePieChart();
+
+      // Initialize calendar
       const calendarEl = document.getElementById('calendar');
       const monthYearEl = document.getElementById('monthYear');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
 
-      // If you're passing events from Django, use this line:
+      // Calendar events data
       const eventsData = JSON.parse('{{ events_json|safe }}');
 
       // FullCalendar instance
@@ -288,7 +510,7 @@
             type: event.type
           }
         })),
-        headerToolbar: false, // Disable default header
+        headerToolbar: false,
         navLinks: true,
         dayMaxEvents: 3,
         eventClick: function(info) {
@@ -302,7 +524,7 @@
 
       calendar.render();
 
-      // Update title
+      // Update calendar title
       function updateMonthYearTitle(info) {
         const date = new Date(info.view.currentStart);
         const month = date.toLocaleString('default', { month: 'long' });
@@ -310,14 +532,94 @@
         monthYearEl.textContent = `${month} ${year}`;
       }
 
-      // Navigation buttons
-      prevBtn.addEventListener('click', function () {
-        calendar.prev();
-      });
+      // Calendar navigation buttons
+      prevBtn.addEventListener('click', () => calendar.prev());
+      nextBtn.addEventListener('click', () => calendar.next());
 
-      nextBtn.addEventListener('click', function () {
-        calendar.next();
-      });
+      // Function to update upcoming events section
+      window.updateUpcomingEvents = function() {
+        const timeRange = document.getElementById('timeRange').value;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('time_range', timeRange);
+        
+        // Preserve organization filter if it exists
+        const orgParam = currentUrl.searchParams.get('organization');
+        if (orgParam) {
+          currentUrl.searchParams.set('organization', orgParam);
+        }
+        
+        window.location.href = currentUrl.toString();
+      };
+
+      // Set the correct time range on page load
+      const urlParams = new URLSearchParams(window.location.search);
+      const timeRange = urlParams.get('time_range') || 'week';
+      document.getElementById('timeRange').value = timeRange;
+
+      // Function to show event details
+      window.showEventDetails = function(name, datetime, location, description, organization) {
+        const content = `
+          <div style="padding: 20px;">
+            <h3 style="color: #760467; margin-bottom: 15px;">📌 ${name}</h3>
+            <p><strong>📅 Date & Time:</strong> ${datetime}</p>
+            <p><strong>📍 Location:</strong> ${location}</p>
+            <p><strong>🏢 Organization:</strong> ${organization}</p>
+            <p><strong>📝 Description:</strong></p>
+            <p style="white-space: pre-wrap;">${description}</p>
+          </div>
+        `;
+        
+        const modalContainer = document.createElement('div');
+        modalContainer.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+        `;
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          background: white;
+          border-radius: 12px;
+          max-width: 500px;
+          width: 90%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        `;
+
+        const closeButton = document.createElement('button');
+        closeButton.innerHTML = '×';
+        closeButton.style.cssText = `
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          border: none;
+          background: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: #760467;
+          padding: 5px 10px;
+        `;
+        
+        closeButton.onclick = () => modalContainer.remove();
+        
+        modal.innerHTML = content;
+        modal.appendChild(closeButton);
+        modalContainer.appendChild(modal);
+        document.body.appendChild(modalContainer);
+
+        modalContainer.onclick = (e) => {
+          if (e.target === modalContainer) modalContainer.remove();
+        };
+      };
     });
   </script>
 {% endblock %}

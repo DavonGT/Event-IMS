@@ -24,21 +24,159 @@ from django.utils import timezone
 
 @login_required
 def events_dashboard(request):
-    selected_org_id = request.GET.get('organization')  # Get org ID from query param (e.g. ?organization=3)
+    selected_org_id = request.GET.get('organization')  # Get org ID from query param
     organizations = Organization.objects.all()
+    now = timezone.now()
+    
+    # Get time range from request, default to week
+    time_range = request.GET.get('time_range', 'week')
+    
+    # Calculate end date based on time range
+    if time_range == 'week':
+        end_date = now + timedelta(days=7)
+    elif time_range == 'month':
+        # Add one month by getting the first day of next month
+        next_month = now.replace(day=1) + timedelta(days=32)
+        end_date = next_month.replace(day=1)
+    else:  # year
+        end_date = now.replace(year=now.year + 1)
 
-    # Filter upcoming events (events with end_datetime in the future)
-    upcoming_events = Event.objects.filter(end_datetime__gte=timezone.now())
+    # Get upcoming events based on time range
+    upcoming_events = Event.objects.filter(
+        end_datetime__gte=now,
+        start_datetime__lte=end_date
+    ).order_by('start_datetime')[:10]  # Show up to 10 upcoming events
+    
+    # Count all upcoming events for stats (keep this as weekly for the quick stats)
+    week_end = now + timedelta(days=7)
+    upcoming_events_count = Event.objects.filter(
+        end_datetime__gte=now,
+        start_datetime__lte=week_end
+    ).count()
+    
+    # Calculate total events this year
+    year_start = now.replace(month=1, day=1)
+    total_events_this_year = Event.objects.filter(start_datetime__year=now.year).count()
+    
+    # Get total active organizations
+    total_organizations = Organization.objects.count()
 
-    # If an org is selected, filter by that org
+    # Calculate events per organization for pie chart
+    org_events_data = []
+    for org in organizations:
+        event_count = Event.objects.filter(organization=org).count()
+        if event_count > 0:  # Only include organizations with events
+            org_events_data.append({
+                'name': org.name,
+                'acronym': org.acronym,
+                'count': event_count
+            })
+    
+    # Sort by count in descending order
+    org_events_data.sort(key=lambda x: x['count'], reverse=True)
+
+    # If an org is selected, filter events by that org
+    selected_org = None
     if selected_org_id:
-        upcoming_events = upcoming_events.filter(organization_id=selected_org_id)
+        try:
+            selected_org = Organization.objects.get(id=selected_org_id)
+            # Filter upcoming events based on selected organization
+            upcoming_events = upcoming_events.filter(organization=selected_org)
+            # Update total events for stats
+            total_events_this_year = Event.objects.filter(
+                organization=selected_org,
+                start_datetime__year=now.year
+            ).count()
+            # Update upcoming events count (weekly stats)
+            upcoming_events_count = Event.objects.filter(
+                organization=selected_org,
+                end_datetime__gte=now,
+                start_datetime__lte=week_end
+            ).count()
 
-    return render(request, 'core/dashboard.html', {
+            # Add organization filter to calendar events
+            events_json = [e for e in events_json if e['organization'] == selected_org.name]
+        except Organization.DoesNotExist:
+            selected_org_id = None
+        
+    # Get event counts by time period
+    events_by_year = {}
+    activities_by_year = {}
+    current_year = now.year
+
+    # Get data for the last 5 years
+    for year in range(current_year - 4, current_year + 1):
+        events_count = Event.objects.filter(
+            start_datetime__year=year
+        ).count()
+        activities_count = ExtensionActivity.objects.filter(
+            start_datetime__year=year
+        ).count()
+        
+        events_by_year[year] = events_count
+        activities_by_year[year] = activities_count
+
+    # Get semester data for current year
+    semesters_data = {
+        '1st Semester': {
+            'events': Event.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[6, 10]  # June to October
+            ).count(),
+            'activities': ExtensionActivity.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[6, 10]
+            ).count()
+        },
+        '2nd Semester': {
+            'events': Event.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[11, 12]  # November to December
+            ).count() + Event.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[1, 3]  # January to March
+            ).count(),
+            'activities': ExtensionActivity.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[11, 12]
+            ).count() + ExtensionActivity.objects.filter(
+                start_datetime__year=current_year,
+                start_datetime__month__range=[1, 3]
+            ).count()
+        }
+    }
+
+    # Prepare events data for calendar
+    events_json = [
+        {   
+            'name': event.name,
+            'date': event.start_datetime.strftime('%Y-%m-%d'),
+            'time': event.start_datetime.strftime('%H:%M'),
+            'location': event.location,
+            'description': event.description,
+            'type': event.event_type,
+            'organization': event.organization.name,
+        }
+        for event in Event.objects.all()
+    ]
+
+    context = {
         'organizations': organizations,
         'upcoming_events': upcoming_events,
+        'upcoming_events_count': Event.objects.filter(end_datetime__gte=now, start_datetime__lte=end_date).count(),
+        'time_range': time_range,
+        'total_events_this_year': total_events_this_year,
+        'total_organizations': total_organizations,
         'selected_org_id': selected_org_id,
-    })
+        'selected_org': selected_org,
+        'org_events_data': json.dumps(org_events_data),
+        'events_by_year': json.dumps(events_by_year),
+        'activities_by_year': json.dumps(activities_by_year),
+        'semesters_data': json.dumps(semesters_data),
+        'events_json': json.dumps(events_json, cls=DjangoJSONEncoder),
+    }
+    
+    return render(request, 'core/dashboard.html', context)
 
     # user_role = str(request.user.role).title()
     #     return render(request, 'core/dashboard.html', {'user_role': user_role})
