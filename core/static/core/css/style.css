@@ -125,7 +125,7 @@ body {
 .title-full {
     width: auto;
     margin: 20px 0px;
-    background-color: #4a004a;
+    background: linear-gradient(130deg, #5d045d, #983e97);
     padding: 10px 20px;
 }
 
@@ -230,7 +230,7 @@ body {
 }
 
 .add-new-button {
-    background-color: #4a004a;
+    background: linear-gradient(135deg, #5d045d, #bc52ba);
     color: white;
     padding: 8px 14px;
     text-decoration: none;
@@ -556,13 +556,26 @@ td:nth-child(5) {
     background: transparent;
 }
 
+/* Profile picture upload styles */
+.profile-picture-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
 
+.profile-picture-section label {
+  display: block;
+  margin-bottom: 10px;
+  color: #5d045d;
+  font-weight: 500;
+}
 
-
-
-
-
-
+.profile-picture-section input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+}
 
 /* Button row in modal */
 .button-row {
@@ -705,12 +718,16 @@ td:nth-child(5) {
 
 
 .title-logo-user {
+  position: absolute;
+  top: 5px;
+  right: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
+  transform: scale(0.85); /* Make it smaller */
+  z-index: 999;
 }
 
-/* 🔧 Ensures vertical alignment of Hello text */
 .user-text {
   display: flex;
   flex-direction: column;
@@ -719,37 +736,41 @@ td:nth-child(5) {
 }
 
 .dashboard-title {
-  font-size: 30px;
+  font-size: 18px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
 }
 
 .dashboard-subtitle {
-  font-size: 25px;
+  font-size: 14px;
   font-family: "Cal Sans", sans-serif;
   color: #760376;
   margin: 0;
 }
 
-.logo-img {
-  height: 100px;
-  width: 100px;
-  border-radius: 25%;
-  object-fit: cover;
-}
 
-.title-logo {
-  display: flex;
-  align-items: center;
-}
-
-.title-logo img.logo-img {
+.profile-circle {
+  width: 60px;             /* adjust size as needed */
   height: 60px;
-  width: auto;
-  border-radius: 50%;
-  object-fit: cover;
+  border-radius: 50%;      /* makes it a circle */
+  overflow: hidden;        /* ensures image stays inside the circle */
+  border: 2px solid #fff;  /* optional white border */
+  background-color: #f3f0ff; /* fallback color */
 }
+
+.profile-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+
+
+
+
 
 .header-container {
   display: flex;
@@ -1195,6 +1216,8 @@ td:nth-child(5) {
 
 
 
+
+
   /* === Profile container === */
 .profile-container {
   display: flex;
@@ -1377,11 +1400,9 @@ td:nth-child(5) {
   }
   .dashboard-stats-filters {
     background: #f5eeff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(130,39,128,0.04);
+    border: none;
     padding: 1rem 2rem;
     margin-bottom: 1.5rem;
-    border: 1.5px solid #822780;
   }
   .event-count {
     color: #822780;
@@ -1636,11 +1657,257 @@ td:nth-child(5) {
   .custom-modal-body textarea {
       font-size: 13px;
   }
+}
 
-  .save-button,
-  .cancel-button,
-  .delete-button {
-      font-size: 14px;
-      padding: 8px 12px;
-  }
+
+
+
+
+.profile-picture-section input[type="file"].pictureinput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+/* --- General Styles --- */
+
+
+/* --- Dashboard Layout --- */
+
+.dashboard {
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.dashboard-section {
+  background: #f5eeff;
+  border-radius: 10px;
+  padding: 20px;
+
+}
+
+.dashboard-header h2 {
+  font-size: 24px;
+  margin: 15px auto;
+  color: #5d045d;
+}
+
+/* --- Quick Stats Section --- */
+.quick-stats {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card, .chart, .orgs, .upcoming, .event-detail {
+  background: #fff;
+  border: 2px solid #a500a5;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.card {
+  background: #fff;
+  border: 2px solid #a500a5;
+  border-radius: 12px;
+  padding: 0px;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Card Header Styling --- */
+.card-header {
+  background: linear-gradient(135deg, #5d045d, #bc52ba); /* Gradient background */
+  padding: 20px;
+  color: white; /* White text on the gradient background */
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0; /* Optional: rounded top corners */
+  text-align: center; /* Center the text inside the header */
+}
+
+/* --- Card Body Styling --- */
+.card-body {
+  font-size: 14px;
+  color: #333;
+  margin: 10px auto;
+}
+
+/* --- Chart Grid --- */
+.charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  grid-column: span 4;
+}
+
+.chart canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+/* --- Upcoming Events Section --- */
+.upcoming {
+  grid-column: span 3;
+}
+
+.search-bar {
+  margin: 10px 0;
+  text-align: right;
+}
+
+.search-bar input {
+  padding: 5px 10px;
+  border: 2px solid #760467;
+  border-radius: 20px;
+  outline: none;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.event-date {
+  background: #c274d8;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.event-info {
+  flex-grow: 1;
+}
+
+.event-info h4 {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.event-info small {
+  font-size: 12px;
+  color: #760467;
+}
+
+/* --- Event Detail Section --- */
+.event-detail {
+  position: relative;
+  grid-column: span 3;
+  margin-top: 10px;
+  background: #ffe8fc;
+}
+
+.event-detail h3 {
+  margin-bottom: 10px;
+}
+
+.event-detail .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #760467;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+/* --- Top Organizations Section --- */
+.orgs {
+  grid-column: span 1;
+  background: #e6d6f3;
+}
+
+.orgs h4 {
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+/* Row wrapper inside dashboard section */
+.dashboard-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Quick stats main content */
+.dashboard-main {
+  flex: 1;
+}
+
+/* Dropdown menu on the right */
+.dropdown-container {
+  width: 200px;
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  position: relative;
+  z-index: 10;
+  background: #f5eeff;
+}
+
+.dropdown-header {
+  background: linear-gradient(135deg, #5d045d, #bc52ba);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+  margin-top: 12px;
+}
+
+.dropdown-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  margin-top: 10px;
+  background-color: #f5e1ff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: #5d045d;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background: #c274d8;
+  color: white;
 }

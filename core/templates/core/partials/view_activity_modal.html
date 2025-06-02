@@ -1,0 +1,37 @@
+<div class="custom-modal" style="display: flex;">
+  <div class="custom-modal-overlay" onclick="closeModal()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h3 class="modal-title-text event-title">{{ activity.name }}</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="custom-modal-body">
+      <div class="activity-details">
+        <div class="detail-row">
+          <strong>College:</strong>
+          <span>{{ activity.college.name }} ({{ activity.college.acronym }})</span>
+        </div>
+        <div class="detail-row">
+          <strong>Host:</strong>
+          <span>{{ activity.host.get_full_name }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Location:</strong>
+          <span>{{ activity.location }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Date:</strong>
+          <span>{{ activity.start_datetime|date:"F d, Y" }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Time:</strong>
+          <span>{{ activity.start_datetime|time:"h:i A" }} - {{ activity.end_datetime|time:"h:i A" }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Description:</strong>
+          <p>{{ activity.description|linebreaks }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

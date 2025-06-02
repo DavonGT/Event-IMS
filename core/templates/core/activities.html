@@ -1,24 +1,18 @@
 {% extends "core/base.html" %}
 
-{% block title %}All Events{% endblock %}
+{% block title %}All Activities{% endblock %}
 
 {% block content %}
 
 <!-- Page Title -->
 <div class="title-full">
-  <h1 class="page-title">College of Computer Studies Extension Activities and Events:</h1>
+  <h1 class="page-title">Extension Activities and Events</h1>
 </div>
 
 <div class="filter-container enhanced-filters">
       <div class="filter-row">
-        <input type="text" placeholder="🔍 Search events..." class="search-input" id="searchInput" onkeyup="filterEvents()" />
-        <select id="typeFilter" class="filter-select" onchange="filterEvents()">
-          <option value="">All Types</option>
-          {% for event_type in event_types %}
-            <option value="{{ event_type }}">{{ event_type }}</option>
-          {% endfor %}
-        </select>
-        <select id="venueFilter" class="filter-select" onchange="filterEvents()">
+        <input type="text" placeholder="🔍 Search activities..." class="search-input" id="searchInput" onkeyup="filterActivities()" />
+        <select id="venueFilter" class="filter-select" onchange="filterActivities()">
           <option value="">All Venues</option>
           {% for venue in venues %}
             <option value="{{ venue }}">{{ venue }}</option>
@@ -36,9 +30,9 @@
     <!-- Tabs Container -->
     <div class="tabs-container">
       <div class="tabs"> 
-         <a href="{% url 'events_list' %}" class="tab {% if selected_organization is None %}active{% endif %}">ALL</a>
-        {% for organization in organizations %}
-          <a href="{% url 'events_list_filtered' organization.id %}" class="tab {% if organization.id == selected_organization_id %}active{% endif %}">{{ organization.acronym }}</a>
+         {% comment %} <a href="{% url 'activities_list' %}" class="tab {% if selected_college is None %}active{% endif %}">ALL</a> {% endcomment %}
+        {% for college in colleges %}
+          <a href="{% url 'activities_list_filtered' college.id %}" class="tab active {% if college.id == selected_college_id %}active{% endif %}">{{ college.acronym }}</a>
         {% endfor %}
       </div>
     </div>
@@ -46,50 +40,47 @@
     <!-- Filter/Search/Add Container -->
     
       <div class="quick-actions">
-        {% if user_role == "Admin" or user_org == selected_organization %}
-          <button class="add-new-button" onclick="openModal('{% url 'add_event' %}')">+ Add New Event</button>
-          <button class="add-new-button" onclick="openModal('{% url 'upload_files' %}')">+ Upload Files</button>
-        {% endif %}
         {% if user_role == "Admin" %}
-          <button class="add-new-button" onclick="openModal('{% url 'add_organization' %}')">+ Add New Org</button>
+          <button class="add-new-button" onclick="openModal('{% url 'add_activity' %}{% if selected_college_id %}?college_id={{ selected_college_id }}{% endif %}')">+ Add New Activity</button>
+          {% comment %} <button class="add-new-button" onclick="openModal('{% url 'add_college' %}')">+ Add New College</button> {% endcomment %}
         {% endif %}
       </div>
     </div>
   </div>
 
-  <!-- Events Table -->
+  <!-- Activities Table -->
   <table class="events-table">
     <thead>
       <tr>
-        <th>Event Name</th>
+        <th>Activity Name</th>
+        <th>College</th>
         <th>Date</th>
         <th>Time</th>
         <th>Venue</th>
-        <th>Type</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      {% for event in events %}
+      {% for activity in activities %}
         <tr>
-          <td>{{ event.name }}</td>
-          <td>{{ event.start_datetime|date:"m. d. Y" }}</td>
-          <td>{{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</td>
-          <td>{{ event.location }}</td>
-          <td>{{ event.event_type }}</td>
+          <td>{{ activity.name }}</td>
+          <td>{{ activity.college.acronym }}</td>
+          <td>{{ activity.start_datetime|date:"m. d. Y" }}</td>
+          <td>{{ activity.start_datetime|time:"h:i A" }} - {{ activity.end_datetime|time:"h:i A" }}</td>
+          <td>{{ activity.location }}</td>
           <td>
-            <button class="action-link" onclick="openModal('{% url 'view_event' event.id %}')">🔍</button>
-            {% if request.user == event.host or user_role == 'Admin' or request.user.organization == event.organization%}
-              <button class="action-link" onclick="openModal('{% url 'edit_event' event.id %}')">✏️</button>
+            <button class="action-link" onclick="openModal('{% url 'view_activity' activity.id %}')">🔍</button>
+            {% if request.user == activity.host or user_role == 'Admin' %}
+              <button class="action-link" onclick="openModal('{% url 'edit_activity' activity.id %}')">✏️</button>
             {% endif %}
             {% if user_role == "Admin" %}
-              <button class="action-link" onclick="openModal('{% url 'delete_event' event.id %}')">🗑️</button>
+              <button class="action-link" onclick="openModal('{% url 'delete_activity' activity.id %}')">🗑️</button>
             {% endif %}
           </td>
         </tr>
       {% empty %}
         <tr>
-          <td colspan="6">No events found.</td>
+          <td colspan="6">No activities found.</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -121,7 +112,7 @@
   // Update this line when the page is loaded to include the proper URL template.
   document.addEventListener('DOMContentLoaded', function() {
     // Store the URL template with a placeholder
-    deleteUrlTemplate = "{% url 'delete_event' 0 %}".replace('/0/', '/');  // A base URL with placeholder
+    deleteUrlTemplate = "{% url 'delete_activity' 0 %}".replace('/0/', '/');  // A base URL with placeholder
   });
 
   function openModal(url) {
@@ -159,14 +150,13 @@
   function closeModal() {
     document.getElementById('eventModal').style.display = 'none';
   }
-  function filterEvents() {
+  function filterActivities() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toLowerCase();
-    const typeFilter = document.getElementById('typeFilter').value;
     const venueFilter = document.getElementById('venueFilter').value;
     const startDateFilter = document.getElementById('startDateFilter').value;
     const endDateFilter = document.getElementById('endDateFilter').value;
-    const table = document.querySelector('.events-table tbody');
+    const table = document.querySelector('.activities-table tbody');
     const rows = table.getElementsByTagName('tr');
 
     for (let i = 0; i < rows.length; i++) {
@@ -185,17 +175,15 @@
       }
       if (!searchMatch) rowMatches = false;
 
-      // Type filter
-      if (typeFilter && cells[4].textContent.trim() !== typeFilter) rowMatches = false;
       // Venue filter
-      if (venueFilter && cells[3].textContent.trim() !== venueFilter) rowMatches = false;
+      if (venueFilter && cells[4].textContent.trim() !== venueFilter) rowMatches = false;
       // Date range filter
       if (startDateFilter || endDateFilter) {
-        const eventDate = cells[1].textContent.trim(); // m. d. Y
-        const [month, day, year] = eventDate.split('.').map(s => s.trim());
-        const eventDateISO = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        if (startDateFilter && eventDateISO < startDateFilter) rowMatches = false;
-        if (endDateFilter && eventDateISO > endDateFilter) rowMatches = false;
+        const activityDate = cells[2].textContent.trim(); // m. d. Y
+        const [month, day, year] = activityDate.split('.').map(s => s.trim());
+        const activityDateISO = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        if (startDateFilter && activityDateISO < startDateFilter) rowMatches = false;
+        if (endDateFilter && activityDateISO > endDateFilter) rowMatches = false;
       }
       rows[i].style.display = rowMatches ? '' : 'none';
     }
@@ -203,11 +191,10 @@
 
   function clearFilters() {
     document.getElementById('searchInput').value = '';
-    document.getElementById('typeFilter').value = '';
     document.getElementById('venueFilter').value = '';
     document.getElementById('startDateFilter').value = '';
     document.getElementById('endDateFilter').value = '';
-    filterEvents();
+    filterActivities();
   }
   
 </script>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Organization
+from .models import Event, Organization, ExtensionActivity, College
 
 
 class EventForm(forms.ModelForm):
@@ -54,3 +54,33 @@ class UploadFileForm(forms.Form):
         super(UploadFileForm, self).__init__(*args, **kwargs)
         self.fields['organization_file'].required = False
         self.fields['event_file'].required = False
+
+
+class CollegeForm(forms.ModelForm):
+    class Meta:
+        model = College
+        fields = ['name', 'acronym', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'College Name'}),
+            'acronym': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Acronym'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': 3}),
+        }
+
+
+class ExtensionActivityForm(forms.ModelForm):
+    class Meta:
+        model = ExtensionActivity
+        fields = [
+            'name', 'college', 'description', 
+            'location', 'start_datetime', 'end_datetime'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Activity Name'}),
+            'college': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
+            'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+        }
+
+

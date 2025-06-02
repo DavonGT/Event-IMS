@@ -1,0 +1,60 @@
+<div class="custom-modal" style="display: flex;">
+  <div class="custom-modal-overlay" onclick="closeModal()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h3 class="modal-title-text">Add New College</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-body" class="custom-modal-body">
+      <form method="POST" id="addCollegeForm" action="{% url 'add_college' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label for="{{ form.name.id_for_label }}">College Name</label>
+          {{ form.name }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.acronym.id_for_label }}">Acronym</label>
+          {{ form.acronym }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.description.id_for_label }}">Description</label>
+          {{ form.description }}
+        </div>
+
+        <button type="submit" class="save-button">Add College</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const collegeForm = document.getElementById('addCollegeForm');
+
+  if (collegeForm) {
+    collegeForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(collegeForm);
+      fetch("{% url 'add_college' %}", {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          closeModal();
+          location.reload();
+        } else {
+          document.getElementById('modal-body').innerHTML = data.html;
+        }
+      });
+    });
+  }
+</script>

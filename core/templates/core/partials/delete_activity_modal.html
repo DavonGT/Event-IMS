@@ -1,0 +1,48 @@
+<div class="custom-modal" style="display: flex;">
+  <div class="custom-modal-overlay" onclick="closeModal()"></div>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h3 class="modal-title-text">Delete Activity</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="custom-modal-body">
+      <p>Are you sure you want to delete the activity "{{ activity.name }}"?</p>
+      <p>This action cannot be undone.</p>
+      
+      <form method="POST" action="{% url 'delete_activity' activity.id %}" id="deleteActivityForm">
+        {% csrf_token %}
+        <div class="button-group">
+          <button type="button" class="cancel-button" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="delete-button">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const deleteForm = document.getElementById('deleteActivityForm');
+  
+  if (deleteForm) {
+    deleteForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      fetch(this.action, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.redirect_url) {
+          window.location.href = data.redirect_url;
+        } else {
+          closeModal();
+          location.reload();
+        }
+      });
+    });
+  }
+</script>

@@ -38,6 +38,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=20, blank=False)
     middle_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=False)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default-avatar.png')
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
 
     objects = UserManager()  # Use the custom manager

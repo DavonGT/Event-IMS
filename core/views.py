@@ -6,8 +6,9 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Event, Organization
-from .forms import EventForm, UploadFileForm, OrganizationForm
+from .models import Event, Organization, ExtensionActivity, College
+
+from .forms import EventForm, UploadFileForm, OrganizationForm, ExtensionActivityForm, CollegeForm
 from django.views.decorators.http import require_GET
 from openpyxl import load_workbook
 from accounts.forms import UserProfileForm
@@ -16,8 +17,10 @@ from django.urls import reverse
 from django.db.models import F
 
 
+@login_required
 def events_dashboard(request):
-    return render(request, 'core/dashboard.html')
+    user_role = str(request.user.role).title()
+    return render(request, 'core/dashboard.html', {'user_role': user_role})
 
 
 
@@ -26,10 +29,11 @@ def events_dashboard(request):
 
 @login_required
 def calendar(request):
+    user = request.user
     events = Event.objects.all()
     organizations = Organization.objects.all()
     events_json = [
-        {
+        {   
             'name': event.name,
             'date': event.start_datetime.strftime('%Y-%m-%d'),
             'time': event.start_datetime.strftime('%H:%M'),
@@ -48,6 +52,7 @@ def calendar(request):
     # Role-based access control
     if request.user.role:
         return render(request, 'core/calendar.html', {
+        "user": user,
         "events_json": json.dumps(events_json, cls=DjangoJSONEncoder),
         'user_role': str(request.user.role).title(),
         'organizations': organizations
@@ -78,6 +83,29 @@ def events_list(request, organization_id=None):
         'user_role': str(request.user.role).title(),
         'user_org':str(request.user.organization) if hasattr(request.user, 'organization') else None,
         'event_types': event_types,
+        'venues': venues,
+    })
+
+@login_required
+def activities_list(request, college_id=None):
+    colleges = College.objects.all()
+    activities = ExtensionActivity.objects.all()
+
+    if college_id:
+        activities = activities.filter(college_id=college_id)
+        selected_college_id = college_id
+    else:
+        selected_college_id = None
+
+    # Get unique event's venues for filters
+    venues = list(activities.order_by('location').values_list('location', flat=True).distinct())
+    print(colleges)
+    return render(request, 'core/activities.html', {
+        'activities': activities,
+        'colleges': colleges,
+        'selected_college_id': selected_college_id,
+        'selected_college': College.objects.get(id=selected_college_id).name if selected_college_id else None,
+        'user_role': str(request.user.role).title(),
         'venues': venues,
     })
 
@@ -156,6 +184,103 @@ def edit_event(request, event_id):
         form = EventForm(instance=event)
     return render(request, 'core/partials/edit_event_modal.html', {'form': form, 'event': event})
 
+########################################################################################################################
+
+# View to create a new activity
+@login_required
+def add_activity(request):
+    user_role = str(request.user.role).title()
+    # Get the selected college if passed, otherwise get the first one
+    college_id = request.GET.get('college_id')
+    if college_id:
+        college = College.objects.get(id=college_id)
+    else:
+        college = College.objects.first()
+        
+    initial_data = {'college': college.id} if college else {}
+    
+    if request.method == 'POST':
+        form = ExtensionActivityForm(request.POST)
+        if form.is_valid():
+            activity = form.save(commit=False)
+            activity.host = request.user
+            activity.save()
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': True})
+            return redirect('activities_list')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                html = render_to_string('core/partials/activity_form.html', {
+                    'form': form, 
+                    'user_role': user_role,
+                    'college': college
+                }, request=request)
+                return JsonResponse({'success': False, 'html': html})
+
+    form = ExtensionActivityForm(initial=initial_data)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('core/partials/activity_form.html', {
+            'form': form, 
+            'user_role': user_role,
+            'college': college
+        }, request=request)
+        return JsonResponse({'html': html})
+
+    return render(request, 'core/activities.html', {
+        'form': form,
+        'user_role': user_role,
+        'college': college
+    })
+
+def delete_activity(request, activity_id):
+    activity = get_object_or_404(ExtensionActivity, id=activity_id)
+
+    # Check if the user is the host of the activity
+    if request.user != activity.host:
+        messages.error(request, "You do not have permission to delete this activity.")
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+            return JsonResponse({'error': 'Permission Denied'}, status=403)
+        return redirect(reverse('activities_list'))
+
+    if request.method == 'POST':
+        activity.delete()
+        messages.success(request, "Activity deleted successfully.")
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+            return JsonResponse({'message': 'Activity deleted successfully.', 'redirect_url': '/activities/'})  # Redirect URL after delete
+
+    # If the request is AJAX, return the delete modal HTML
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # AJAX request
+        html = render(request, 'core/partials/delete_activity_modal.html', {'activity': activity}).content.decode('utf-8')
+        return JsonResponse({'html': html})
+
+    return redirect('activities_list')
+
+def view_activity(request, activity_id):
+    activity = get_object_or_404(ExtensionActivity, pk=activity_id)
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('core/partials/view_activity_modal.html', {'activity': activity})
+        return HttpResponse(html)
+    
+    return render(request, 'core/activities.html', {'activity': activity})
+
+def edit_activity(request, activity_id):
+    activity = get_object_or_404(ExtensionActivity, pk=activity_id)
+    if request.method == 'POST':
+        form = ExtensionActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            form.save()
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'Activity updated successfully'})
+            return redirect('activities_list')
+    
+    else:
+        form = ExtensionActivityForm(instance=activity)
+    return render(request, 'core/partials/edit_activity_modal.html', {'form': form, 'activity': activity})
+
+##############################################################################################################################
+
 def add_organization(request):
     if request.method == 'POST':
         form = OrganizationForm(request.POST)
@@ -166,6 +291,17 @@ def add_organization(request):
         form = OrganizationForm()
 
     return render(request, 'core/partials/add_org_modal.html', {'form': form})
+
+def add_college(request):
+    if request.method == 'POST':
+        form = CollegeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('activities_list')  # Change to your preferred redirect
+    else:
+        form = CollegeForm()
+
+    return render(request, 'core/partials/add_college_modal.html', {'form': form})
 
 @require_GET
 @login_required
@@ -233,7 +369,7 @@ def upload_file_view(request):
 def profile(request):
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user)
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully.")
@@ -249,12 +385,11 @@ def profile(request):
 def edit_profile(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user)
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, "User profile updated successfully.")
-            return redirect('profile')
-
+            return JsonResponse({'success': True, 'message': 'Profile updated successfully'})
     else:
         form = UserProfileForm(instance=user)
     return render(request, 'core/partials/edit_profile_modal.html', {'form': form, 'user': user})

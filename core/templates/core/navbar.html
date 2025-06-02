@@ -30,6 +30,14 @@
                 <span>Events</span>
             </a>
         </li>
+        {% if user_role == 'Admin' %}
+         <li>
+            <a href="{% url 'activities_list' %}" class="{% if request.path == '/activities_list/' %}active{% endif %}">
+                <i class="fas fa-list-check"></i>
+                <span>Extension Act</span>
+            </a>
+        </li>
+        {% endif %}
         {% endif %}
 
         <li>

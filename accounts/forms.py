@@ -46,7 +46,7 @@ class UserRegistrationForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'middle_name', 'last_name', 'organization']
+        fields = ['profile_picture', 'first_name', 'middle_name', 'last_name', 'organization']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,9 +55,10 @@ class UserProfileForm(forms.ModelForm):
             'first_name': 'First Name',
             'middle_name': 'Middle Name',
             'last_name': 'Last Name',
-            'organization': 'Organization'
+            'organization': 'Organization',
         }
 
         for field_name, field in self.fields.items():
-            field.label = None
-            field.widget.attrs.update({'placeholder': placeholders.get(field_name, '')})
+            if field_name != 'profile_picture':
+                field.label = None
+                field.widget.attrs.update({'placeholder': placeholders.get(field_name, '')})

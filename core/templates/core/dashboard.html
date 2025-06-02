@@ -1,4 +1,3 @@
-{# templates/core/dashboard.html #}
 {% extends 'core/base.html' %}
 
 {% block title %}Events Dashboard{% endblock %}
@@ -6,165 +5,213 @@
 {% block extra_css %}
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet"/>
   <style>
-    /* --- Your custom styles (as you already posted) --- */
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-    .card, .chart, .orgs, .upcoming, .event-detail {
-      background: #fff;
-      border: 2px solid #a500a5;
-      border-radius: 10px;
-      padding: 15px;
-    }
-    .card {
-      text-align: center;
-      background-color: #f5e1ff;
-      cursor: pointer;
-    }
-    .card.active {
-      border: 3px solid #760467;
-    }
-    .charts {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      grid-column: span 4;
-    }
-    .chart canvas {
-      width: 100% !important;
-      height: 300px !important;
-    }
-    .upcoming {
-      grid-column: span 3;
-    }
-    .search-bar {
-      margin: 10px 0;
-      text-align: right;
-    }
-    .search-bar input {
-      padding: 5px 10px;
-      border: 2px solid #760467;
-      border-radius: 20px;
-      outline: none;
-    }
-    .event-item {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .event-date {
-      background: #c274d8;
-      color: #fff;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-      margin-right: 10px;
-    }
-    .event-info {
-      flex-grow: 1;
-    }
-    .event-info h4 {
-      margin-bottom: 5px;
-      font-size: 14px;
-    }
-    .event-info small {
-      font-size: 12px;
-      color: #760467;
-    }
-    .event-detail {
-      position: relative;
-      grid-column: span 3;
-      margin-top: 10px;
-      background: #ffe8fc;
-    }
-    .event-detail h3 {
-      margin-bottom: 10px;
-    }
-    .event-detail .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #760467;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-    }
-    .orgs {
-      grid-column: span 1;
-      background: #e6d6f3;
-    }
-    .orgs h4 {
-      margin-bottom: 10px;
-    }
+
+    .upcoming-events-calendar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+/* Upcoming Events Section */
+.upcoming {
+  flex: 1;
+  padding: 16px;
+  background-color: #f9e6ff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(118, 4, 103, 0.1);
+}
+
+/* Calendar Section */
+.calendar-container {
+  flex: 1;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+/* Custom header (replaces FullCalendar header) */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.calendar-header button {
+  background-color: #760467;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-header button:hover {
+  background-color: #a500a5;
+}
+
+/* Optional: If you still use a manual calendar grid elsewhere */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+
+.calendar-grid div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9e6ff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-grid .day-name {
+  font-weight: 700;
+  background-color: #e6d6f3;
+  color: #760467;
+}
+
+.calendar-grid .day:hover {
+  background-color: #bc52ba;
+  color: white;
+}
+
+.selected-day {
+  background-color: #a500a5;
+  color: white;
+}
+
+.selected-day:hover {
+  background-color: #8b008b;
+}
+
+.selected-date {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #5d045d;
+  font-weight: bold;
+}
+
   </style>
 {% endblock %}
 
 {% block content %}
   <h1>Events Dashboard</h1>
+
   <div class="dashboard">
-    <div class="card active">Upcoming Events</div>
-    <div class="card">Total Events</div>
-    <div class="card">Total Organizations</div>
-    <div class="card">ALL ▼</div>
-
-    <div class="charts">
-      <div class="chart">
-        <canvas id="barChart"></canvas>
+    <!-- Dashboard Stats -->
+    <div class="dashboard-section">
+      <div class="dashboard-header">
+        <h2>Quick Stats</h2>
       </div>
-      <div class="chart">
-        <canvas id="pieChart"></canvas>
-      </div>
-    </div>
-
-    <div class="upcoming">
-      <div class="search-bar">
-        <input type="text" placeholder="Search...">
-      </div>
-      <h3>Upcoming Events:</h3>
-      <div class="event-item">
-        <div class="event-date">
-          <strong>01</strong><br>July
+      <div class="dashboard-row">
+        <div class="dashboard-main">
+          <div class="dashboard-body">
+            <div class="quick-stats">
+              <div class="card">
+                <div class="card-header">Upcoming Events</div>
+                <div class="card-body">5 events this week</div>
+              </div>
+              <div class="card">
+                <div class="card-header">Total Events</div>
+                <div class="card-body">125 events this year</div>
+              </div>
+              <div class="card">
+                <div class="card-header">Total Organizations</div>
+                <div class="card-body">12 active organizations</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="event-info">
-          <h4>NEW IT LABORATORY BUILDING</h4>
-          <small>JUL 01, 2025 • 08:00 AM • ALL CCS STUDENTS</small>
+        <div class="dropdown-container">
+          <div class="dropdown-header">
+            Dropdown Menu
+            <button class="dropdown-btn" onclick="toggleDropdown()">&#9660;</button>
+          </div>
+          <div class="dropdown-content" id="dropdownMenu">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+          </div>
         </div>
-        <button style="background:#760467; color:#fff; border:none; border-radius:5px; padding:5px 10px;">View Details</button>
       </div>
-    </div>
-
-    <div class="event-detail">
-      <button class="close-btn">×</button>
-      <h3>CCS FEAST</h3>
-      <p>Join us as we enjoy the most awaited COLLEGE FEAST. Watch out for games, booths, music, food and more!</p>
-      <ul>
-        <li>📍 CCS BUILDING</li>
-        <li>📅 JULY 1, 2025</li>
-        <li>⏰ 8:00 AM</li>
-        <li>🎓 All CCS Students</li>
-        <li>🏢 Organized by: Any CCS-based Organization</li>
-      </ul>
-    </div>
-
-    <div class="orgs">
-      <h4>Top Organizations</h4>
-      <p>01 - GROUP 8</p>
     </div>
   </div>
+
+  <!-- Charts -->
+  <div class="charts">
+    <div class="chart">
+      <canvas id="barChart"></canvas>
+    </div>
+    <div class="chart">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <div class="upcoming-events-calendar">
+    <div class="calendar-upcoming-container" style="display: flex; gap: 2rem; margin-top: 1rem;">
+      <div style="flex: 2; min-width: 0;">
+        <!-- Custom Header -->
+        <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <button id="prevBtn">&#8592;</button>
+          <span id="monthYear" style="font-size: 1.2rem; font-weight: bold;"></span>
+          <button id="nextBtn">&#8594;</button>
+        </div>
+        <!-- FullCalendar Target -->
+        <div id="calendar"></div>
+      </div>
+    </div>
+
+  
+    <div class="upcoming">
+      <h3>Upcoming Events</h3>
+      <div class="event-item">
+        <div class="event-date">05</div>
+        <div class="event-details">
+          <strong>Event 1</strong>
+          <p>Description for the event goes here.</p>
+        </div>
+        <button class="view-button">View</button>
+      </div>
+      <div class="event-item">
+        <div class="event-date">12</div>
+        <div class="event-details">
+          <strong>Event 2</strong>
+          <p>Short description for the event.</p>
+        </div>
+        <button class="view-button">View</button>
+      </div>
+    </div>
+  </div>
+
+    
+
 {% endblock %}
 
 {% block extra_js %}
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FullCalendar -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
   <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // =================== CHARTS ===================
     const barCtx = document.getElementById('barChart').getContext('2d');
     new Chart(barCtx, {
       type: 'bar',
@@ -198,6 +245,61 @@
       options: {
         responsive: true
       }
+    });
+
+    // =================== CALENDAR ===================
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const monthYearEl = document.getElementById('monthYear');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      // If you're passing events from Django, use this line:
+      const eventsData = JSON.parse('{{ events_json|safe }}');
+
+      // FullCalendar instance
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: eventsData.map(event => ({
+          title: event.name,
+          date: event.date,
+          extendedProps: {
+            description: event.description,
+            location: event.location,
+            organization: event.organization,
+            type: event.type
+          }
+        })),
+        headerToolbar: false, // Disable default header
+        navLinks: true,
+        dayMaxEvents: 3,
+        eventClick: function(info) {
+          const e = info.event;
+          alert(`📌 ${e.title}\n📅 ${e.startStr}\n📍 ${e.extendedProps.location}\n📝 ${e.extendedProps.description}`);
+        },
+        datesSet: function(info) {
+          updateMonthYearTitle(info);
+        }
+      });
+
+      calendar.render();
+
+      // Update title
+      function updateMonthYearTitle(info) {
+        const date = new Date(info.view.currentStart);
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        monthYearEl.textContent = `${month} ${year}`;
+      }
+
+      // Navigation buttons
+      prevBtn.addEventListener('click', function () {
+        calendar.prev();
+      });
+
+      nextBtn.addEventListener('click', function () {
+        calendar.next();
+      });
     });
   </script>
 {% endblock %}

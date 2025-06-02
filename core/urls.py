@@ -11,19 +11,27 @@ urlpatterns = [
 
     # path('dashboard/', views.dashboard, name='dashboard'),
     path('add-event/', views.add_event, name='add_event'),
+    path('add-activity/', views.add_activity, name='add_activity'),
     path('events_list/<int:organization_id>/', views.events_list, name='events_list_filtered'),
     path('events_list/', views.events_list, name='events_list'),
+
+    path('activities_list/<int:college_id>/', views.activities_list, name='activities_list_filtered'),
+    path('activities_list/', views.activities_list, name='activities_list'),
+
     path('upload_files/', views.upload_file_view, name='upload_files'),
 
     # path('view-event/<int:event_id>/', views.view_event, name='view_event'),
     # path('edit-event/<int:event_id>/', views.edit_event, name='edit_event'),
     # path('event/<int:event_id>/delete/', views.delete_event, name='delete_event'),
     path('event/<int:event_id>/delete/', views.delete_event, name='delete_event'),
-
-
     path('events/<int:event_id>/view/', views.view_event, name='view_event'),
     path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
     path('organizations/add/', views.add_organization, name='add_organization'),
+
+    path('activity/<int:event_id>/delete/', views.delete_activity, name='delete_activity'),
+    path('activity/<int:event_id>/view/', views.view_activity, name='view_activity'),
+    path('activity/<int:event_id>/edit/', views.edit_activity, name='edit_activity'),
+    path('college/add/', views.add_college, name='add_college'),
 
     path('profile/', views.profile, name='profile'),
     path('profile/edit/<int:user_id>/', views.edit_profile, name='edit_profile'),
