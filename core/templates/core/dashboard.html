@@ -7,23 +7,23 @@
   <style>
     /* Calendar container */
 #calendar {
-  max-width: 1370px;
+#calendar {
+  max-width: 1000px; /* Made wider */
+  min-width: 600px;
   max-height: 610px;
-  min-width: 400px;
   min-height: 200px;
   margin-bottom: 0;
   background: #faf7fe;
   border-radius: 10px;
-  padding: 30px;
+  padding: 20px; /* Smaller padding */
   border: none;
   box-shadow: 
     0 0 5px rgba(0, 0, 0, 0.15), 
     0 0 10px rgba(139, 0, 139, 0.5), 
     0 0 20px rgba(139, 0, 139, 0.4);
-  overflow-x: auto; /* Allow horizontal scroll if needed */
+  overflow-x: auto;
 }
 
-/* Global text color inside calendar */
 #calendar,
 #calendar .fc,
 #calendar .fc-daygrid-day-number,
@@ -33,207 +33,59 @@
 #calendar .fc-col-header-cell-cushion,
 #calendar .fc-daygrid-day {
   color: #5d045d !important;
+  font-size: 12px; /* Smaller font */
 }
 
-/* Fix scrollgrid overflow */
-#calendar .fc-scrollgrid,
-#calendar .fc-view-harness,
-#calendar .fc-daygrid,
-#calendar .fc-daygrid-body {
-  max-width: 100%;
-  overflow-x: hidden !important;
-}
-
-/* Uniform day cells */
 #calendar .fc-daygrid-day {
-  flex: 1 1 0;
-  max-width: 100%;
-  padding: 0;
-  margin: 0;
-  height: 100px; /* Adjust for desired height */
-  box-sizing: border-box;
+  height: 80px; /* Smaller height */
 }
 
-/* Consistent day number placement */
-#calendar .fc-daygrid-day-top {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 4px 6px 0 0;
-  height: 24px;
-  overflow: hidden;
-}
-
-/* Uniform day number styling */
 #calendar .fc-daygrid-day-number {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-  display: inline-block;
-  min-width: 18px;
-  text-align: right;
-  white-space: nowrap;
-  color: #000;
+  font-size: 12px;
 }
 
-/* Equal header columns */
 #calendar .fc-col-header-cell {
-  background-color: #4a024b !important;
-  color: white !important;
-  border: 1px solid #3b003b !important;
-  width: 14.2857% !important; /* 100% ÷ 7 */
-  text-align: center;
-  box-sizing: border-box;
+  font-size: 12px;
+  padding: 4px 0;
 }
 
-/* Header cushion styling */
-#calendar .fc-col-header-cell-cushion {
-  color: white !important;
-  font-weight: bold;
-}
-
-/* Force day content to fill */
-#calendar .fc-daygrid-body .fc-daygrid-day-frame {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header toolbar */
-.fc-header-toolbar {
-  background-color: #faf7fe !important;
-}
-
-.fc-toolbar-chunk {
-  display: flex;
-  align-items: center;
-}
-
-/* Custom Title */
 .fc-customTitle-button {
-  background: none !important;
-  border: none !important;
-  pointer-events: none;
-  cursor: default;
-  font-size: 70px;
-  display: flex;
-  align-items: baseline;
-  font-family: "Cal Sans", sans-serif;
-  color: #822780;
-  font-weight: bold;
+  font-size: 36px; /* Scaled down */
 }
 
-/* Month and Year styling */
 .calendar-month {
-  font-family: "Cal Sans", sans-serif;
-  font-size: 48px;
-  margin-right: 0;
-  color: #822780;
+  font-size: 32px;
 }
 
 .calendar-year {
-  font-family: "Cal Sans", sans-serif;
-  font-size: 40px;
-  font-weight: bold;
-  color: #6b296e;
+  font-size: 28px;
 }
 
-/* Buttons */
 .fc .fc-button-group > .fc-button {
-  background-color: transparent;
-  border: none;
-  font-size: 24px;
-  color: #822780;
-}
-
-/* Grid borders for calendar */
-#calendar .fc-daygrid-day,
-#calendar .fc-scrollgrid,
-#calendar .fc-daygrid-day-frame,
-#calendar .fc-daygrid-body,
-#calendar td,
-#calendar th {
-  border: 1px solid #3b003b !important;
-}
-
-/* Collapsing border for scrollgrid */
-#calendar .fc-scrollgrid {
-  border-collapse: collapse;
-  table-layout: fixed !important; /* Fix layout to avoid stretching */
-  width: 100% !important;
-}
-
-/* Events */
-.fc .fc-event {
-  background-color: transparent !important;
-  color: #5d045d !important;
-  border: none !important;
-  font-family: "Cal Sans", sans-serif;
-  padding: 2px 20px;
+  font-size: 18px;
 }
 
 .fc-h-event .fc-event-title-container {
-  flex-grow: 1;
-  flex-shrink: 1;
-  min-width: 0;
-  font-family: "Cal Sans", sans-serif;
-  font-size: 14px;
-  color: white;
+  font-size: 12px;
 }
 
-/* Calendar header layout */
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 60px;
-}
-
-.calendar-header h1 {
-  font-size: 48px;
-  color: #822780;
-  font-family: 'Brush Script MT', cursive;
-  margin: 0;
-}
-
-.calendar-header .search-bar {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 60px;
-}
-
+/* Adjust input size in header */
 .calendar-header input {
-  width: 200px;
-  padding: 5px 10px;
-  border-radius: 20px;
-  border: 1px solid #5d045d;
+  width: 160px;
+  padding: 4px 8px;
+  font-size: 12px;
 }
 
-/* Force all day columns to have equal width */
-#calendar td.fc-daygrid-day,
-#calendar th.fc-col-header-cell {
-  width: 14.2857% !important; /* 100% / 7 days */
-  max-width: 14.2857% !important;
-  min-width: 14.2857% !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  margin: 0 !important;
+/* Optional: reduce general margins & paddings */
+.calendar-header {
+  margin-left: 20px;
+}
+.calendar-header .search-bar {
+  margin-left: 20px;
 }
 
-/* Prevent day number from stretching */
-#calendar .fc-daygrid-day-number {
-  display: inline-block !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
+
+
 
 
   </style>
@@ -241,13 +93,12 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Events Dashboard</h1>
+  <h1 class="search-label">Events and Extension Activities Dashboard</h1>
 
   <div class="dashboard">
     <!-- Dashboard Stats -->
     <div class="dashboard-section">
       <div class="dashboard-header">
-        <h2>Quick Stats</h2>
       </div>
       <div class="dashboard-row">
         <div class="dashboard-main">
@@ -268,40 +119,43 @@
             </div>
           </div>
         </div>
-        <div class="dropdown-container" style="width: 200px; user-select: none;">
-          <div class="dropdown-header" id="dropdownHeader">
-            <span id="selectedOrgName">{% if selected_org %}{{ selected_org.name }}{% else %}Select Organization{% endif %}</span>
-            <button class="dropdown-btn" onclick="toggleDropdown(event)">&#9660;</button>
-          </div>
-          <div class="dropdown-content" id="dropdownMenu">
-            <a href="?organization=" onclick="selectOption(event, 'All Organizations')">All Organizations</a>
+        <div class="filter-group" style="width: 200px; align-self: flex-start;">
+          <select id="organizationSelect" class="activity-select" onchange="onOrganizationChange(this)" style="width: 100%;">
+            <option value="">All Organizations</option>
             {% for org in organizations %}
-            <a href="?organization={{ org.id }}" onclick="selectOption(event, '{{ org.name }}')">{{ org.name }}</a>
+              <option value="{{ org.id }}" {% if selected_org and selected_org.id == org.id %}selected{% endif %}>
+                {{ org.name }}
+              </option>
             {% endfor %}
-          </div>
+          </select>
+        </div>
+
+
         </div>
       </div>
     </div>
-  </div>
+  
 
   <!-- Charts -->
   <div class="charts-section">
     <div class="chart-filters" style="margin-bottom: 20px; display: flex; gap: 20px;">
       <div class="filter-group">
         <label for="activityType">Show:</label>
-        <select id="activityType" onchange="updateBarChart()" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+        <select id="activityType" onchange="updateBarChart()" class="activity-select">
           <option value="events">Events</option>
           <option value="activities">Extension Activities</option>
           <option value="both">Both</option>
         </select>
       </div>
+
       <div class="filter-group">
         <label for="timeFrame">Time Frame:</label>
-        <select id="timeFrame" onchange="updateBarChart()" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+        <select id="timeFrame" onchange="updateBarChart()" class="timeframe-select">
           <option value="yearly">Yearly</option>
           <option value="semester">Per Semester</option>
         </select>
       </div>
+
     </div>
     <div class="charts">
       <div class="chart">
@@ -315,9 +169,17 @@
 
   <div class="upcoming-events-calendar">
     <div class="calendar-upcoming-container" style="display: flex; gap: 2rem; margin-top: 1rem;">
-      <div style="flex: 2; min-width: 0;">
+      <div style="flex: 1; min-width: 570px;">
+        <div class="calendar-btn-wrapper">
+          <a href="{% url 'calendar' %}" 
+            class="calendar-btn {% if request.path == '/calendar/' %}active{% endif %}">
+            <span>Go to Calendar</span>
+          </a>
+        </div>
+
+
         <!-- Custom Header -->
-        <div class="calendar-header">
+        <div class="calendar-header"> 
         </div>
         <!-- FullCalendar Target -->
         <div id="calendar"></div>
@@ -354,6 +216,8 @@
     </div>
   </div>
 
+
+
     
 
 {% endblock %}
@@ -372,7 +236,16 @@
         const dropdown = document.getElementById('dropdownMenu');
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
       }
-
+        function onOrganizationChange(selectElement) {
+          const selectedValue = selectElement.value;
+          const urlParams = new URLSearchParams(window.location.search);
+          if (selectedValue) {
+            urlParams.set('organization', selectedValue);
+          } else {
+            urlParams.delete('organization');
+          }
+          window.location.search = urlParams.toString();
+        }
       function selectOption(event, name) {
         event.preventDefault();
         const selectedOrgName = document.getElementById('selectedOrgName');

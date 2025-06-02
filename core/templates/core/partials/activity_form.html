@@ -7,7 +7,7 @@
     </div>
 
     <div id="modal-body" class="custom-modal-body">
-      <form method="POST" id="activityForm" action="{% url 'add_activity' %}">
+      <form method="POST" id="activityForm" action="{% url 'add_activity' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% if user_role == 'Admin' %}
@@ -41,6 +41,12 @@
         <div class="form-group">
           <label for="{{ form.end_datetime.id_for_label }}">End Date & Time</label>
           {{ form.end_datetime }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.soft_copy.id_for_label }}">PDF Document</label>
+          {{ form.soft_copy }}
+          <small class="form-text text-muted">Upload PDF document only</small>
         </div>
 
         <button type="submit" class="save-button">Save</button>

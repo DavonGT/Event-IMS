@@ -31,6 +31,12 @@
           <strong>Description:</strong>
           <p>{{ activity.description|linebreaks }}</p>
         </div>
+        {% if activity.soft_copy %}
+        <div class="detail-row">
+          <strong>Document:</strong>
+          <span>📄 <a href="{{ activity.soft_copy.url }}" target="_blank">View Document</a></span>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

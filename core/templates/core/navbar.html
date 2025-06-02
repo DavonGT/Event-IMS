@@ -8,17 +8,10 @@
 
     <ul>
         
-
-        <li>
-            <a href="{% url 'calendar' %}" class="{% if request.path == '/calendar/' %}active{% endif %}">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-        </li>
         <li>
             <a href="{% url 'events_dashboard' %}" class="{% if request.resolver_match.url_name == 'events_dashboard' %}active{% endif %}">
-                <i class="fa fa-bar-chart"></i>
-                <span>Dashboard</span>
+                <i class="fas fa-home"></i>
+                <span>Home</span>
             </a>
 
         </li>

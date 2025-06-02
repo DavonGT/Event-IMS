@@ -111,6 +111,20 @@
 </div>
 
 
+
+{% comment %} <div class="filter-group" style="flex: 1 1 30%; min-width: 220px; display: flex; flex-direction: column; justify-content: flex-start;">
+          <label for="organizationSelect" style="margin-bottom: 0.5rem;">Organization:</label>
+          <select id="organizationSelect" onchange="handleOrgSelect(this)" class="organization-select" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+            <option value="">All Organizations</option>
+            {% for org in organizations %}
+              <option value="{{ org.id }}" {% if selected_org and selected_org.id == org.id %}selected{% endif %}>{{ org.name }}</option>
+            {% endfor %}
+          </select>
+        </div> {% endcomment %}
+
+
+
+
 <!-- Delete Confirmation Modal -->
 
 

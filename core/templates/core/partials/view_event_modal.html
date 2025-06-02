@@ -13,6 +13,9 @@
               <p>📍 {{ event.location }}</p>
               <p>📅 {{ event.start_datetime|date:"d. m. Y" }} &nbsp;&nbsp; ⏰ {{ event.start_datetime|time:"h:i A" }} - {{ event.end_datetime|time:"h:i A" }}</p>
               <p>👥 {{ event.event_type }}</p>
+              {% if event.soft_copy %}
+                <p>📄 <a href="{{ event.soft_copy.url }}" target="_blank">View Document</a></p>
+              {% endif %}
           </div>
       </div>
   </div>

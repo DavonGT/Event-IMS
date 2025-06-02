@@ -24,9 +24,24 @@ from django.utils import timezone
 
 @login_required
 def events_dashboard(request):
+    
     selected_org_id = request.GET.get('organization')  # Get org ID from query param
     organizations = Organization.objects.all()
     now = timezone.now()
+
+    # Prepare events data for calendar
+    events_json = [
+        {   
+            'name': event.name,
+            'date': event.start_datetime.strftime('%Y-%m-%d'),
+            'time': event.start_datetime.strftime('%H:%M'),
+            'location': event.location,
+            'description': event.description,
+            'type': event.event_type,
+            'organization': event.organization.name,
+        }
+        for event in Event.objects.all()
+]
     
     # Get time range from request, default to week
     time_range = request.GET.get('time_range', 'week')
@@ -42,10 +57,13 @@ def events_dashboard(request):
         end_date = now.replace(year=now.year + 1)
 
     # Get upcoming events based on time range
-    upcoming_events = Event.objects.filter(
+    base_upcoming_events = Event.objects.filter(
         end_datetime__gte=now,
         start_datetime__lte=end_date
-    ).order_by('start_datetime')[:10]  # Show up to 10 upcoming events
+    ).order_by('start_datetime')
+
+    upcoming_events = base_upcoming_events[:10]
+  # Show up to 10 upcoming events
     
     # Count all upcoming events for stats (keep this as weekly for the quick stats)
     week_end = now + timedelta(days=7)
@@ -81,7 +99,7 @@ def events_dashboard(request):
         try:
             selected_org = Organization.objects.get(id=selected_org_id)
             # Filter upcoming events based on selected organization
-            upcoming_events = upcoming_events.filter(organization=selected_org)
+            upcoming_events = base_upcoming_events.filter(organization=selected_org)[:10]
             # Update total events for stats
             total_events_this_year = Event.objects.filter(
                 organization=selected_org,
@@ -93,6 +111,21 @@ def events_dashboard(request):
                 end_datetime__gte=now,
                 start_datetime__lte=week_end
             ).count()
+            
+            # Prepare events data for calendar
+            events_json = [
+                {   
+                    'name': event.name,
+                    'date': event.start_datetime.strftime('%Y-%m-%d'),
+                    'time': event.start_datetime.strftime('%H:%M'),
+                    'location': event.location,
+                    'description': event.description,
+                    'type': event.event_type,
+                    'organization': event.organization.name,
+                }
+                for event in Event.objects.all()
+    ]
+
 
             # Add organization filter to calendar events
             events_json = [e for e in events_json if e['organization'] == selected_org.name]
@@ -146,19 +179,7 @@ def events_dashboard(request):
         }
     }
 
-    # Prepare events data for calendar
-    events_json = [
-        {   
-            'name': event.name,
-            'date': event.start_datetime.strftime('%Y-%m-%d'),
-            'time': event.start_datetime.strftime('%H:%M'),
-            'location': event.location,
-            'description': event.description,
-            'type': event.event_type,
-            'organization': event.organization.name,
-        }
-        for event in Event.objects.all()
-    ]
+    
 
     context = {
         "user_role": str(request.user.role).title(),
@@ -275,7 +296,7 @@ def activities_list(request, college_id=None):
 @login_required
 def add_event(request):
     if request.method == 'POST':
-        form = EventForm(request.POST, user=request.user)
+        form = EventForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             event = form.save(commit=False)
             event.host = request.user
@@ -362,7 +383,7 @@ def add_activity(request):
     initial_data = {'college': college.id} if college else {}
     
     if request.method == 'POST':
-        form = ExtensionActivityForm(request.POST)
+        form = ExtensionActivityForm(request.POST, request.FILES)
         if form.is_valid():
             activity = form.save(commit=False)
             activity.host = request.user
@@ -516,8 +537,12 @@ def upload_file_view(request):
                     name = row[1].replace("'","").replace("`","")
                     description = row[2].replace("'","").replace("`","")
                     location = row[3].replace("'","").replace("`","")
-
-                    Event.objects.create(organization_id=organization.id, name=name, description=description, location=location, start_datetime=row[4], end_datetime=row[5], event_type=row[6], host=request.user)
+                    
+                    Event.objects.create(organization_id=organization.id, 
+                                        name=name, description=description, 
+                                        location=location, start_datetime=row[4], 
+                                        end_datetime=row[5], event_type=row[6], 
+                                        host=request.user)
 
             return redirect('events_list')
     else:
