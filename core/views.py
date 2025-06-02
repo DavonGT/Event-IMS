@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Event, Organization, ExtensionActivity, College
+from .models import Event, Organization, ExtensionActivity, College, Event
 
 from .forms import EventForm, UploadFileForm, OrganizationForm, ExtensionActivityForm, CollegeForm
 from django.views.decorators.http import require_GET
@@ -15,12 +15,32 @@ from accounts.forms import UserProfileForm
 from accounts.models import User
 from django.urls import reverse
 from django.db.models import F
+from datetime import datetime, timedelta
+from django.utils import timezone
+
+
+
 
 
 @login_required
 def events_dashboard(request):
-    user_role = str(request.user.role).title()
-    return render(request, 'core/dashboard.html', {'user_role': user_role})
+    selected_org_id = request.GET.get('organization')  # Get org ID from query param (e.g. ?organization=3)
+    organizations = Organization.objects.all()
+
+    # Filter upcoming events (events with end_datetime in the future)
+    upcoming_events = Event.objects.filter(end_datetime__gte=timezone.now())
+
+    # If an org is selected, filter by that org
+    if selected_org_id:
+        upcoming_events = upcoming_events.filter(organization_id=selected_org_id)
+
+    return render(request, 'core/dashboard.html', {
+        'organizations': organizations,
+        'upcoming_events': upcoming_events,
+        'selected_org_id': selected_org_id,
+    })
+
+
 
 
 

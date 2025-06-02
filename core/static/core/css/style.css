@@ -21,7 +21,7 @@ body {
 .sidebar {
   width: 220px;
   height: 100vh;
-  background-color: #e0c5ff;
+  background-color: #d6ccef;
   position: fixed;
   top: 0;
   left: 0;
@@ -1173,52 +1173,6 @@ td:nth-child(5) {
 
 
   /* === Sidebar and Event box === */
-  .events-sidebar {
-    width: 250px;
-    padding: 20px;
-    margin-top: 60px;
-  }
-
-  .event-box {
-    background-color: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    padding-bottom: 15px;
-  }
-
-  .event-box h3 {
-    background-color: #5d045d;
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    margin: 0;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
-
-  .event-box ul {
-    padding: 15px 20px;
-    margin: 0;
-    list-style-type: disc;
-  }
-
-  .event-box li {
-    font-family: "Cal Sans", sans-serif;
-  }
-
-
-
-
-
-
-
-
-
-
-
-  /* === Profile container === */
 .profile-container {
   display: flex;
   justify-content: center;
@@ -1228,79 +1182,81 @@ td:nth-child(5) {
   background: #f5f1ff;
 }
 
-.modern-profile-card {
-  width: 340px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  font-family: 'Segoe UI', sans-serif;
+
+.profile-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #5d045d;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
-.profile-header {
-  background: linear-gradient(135deg, #5d045d, #bc52ba);
-  padding: 40px 0 20px;
-  position: relative;
+
+
+.modern-profile-card {
+  display: flex;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+  width: 700px;
+  max-width: 90%;
+  border: 1px solid #a442a4;
 }
 
-.profile-header .edit-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: white;
-  border-radius: 50%;
-  padding: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.profile-left {
+  background: linear-gradient(135deg, #5d045d, #bc52ba);
+  color: white;
+  width: 35%;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  background: #f3f0ff;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  border: 4px solid #fff;
-  margin-bottom: -40px;
-  margin: 0 auto;
-}
-
-.profile-body {
-  padding: 20px;
-}
-
-.profile-body h2 {
-  margin: 10px 0 5px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
+  border: 5px solid white;
+  background-color: #f3f0ff;
+  margin-bottom: 1rem;
+  background-repeat: no-repeat;
 }
 
 .handle {
-  color: #5d045d;
-  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #f9f0ff;
 }
 
-.calendar-icon {
-  margin-right: 5px;
-  color: #5d045d;
-}
-
-.stats {
+.profile-right {
+  width: 65%;
+  padding: 2rem;
   display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
-  font-size: 14px;
-  color: #555;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.stats div {
-  background: #f8f5ff;
-  padding: 10px;
+.profile-right h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #5d045d;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.info-box {
+  padding: 0.75rem 1rem;
+  border: 2px solid #5d045d;
   border-radius: 10px;
-  width: 70px;
-  font-weight: 500;
+  font-size: 1rem;
+  color: #5d045d;
+  background-color: #fff;
 }
 
 .edit-button {
@@ -1311,12 +1267,16 @@ td:nth-child(5) {
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
+  width: fit-content;
+  align-self: center;
   transition: background-color 0.3s ease;
+  margin-top: 1rem;
 }
 
 .edit-button:hover {
   background-color: #4a034a;
 }
+
 
 
 
@@ -1910,4 +1870,167 @@ td:nth-child(5) {
 .dropdown-content a:hover {
   background: #c274d8;
   color: white;
+}
+
+
+
+
+
+
+
+
+
+/* Main container for Calendar + Events */
+.upcoming-events-calendar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Upcoming Events Section */
+.upcoming {
+  flex: 1;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 16px;
+  background-color: #f9e6ff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(93, 4, 93, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.upcoming h3 {
+  color: #5d045d;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(118, 4, 103, 0.05);
+  gap: 12px;
+}
+
+.event-date {
+  background: #e0c5ff;
+  color: #5d045d;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.event-details p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.view-button {
+  margin-left: auto;
+  background-color: #5d045d;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-button:hover {
+  background-color: #4a034a;
+}
+
+
+
+
+
+
+
+
+
+
+/* Calendar Component */
+.calendar-container {
+  flex: 2;
+  min-width: 280px;
+  max-width: 500px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #d0b6f8;
+}
+
+/* Calendar Header */
+/* .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #5d045d, #bc52ba);
+  color: white;
+  padding: 1rem;
+} */
+
+.calendar-header button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#month-year {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Calendar Days Grid */
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #f3e8ff;
+  text-align: center;
+  font-weight: bold;
+  color: #5d045d;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+/* Calendar Dates Grid */
+.calendar-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.calendar-dates div {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+}
+
+.calendar-dates div:hover {
+  background-color: #f0dfff;
+}
+
+.today {
+  background-color: #bc52ba;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
 }

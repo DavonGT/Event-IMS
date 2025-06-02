@@ -7,18 +7,25 @@
 <div class="profile-container">
   {% if user.username %}
   <div class="modern-profile-card">
-      <div class="profile-header">        
-        <div class="avatar" style="
-          background-image: url('{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'core/images/default-avatar.png' %}{% endif %}');
-          background-size: cover;
-          background-position: center;
-        "></div>
-      </div>
-    <div class="profile-body">
-      <h2>{{ user.get_full_name|default:"Unnamed User" }}</h2>
+    <div class="profile-left">
+      <div class="avatar" style="
+        background-image: url('{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'core/images/default-avatar.png' %}{% endif %}');
+        background-size: cover;
+        background-position: center;
+      "></div>
       <p class="handle">@{{ user.username }}</p>
-      <p>{{ user_role }}</p>
-      <p><span class="calendar-icon">📅</span>Joined {{ user.date_joined|date:"F Y" }}</p>
+    </div>
+    <div class="profile-right">
+      <h1 class="profile-title">PROFILE</h1>
+      <div class="info-box">
+        <strong>Name:</strong> {{ user.get_full_name|default:"Unnamed User" }}
+      </div>
+      <div class="info-box">
+        <strong>Role:</strong> {{ user_role }}
+      </div>
+      <div class="info-box">
+        <strong>Date joined:</strong> {{ user.date_joined|date:"m/d/Y" }}
+      </div>
       <button class="edit-button" onclick="openModal('{% url 'edit_profile' user.id %}')">Edit Profile</button>
     </div>
   </div>
@@ -26,6 +33,7 @@
   <p>No user data available</p>
   {% endif %}
 </div>
+
 
 
 {% comment %} 

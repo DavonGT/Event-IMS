@@ -121,7 +121,8 @@
             <div class="quick-stats">
               <div class="card">
                 <div class="card-header">Upcoming Events</div>
-                <div class="card-body">5 events this week</div>
+                <div class="card-body">{{ upcoming_events_count }} event{{ upcoming_events_count|pluralize }} this week</div>
+
               </div>
               <div class="card">
                 <div class="card-header">Total Events</div>
@@ -134,15 +135,15 @@
             </div>
           </div>
         </div>
-        <div class="dropdown-container">
-          <div class="dropdown-header">
-            Dropdown Menu
-            <button class="dropdown-btn" onclick="toggleDropdown()">&#9660;</button>
+        <div class="dropdown-container" style="width: 200px; user-select: none;">
+          <div class="dropdown-header" id="dropdownHeader">
+            <span id="selectedOrgName">Select Organization</span>
+            <button class="dropdown-btn" onclick="toggleDropdown(event)">&#9660;</button>
           </div>
           <div class="dropdown-content" id="dropdownMenu">
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
+            <a href="#" onclick="selectOption(event, 'Organization A')">Organization A</a>
+            <a href="#" onclick="selectOption(event, 'Organization B')">Organization B</a>
+            <a href="#" onclick="selectOption(event, 'Organization C')">Organization C</a>
           </div>
         </div>
       </div>
@@ -206,10 +207,27 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
   <script>
-    function toggleDropdown() {
-      const dropdown = document.getElementById('dropdownMenu');
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    function toggleDropdown(event) {
+    event.stopPropagation(); // prevent document click from firing
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function selectOption(event, name) {
+    event.preventDefault();
+    const selectedOrgName = document.getElementById('selectedOrgName');
+    const dropdown = document.getElementById('dropdownMenu');
+    selectedOrgName.textContent = name;
+    dropdown.style.display = 'none';
+  }
+
+  // Close dropdown if clicking outside
+  document.addEventListener('click', function() {
+    const dropdown = document.getElementById('dropdownMenu');
+    if (dropdown.style.display === 'block') {
+      dropdown.style.display = 'none';
     }
+  });
 
     // =================== CHARTS ===================
     const barCtx = document.getElementById('barChart').getContext('2d');
