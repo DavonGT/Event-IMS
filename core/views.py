@@ -40,6 +40,9 @@ def events_dashboard(request):
         'selected_org_id': selected_org_id,
     })
 
+    # user_role = str(request.user.role).title()
+    #     return render(request, 'core/dashboard.html', {'user_role': user_role})
+
 
 
 
