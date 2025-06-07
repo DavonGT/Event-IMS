@@ -50,7 +50,8 @@ class Event(models.Model):
         validators=[validate_pdf],
         help_text='Upload PDF document only',
         null=False,
-        blank=False
+        blank=False,
+        default='sample_pdf.pdf'
     )
 
     objects = EventManager()

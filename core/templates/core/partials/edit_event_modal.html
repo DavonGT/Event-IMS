@@ -6,7 +6,7 @@
         <button class="modal-close" type="button" onclick="closeModal()">×</button>
       </div>
   
-      <form method="POST" action="{% url 'edit_event' form.instance.id %}">
+      <form method="POST" action="{% url 'edit_event' form.instance.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="custom-modal-body">
 
@@ -40,10 +40,16 @@
   
           <label for="id_event_type">Type of Event:</label>
           {{ form.event_type }}
+          
+          <label for="id_soft_copy">PDF Document:</label>
+          {{ form.soft_copy }}
+          <small class="form-text text-muted">Upload PDF document only</small>
+          {% if form.instance.soft_copy %}
+            <p>Current file: {{ form.instance.soft_copy.name }}</p>
+          {% endif %}
   
           <button type="submit" class="save-button">SAVE</button>
         </div>
       </form>
     </div>
   </div>
-  

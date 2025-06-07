@@ -7,7 +7,7 @@
     </div>
 
     <div id="modal-body" class="custom-modal-body">
-      <form method="POST" id="eventForm" action="{% url 'add_event' %}">
+      <form method="POST" id="eventForm" action="{% url 'add_event' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% if request.user.role == 'admin' %}
@@ -51,6 +51,12 @@
         <div class="form-group">
           <label for="{{ form.event_type.id_for_label }}">Event Type</label>
           {{ form.event_type }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.soft_copy.id_for_label }}">PDF Document</label>
+          {{ form.soft_copy }}
+          <small class="form-text text-muted">Upload PDF document only</small>
         </div>
 
         <button type="submit" class="save-button">Save</button>

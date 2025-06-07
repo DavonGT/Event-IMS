@@ -19,7 +19,8 @@ class EventForm(forms.ModelForm):
         fields = [
             'organization',
             'name', 'description', 'location', 
-            'start_datetime', 'end_datetime', 'event_type'
+            'start_datetime', 'end_datetime', 'event_type',
+            'soft_copy'
             ]
         
         widgets = {
@@ -29,6 +30,8 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control' , 'placeholder': 'Location'}),
             'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'event_type': forms.Select(attrs={'class': 'form-control'}),
+            'soft_copy': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'})
         }
     
 
@@ -72,7 +75,8 @@ class ExtensionActivityForm(forms.ModelForm):
         model = ExtensionActivity
         fields = [
             'name', 'college', 'description', 
-            'location', 'start_datetime', 'end_datetime'
+            'location', 'start_datetime', 'end_datetime',
+            'soft_copy'
         ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Activity Name'}),
@@ -81,6 +85,7 @@ class ExtensionActivityForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
             'start_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'end_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'soft_copy': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'})
         }
 
 
